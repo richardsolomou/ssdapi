@@ -1,0 +1,16 @@
+{
+	"name": "uopwebapi",
+	"version": "0.0.1",
+	"author": "Richard Solomou",
+	"description": "University of Portsmouth API",
+	"dependencies": {
+		"express": "3.*",
+		"mysql": "2.*",
+		"mssql": "*",
+		"async": "*"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/rsolomou/uopwebapi"
+	}
+}
