@@ -42,13 +42,13 @@ app.configure(function () {
 	app.use(flash());
 });
 
+
 /**
  * Route cofiguration.
  */
 
-app.get('/', function (req, res) {
-	res.send('uopwebapi');
-});
+// Load routes and pass in the application and passport instances.
+require('./app/routes')(app, passport);
 
 
 // Listen for connections.
