@@ -1,22 +1,22 @@
 module.exports = function (app, passport) {
 	// Homepage.
 	app.get('/', function (req, res) {
-		res.render('index.ejs');
+		res.render('index');
 	});
 
 	// Login form.
 	app.get('/login', function (req, res) {
-		res.render('login.ejs', { message: req.flash('loginMessage') });
+		res.render('login', { message: req.flash('loginMessage') });
 	});
 
 	// Register form.
 	app.get('/register', function (req, res) {
-		res.render('register.ejs', { message: req.flash('registerMessage') });
+		res.render('register', { message: req.flash('registerMessage') });
 	});
 
 	// Profile section.
 	app.get('/profile', isLoggedIn, function (req, res) {
-		res.render('profile.ejs', { user: req.user });
+		res.render('profile', { user: req.user });
 	});
 
 	// Logout.
