@@ -31,8 +31,8 @@ app.configure(function () {
 	// Get information from HTML forms.
 	app.use(express.json());
 	app.use(express.urlencoded());
-	// Set up jade for templating.
-	app.set('view engine', 'jade');
+	// Set up ejs for templating.
+	app.set('view engine', 'ejs');
 	// Session secret.
 	app.use(express.session({ secret: 'uopwebapi' }));
 	app.use(passport.initialize());
