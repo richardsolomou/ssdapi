@@ -7,7 +7,12 @@
 		"express": "3.*",
 		"mysql": "2.*",
 		"mssql": "*",
-		"async": "*"
+		"async": "*",
+		"jade": "*",
+		"passport": "*",
+		"passport-local": "*",
+		"connect-flash": "*",
+		"bcrypt-nodejs": "*"
 	},
 	"repository": {
 		"type": "git",
