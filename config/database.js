@@ -1,14 +1,14 @@
 module.exports = {
 	mysql: {
-		host: '',
-		user: '',
-		password: '',
-		database: ''
+		host: 'foo',
+		user: 'bar',
+		password: 'baz',
+		database: 'qux'
 	},
 	mssql: {
-		server: '',
-		user: '',
-		password: '',
-		database: ''
+		server: 'foo',
+		user: 'bar',
+		password: 'baz',
+		database: 'qux'
 	}
 };
