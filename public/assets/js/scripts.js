@@ -35,7 +35,7 @@ $(document).ready(function () {
 		$('#route button').trigger('click');
 	});
 
-	$('#route button').click(function (e) {
+	$(document).on('click', '#route button', function (e) {
 		var route;
 
 		$.getJSON(api + '/v1/routes').complete(function (data) {
