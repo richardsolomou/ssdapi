@@ -3,7 +3,6 @@
  */
 
 var express = require('express'),
-	ejs = require('ejs'),
 	mysql = require('mysql'),
 	mssql = require('mssql'),
 	async = require('async'),
@@ -35,9 +34,9 @@ app.configure(function () {
 	// Get information from HTML forms.
 	app.use(express.json());
 	app.use(express.urlencoded());
-	// Set up ejs for templating.
+	// Set up jade for templating.
 	app.locals(local);
-	app.set('view engine', 'ejs');
+	app.set('view engine', 'jade');
 	// Session secret.
 	app.use(express.session({ secret: 'uopwebapi' }));
 	app.use(passport.initialize());
