@@ -8,9 +8,9 @@
 		"mysql": "2.*",
 		"mssql": "*",
 		"async": "*",
-		"jade": "*",
+		"ejs": "*",
 		"passport": "*",
-		"passport-local": "*",
+		"passport-google-oauth": "*",
 		"connect-flash": "*",
 		"bcrypt-nodejs": "*"
 	},
