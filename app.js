@@ -24,6 +24,31 @@ var app = express();
 var webapi = mysql.createConnection(config.db.mysql),
 	mssql_conn = mssql.connect(config.db.mssql);
 
+// Serialize user instance to and from the session.
+passport.serializeUser(function (user, done) {
+	done(null, user);
+});
+
+// Deserialize user instance to and from the session.
+passport.deserializeUser(function (obj, done) {
+	done(null, obj);
+});
+
+// Use the GoogleStrategy within Passport.
+passport.use(new GoogleStrategy({
+		clientID: db.oauth.client_id,
+		clientSecret: db.oauth.client_secret,
+		callbackURL: local.url + '/auth/google/callback',
+		scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile'
+	},
+	function (accessToken, refreshToken, profile, done) {
+		process.nextTick(function () {
+			// The user's profile is returned to represent the logged-in user.
+			return done(null, profile);
+		});
+	}
+));
+
 // Set up the express application.
 app.configure(function () {
 	app.use(express.static(__dirname + '/public'));
