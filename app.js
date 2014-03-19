@@ -47,8 +47,8 @@ passport.deserializeUser(function (obj, done) {
 
 // Use the GoogleStrategy within Passport.
 passport.use(new GoogleStrategy({
-		clientID: db.oauth.client_id,
-		clientSecret: db.oauth.client_secret,
+		clientID: config.passport.client_id,
+		clientSecret: config.passport.client_secret,
 		callbackURL: local.url + '/auth/google/callback',
 		scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile'
 	},
