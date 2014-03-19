@@ -7,10 +7,11 @@ var express = require('express'),
 	mssql = require('mssql'),
 	async = require('async'),
 	passport = require('passport'),
-	flash = require('connect-flash');
+	flash = require('connect-flash'),
+	GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;;
 
 var port = process.env.PORT || 8080;
-	db = require('./config/database'),
+	config = require('./config/config'),
 	local = require('./config/local');
 
 
@@ -20,8 +21,8 @@ var port = process.env.PORT || 8080;
 
 var app = express();
 // Setup connection to the databases.
-var webapi = mysql.createConnection(db.mysql),
-	mssql_conn = mssql.connect(db.mssql);
+var webapi = mysql.createConnection(config.db.mysql),
+	mssql_conn = mssql.connect(config.db.mssql);
 
 // Set up the express application.
 app.configure(function () {
@@ -34,11 +35,11 @@ app.configure(function () {
 	// Get information from HTML forms.
 	app.use(express.json());
 	app.use(express.urlencoded());
-	// Set up jade for templating.
+	// Set up ejs for templating.
 	app.locals(local);
-	app.set('view engine', 'jade');
+	app.set('view engine', 'ejs');
 	// Session secret.
-	app.use(express.session({ secret: 'uopwebapi' }));
+	app.use(express.session({ secret: config.express.secret }));
 	app.use(passport.initialize());
 	// Use persistent login sessions.
 	app.use(passport.session());
