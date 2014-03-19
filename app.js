@@ -7,7 +7,6 @@ var express = require('express'),
 	mssql = require('mssql'),
 	async = require('async'),
 	passport = require('passport'),
-	flash = require('connect-flash'),
 	GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
 var port = process.env.PORT || 8080;
@@ -96,8 +95,6 @@ app.configure(function () {
 	app.use(passport.initialize());
 	// Use persistent login sessions.
 	app.use(passport.session());
-	// Use connect-flash for flash messages stored in session.
-	app.use(flash());
 });
 
 
