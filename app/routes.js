@@ -46,6 +46,20 @@ module.exports = function (app, passport) {
 	});
 
 	/**
+	 * DOCUMENTATION
+	 */
+	
+	app.get('/documentation', isLoggedIn, function (req, res) {
+		// Render documentation.ejs with the user's credentials.
+		res.render('documentation', {
+			name: 'documentation',
+			user: req.user._json,
+			js: 'documentation',
+			css: 'documentation'
+		});
+	});
+
+	/**
 	 * GOOGLE AUTHENTICATION
 	 */
 	app.get('/auth/google', passport.authenticate('google'));
