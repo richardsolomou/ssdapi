@@ -1,0 +1,28 @@
+<nav class="navbar navbar-default" role="navigation">
+	<div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				<li <% if (name == 'home') { %>class="active"<% } %>><a href="/">Home</a></li>
+				<% if (locals.user) { %>
+				<li <% if (name == 'documentation') { %>class="active"<% } %>><a href="/documentation">Documentation</a></li>
+				<li <% if (name == 'credentials') { %>class="active"<% } %>><a href="/credentials">My Credentials</a></li>
+				<% } %>
+			</ul>
+			<div class="pull-right">
+				<% if (locals.user) { %>
+				<a href="/logout" class="btn btn-danger navbar-btn"><span class="fa fa-google-plus"></span> Logout</a>
+				<% } else { %>
+				<a href="/auth/google" class="btn btn-danger navbar-btn"><span class="fa fa-google-plus"></span> Login</a>
+				<% } %>
+			</div>
+		</div>
+	</div>
+</nav>
