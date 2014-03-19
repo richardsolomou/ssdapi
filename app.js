@@ -60,7 +60,7 @@ passport.use(new GoogleStrategy({
 					// Sets the query string to create a new record for the user.
 					var query = 'INSERT INTO `api_clients` (`id`, `given_name`, `family_name`, `email`, `picture`, `hd`) VALUES (:id, :given_name, :family_name, :email, :picture, :hd)';
 					// Sets the query string to update the existing user's record.
-					if (rows[0].count > 0) query = 'UPDATE `api_clients` SET `given_name` = :given_name, `family_name` = :family_name, `email` = :email, `picture` = :picture, "`hd` = :hd WHERE `id` = :id';
+					if (rows && rows[0].count > 0) query = 'UPDATE `api_clients` SET `given_name` = :given_name, `family_name` = :family_name, `email` = :email, `picture` = :picture, "`hd` = :hd WHERE `id` = :id';
 
 					// Runs the selected query on the local database.
 					connection.query(query, { id: profile._json.id, given_name: profile._json.given_name, family_name: profile._json.family_name, email: profile._json.email, picture: profile._json.picture, hd: profile._json.hd }, function () {

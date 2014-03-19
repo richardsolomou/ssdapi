@@ -6,7 +6,8 @@ module.exports = function (app, passport) {
 		// Render index.ejs with any potential user credentials.
 		res.render('index', {
 			name: 'home',
-			user: req.user ? req.user._json : null
+			user: req.user ? req.user._json : null,
+			css: 'home'
 		});
 	});
 
@@ -71,7 +72,7 @@ module.exports = function (app, passport) {
 		// Set redirect URL on successful log-in.
 		successRedirect: '/',
 		// Set redirect URL on failed log-in.
-		failureRedirect: '/login',
+		failureRedirect: '/',
 		// Set flash message to display on failed log-in.
 		failureMessage: 'Hosted domain must be port.ac.uk or myport.ac.uk.'
 	}));
