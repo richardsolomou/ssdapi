@@ -8,7 +8,7 @@ var express = require('express'),
 	async = require('async'),
 	passport = require('passport'),
 	flash = require('connect-flash'),
-	GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;;
+	GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
 var port = process.env.PORT || 8080;
 	config = require('./config/config'),
@@ -21,8 +21,19 @@ var port = process.env.PORT || 8080;
 
 var app = express();
 // Setup connection to the databases.
-var webapi = mysql.createConnection(config.db.mysql),
+var connection = mysql.createConnection(config.db.mysql),
 	mssql_conn = mssql.connect(config.db.mssql);
+
+// Implements a custom format for query escaping.
+connection.config.queryFormat = function (query, values) {
+	if (!values) return query;
+	return query.replace(/\:(\w+)/g, function (txt, key) {
+		if (values.hasOwnProperty(key)) {
+			return this.escape(values[key]);
+		}
+		return txt;
+	}.bind(this));
+};
 
 // Serialize user instance to and from the session.
 passport.serializeUser(function (user, done) {
@@ -43,8 +54,25 @@ passport.use(new GoogleStrategy({
 	},
 	function (accessToken, refreshToken, profile, done) {
 		process.nextTick(function () {
-			// The user's profile is returned to represent the logged-in user.
-			return done(null, profile);
+			// Check if the user is signed in under a University of Portsmouth domain.
+			if (profile._json.hd == 'port.ac.uk' || profile._json.hd == 'myport.ac.uk') {
+				// Check if the user already exists in the local database.
+				connection.query('SELECT COUNT(`id`) AS `count` FROM `api_users` WHERE `id` = :id', { id: profile._json.id }, function (err, rows) {
+					// Sets the query string to create a new record for the user.
+					var query = 'INSERT INTO `api_clients` (`id`, `given_name`, `family_name`, `email`, `picture`, `hd`) VALUES (:id, :given_name, :family_name, :email, :picture, :hd)';
+					// Sets the query string to update the existing user's record.
+					if (rows[0].count > 0) query = 'UPDATE `api_clients` SET `given_name` = :given_name, `family_name` = :family_name, `email` = :email, `picture` = :picture, "`hd` = :hd WHERE `id` = :id';
+
+					// Runs the selected query on the local database.
+					connection.query(query, { id: profile._json.id, given_name: profile._json.given_name, family_name: profile._json.family_name, email: profile._json.email, picture: profile._json.picture, hd: profile._json.hd }, function () {
+						// The user's profile is returned to represent the logged-in user.
+						return done(null, profile);
+					});
+				});
+			} else {
+				// Disregards successful log-ins from non-local accounts and gives an error.
+				return done(null, false);
+			}
 		});
 	}
 ));
