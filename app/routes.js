@@ -1,32 +1,72 @@
 module.exports = function (app, passport) {
-	// Homepage.
+	/**
+	 * HOME
+	 */
 	app.get('/', function (req, res) {
-		res.render('index');
+		// Render index.ejs with any potential user credentials.
+		res.render('index', {
+			name: 'home',
+			user: req.user ? req.user._json : null
+		});
 	});
 
-	// Login form.
+	/**
+	 * LOGIN
+	 */
 	app.get('/login', function (req, res) {
-		res.render('login', { message: req.flash('loginMessage') });
+		// Render login.ejs with any potential user credentials and messages.
+		res.render('login', {
+			name: 'login',
+			user: req.user ? req.user._json : null,
+			message: req.session.messages || []
+		});
+		// Empty session messages array.
+		req.session.messages = [];
 	});
 
-	// Register form.
-	app.get('/register', function (req, res) {
-		res.render('register', { message: req.flash('registerMessage') });
+	/**
+	 * CREDENTIALS
+	 */
+	app.get('/credentials', isLoggedIn, function (req, res) {
+		// Render credentials.ejs with the user's credentials.
+		res.render('credentials', {
+			name: 'credentials',
+			user: req.user._json
+		});
 	});
 
-	// Profile section.
-	app.get('/profile', isLoggedIn, function (req, res) {
-		res.render('profile', { user: req.user });
-	});
-
-	// Logout.
-	app.get('/logout', function (req, res) {
+	/**
+	 * LOGOUT
+	 */
+	app.get('/logout', isLoggedIn, function (req, res) {
+		// Use passport to logout user.
 		req.logout();
+		// Redirect user to homepage.
 		res.redirect('/');
 	});
+
+	/**
+	 * GOOGLE AUTHENTICATION
+	 */
+	app.get('/auth/google', passport.authenticate('google'));
+
+	/**
+	 * GOOGLE AUTHENTICATION CALLBACK
+	 */
+	app.get('/auth/google/callback', passport.authenticate('google', {
+		// Set redirect URL on successful log-in.
+		successRedirect: '/',
+		// Set redirect URL on failed log-in.
+		failureRedirect: '/login',
+		// Set flash message to display on failed log-in.
+		failureMessage: 'Hosted domain must be port.ac.uk or myport.ac.uk.'
+	}));
 };
 
+// Middleware to check if the user is logged in.
 function isLoggedIn(req, res, next) {
+	// Use passport to check if authenticated.
 	if (req.isAuthenticated()) return next();
-	res.redirect('/');
+	// Redirect to login page if not.
+	res.redirect('/login');
 }
