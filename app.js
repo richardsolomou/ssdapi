@@ -133,8 +133,8 @@ app.configure(function () {
  * Route cofiguration.
  */
 
-// Load routes and pass in the application and passport instances.
-require('./app/routes')(app, passport);
+// Load the interface and pass in the application and passport instances.
+require('./app/interface')(app, passport);
 
 
 // Listen for connections.
