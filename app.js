@@ -29,9 +29,7 @@ var connection = mysql.createConnection(config.db.mysql),
 connection.config.queryFormat = function (query, values) {
 	if (!values) return query;
 	return query.replace(/\:(\w+)/g, function (txt, key) {
-		if (values.hasOwnProperty(key)) {
-			return this.escape(values[key]);
-		}
+		if (values.hasOwnProperty(key)) return this.escape(values[key]);
 		return txt;
 	}.bind(this));
 };
@@ -135,6 +133,9 @@ app.configure(function () {
 
 // Load the interface and pass in the application and passport instances.
 require('./app/interface')(app, passport);
+
+// Load the API routes and pass in the application and passport instances.
+require('./app/routes')(app, passport);
 
 
 // Listen for connections.
