@@ -7,7 +7,9 @@ var express = require('express'),
 	mssql = require('mssql'),
 	async = require('async'),
 	passport = require('passport'),
-	GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+	GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
+	LocalAPIKeyStrategy = require('passport-localapikey').Strategy,
+	dns = require('dns');
 
 var port = process.env.PORT || 8080;
 	config = require('./config/config'),
@@ -54,24 +56,53 @@ passport.use(new GoogleStrategy({
 	function (accessToken, refreshToken, profile, done) {
 		process.nextTick(function () {
 			// Check if the user is signed in under a University of Portsmouth domain.
-			if (profile._json.hd == 'port.ac.uk' || profile._json.hd == 'myport.ac.uk') {
-				// Check if the user already exists in the local database.
-				connection.query('SELECT COUNT(`id`) AS `count` FROM `api_users` WHERE `id` = :id', { id: profile._json.id }, function (err, rows) {
-					// Sets the query string to create a new record for the user.
-					var query = 'INSERT INTO `api_clients` (`id`, `given_name`, `family_name`, `email`, `picture`, `hd`) VALUES (:id, :given_name, :family_name, :email, :picture, :hd)';
-					// Sets the query string to update the existing user's record.
-					if (rows && rows[0].count > 0) query = 'UPDATE `api_clients` SET `given_name` = :given_name, `family_name` = :family_name, `email` = :email, `picture` = :picture, "`hd` = :hd WHERE `id` = :id';
-
-					// Runs the selected query on the local database.
-					connection.query(query, { id: profile._json.id, given_name: profile._json.given_name, family_name: profile._json.family_name, email: profile._json.email, picture: profile._json.picture, hd: profile._json.hd }, function () {
-						// The user's profile is returned to represent the logged-in user.
-						return done(null, profile);
-					});
-				});
-			} else {
+			if (profile._json.hd !== 'port.ac.uk' && profile._json.hd !== 'myport.ac.uk') {
 				// Disregards successful log-ins from non-local accounts and gives an error.
 				return done(null, false);
 			}
+
+			// Check if the user already exists in the local database.
+			connection.query('SELECT COUNT(`id`) AS `count` FROM `api_users` WHERE `id` = :id', { id: profile._json.id }, function (err, rows) {
+				// Sets the query string to create a new record for the user.
+				var query = 'INSERT INTO `api_clients` (`id`, `given_name`, `family_name`, `email`, `picture`, `hd`) VALUES (:id, :given_name, :family_name, :email, :picture, :hd)';
+				// Sets the query string to update the existing user's record.
+				if (rows && rows[0].count > 0) query = 'UPDATE `api_clients` SET `given_name` = :given_name, `family_name` = :family_name, `email` = :email, `picture` = :picture, "`hd` = :hd WHERE `id` = :id';
+
+				// Runs the selected query on the local database.
+				connection.query(query, { id: profile._json.id, given_name: profile._json.given_name, family_name: profile._json.family_name, email: profile._json.email, picture: profile._json.picture, hd: profile._json.hd }, function () {
+					// The user's profile is returned to represent the logged-in user.
+					return done(null, profile);
+				});
+			});
+		});
+	}
+));
+
+// Use the LocalAPIKeyStrategy within Passport.
+passport.use(new LocalAPIKeyStrategy({
+		apiKeyField: 'api_key',
+		passReqToCallback: true
+	},
+	function (req, api_key, done) {
+		// Check if the provided access token exists.
+		connection.query('SELECT * FROM `api_keys` WHERE `api_key` = :api_key', { api_key: api_key }, function (err, rows) {
+			if (err) return done(err);
+			// Returns a message to the user that the provided API Key is invalid.
+			if (!rows || !rows[0]) return done(null, false, { message: 'Invalid API Key' });
+
+			// Checks the remote machine's hostname against the allowed request origin.
+			dns.reverse(req.ip, function (err, hostnames) {
+				// Loops through any hostnames.
+				for (var i in hostnames) {
+					// Allows the user to continue if the hostname matches the request origin.
+					if (rows[0].request_origin == hostnames[i]) return done(null, rows[0].user_id);
+				}
+			});
+			// Checks the remote machine's IP address against the allowed request origin.
+			if (rows[0].request_origin !== req.ip) return done(null, false, { message: 'Invalid Request Origin' });
+
+			// Allows the user to continue if the hostname matches the request origin.
+			return done(null, rows[0].user_id);
 		});
 	}
 ));
