@@ -7,7 +7,8 @@ module.exports = function (app, passport) {
 		res.render('index', {
 			name: 'home',
 			user: req.user ? req.user._json : null,
-			css: 'home'
+			css: 'home',
+			success: req.flash('success')
 		});
 	});
 
@@ -19,10 +20,8 @@ module.exports = function (app, passport) {
 		res.render('login', {
 			name: 'login',
 			user: req.user ? req.user._json : null,
-			message: req.session.messages || []
+			error: req.flash('error')
 		});
-		// Empty session messages array.
-		req.session.messages = [];
 	});
 
 	/**
@@ -71,9 +70,11 @@ module.exports = function (app, passport) {
 		// Set redirect URL on successful log-in.
 		successRedirect: '/',
 		// Set redirect URL on failed log-in.
-		failureRedirect: '/',
+		failureRedirect: '/login',
+		// Set flash message to display on successful log-in.
+		successFlash: 'You have succesfully logged in.',
 		// Set flash message to display on failed log-in.
-		failureMessage: 'Hosted domain must be port.ac.uk or myport.ac.uk.'
+		failureFlash: 'Hosted domain must be port.ac.uk or myport.ac.uk.'
 	}));
 };
 
