@@ -19,6 +19,7 @@ html {
 
 body {
 	margin-bottom: 135px;
+	color: #3c3c3c;
 }
 
 p {
@@ -41,7 +42,7 @@ a {
 
 a:hover,
 a:focus {
-	color: #6D46BF;
+	color: inherit;
 }
 
 .lead {
@@ -59,21 +60,39 @@ a:focus {
  */
 
 header {
-	padding: 1.5em 0 2em 0;
+	padding: 3em 0 3.3em 0;
+	background: #8361C9;
+	border-bottom: 2em solid #9172CF;
 }
 
 header a {
+	color: #f4f4f4!important;
+}
+
+header h1 a {
 	text-decoration: none;
-}
-
-header h1 {
 	float: left;
-	color: #444;
 	font-family: 'Adelle_Reg', sans-serif;
+	text-decoration: none!important;
 }
 
-header img {
-	float: right;
+header .user {
+	margin-top: 1em;
+}
+
+header .user .pull-left {
+	margin-right: 1em;
+}
+
+header .user .pull-left a {
+	display: block;
+	text-align: right;
+}
+
+header .user .btn-danger {
+	margin: 0 0 0 auto;
+	display: block;
+	width: 80px;
 }
 
 
@@ -82,18 +101,18 @@ header img {
  * NAVIGATION BAR
  */
 
-.navbar {
+.navbar-inverse {
 	margin: 0;
+	background: #444;
+	border-radius: 0;
+	border: none;
+	padding: 5px;
 }
 
-.dropdown-menu a {
-	padding: 10px 20px!important;
-}
-
-.dropdown-menu > .active > a,
-.dropdown-menu > .active > a:hover,
-.dropdown-menu > .active > a:focus {
-	background-color: #6D46BF;
+.navbar-inverse .navbar-nav > .active > a,
+.navbar-inverse .navbar-nav > .active > a:hover,
+.navbar-inverse .navbar-nav > .active > a:focus {
+	background-color: #5c5c5c;
 }
 
 
@@ -102,7 +121,11 @@ header img {
  */
 
 article {
-	padding: 3em 0 2em 0;
+	padding: 2.5em 0;
+}
+
+article.no-padding-top {
+	padding-top: 0;
 }
 
 
@@ -133,11 +156,6 @@ footer a {
  */
 
 @media (max-width: 560px) {
-	header img {
-		width: 100%;
-		max-width: 250px;
-	}
-
 	header h1 {
 		font-size: 20px;
 		margin-bottom: 0;
@@ -146,12 +164,30 @@ footer a {
 }
 
 @media (max-width: 992px) {
-	header h1,
-	header img {
-		float: none;
-		text-align: center;
-		margin-left: auto;
-		margin-right: auto;
+	header h1 a {
 		display: block;
+		width: 100%;
+		text-align: center;
+	}
+
+	header .user {
+		padding-top: 1em;
+		clear: both;
+		text-align: center;
+	}
+
+	header .user .btn-danger {
+		margin: 0 auto;
+	}
+
+	header .user .pull-left {
+		float: none!important;
+		text-align: center;
+		margin-right: 0;
+		margin-bottom: 1em;
+	}
+
+	header .user .pull-left a {
+		text-align: center;
 	}
 }

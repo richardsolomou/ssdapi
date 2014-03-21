@@ -3,14 +3,14 @@
  */
 
 #intro {
-	background: #f5f5f5;
-	border-bottom: 2px solid #e3e3e3;
+	background: #f0f0f0;
 	color: #444;
-	padding: 2.5em 0;
+	border-bottom: 5px solid #e3e3e3;
 }
 
 #intro p {
 	line-height: 1.6;
+	text-align: justify;
 }
 
 #intro i {
@@ -24,4 +24,52 @@
 
 #intro a:hover {
 	color: #58369E;
+}
+
+
+/**
+ * ROUTE
+ */
+
+#route h3 {
+	margin-top: 0;
+}
+
+#route span.input-group-addon,
+#route input.form-control {
+	border-bottom: none;
+}
+
+#route span.input-group-addon {
+	border-radius: 4px 0 0 0;
+}
+
+#route button {
+	border-radius: 0 4px 0 0 ;
+}
+
+#route pre {
+	border-radius: 0 0 4px 4px;
+	height: 340px;
+}
+
+#alert ul li {
+    list-style-type: square;
+}
+
+#alert ul li:hover,
+#alert ul li a:hover {
+    color: #d58512;
+	text-decoration: none;
+}
+
+
+/**
+ * MEDIA QUERIES
+ */
+
+@media (max-width: 992px) {
+	#intro .col-md-4:not(:nth-child(3)) {
+		margin-bottom: 2.5em;
+	}
 }
