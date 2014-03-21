@@ -76,20 +76,25 @@ header h1 a {
 	text-decoration: none!important;
 }
 
-header .user {
-	margin-top: 1em;
+header .col-md-3 {
+	margin-top: 10px;
 }
 
-header .user .pull-left {
-	margin-right: 1em;
+header .col-md-3 img {
+	float: right;
+	display: inline-block;
+	margin-left: 1em;
 }
 
-header .user .pull-left a {
-	display: block;
+header .col-md-3 .user {
 	text-align: right;
 }
 
-header .user .btn-danger {
+header .col-md-3 .user a {
+	display: block;
+}
+
+header .col-md-3 .btn-danger {
 	margin: 0 0 0 auto;
 	display: block;
 	width: 80px;
@@ -172,22 +177,21 @@ footer a {
 
 	header .user {
 		padding-top: 1em;
-		clear: both;
-		text-align: center;
+		text-align: center!important;
 	}
 
-	header .user .btn-danger {
+	header .btn-danger {
 		margin: 0 auto;
 	}
 
-	header .user .pull-left {
-		float: none!important;
-		text-align: center;
-		margin-right: 0;
-		margin-bottom: 1em;
+	header .col-md-3 {
+		clear: both;
+		padding-top: 1em;
 	}
 
-	header .user .pull-left a {
-		text-align: center;
+	header .col-md-3 img {
+		float: none;
+		display: block;
+		margin: 0 auto;
 	}
 }

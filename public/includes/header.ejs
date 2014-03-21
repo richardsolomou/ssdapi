@@ -21,15 +21,16 @@
 					<h1><a href="/"><%= title %></a></h1>
 				</div>
 
-				<div class="col-md-3 user">
+				<div class="col-md-3">
 				<% if (locals.user && user) { %>
-					<div class="pull-left">
+					<img src="<%= user.picture %>" width="50" class="img-rounded">
+					<div class="user">
 						<a href="/credentials"><strong><%= user.given_name %> <%= user.family_name %></strong></a>
 						<a href="/logout">Logout</a>
 					</div>
-					<img src="<%= user.picture %>" width="50" class="img-rounded">
 				<% } else { %>
-					<a href="/auth/google" class="btn btn-danger login_button"><span class="fa fa-google-plus"></span> Login</a>
+					<div class="clearfix">&nbsp;</div>
+					<a href="/auth/google" class="btn btn-danger"><span class="fa fa-google-plus"></span> Login</a>
 				<% } %>
 				</div>
 			</div>
