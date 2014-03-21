@@ -7,8 +7,7 @@ module.exports = function (app, passport) {
 		res.render('index', {
 			name: 'home',
 			user: req.user ? req.user._json : null,
-			css: 'home',
-			success: req.flash('success')
+			css: 'home'
 		});
 	});
 
@@ -16,12 +15,10 @@ module.exports = function (app, passport) {
 	 * LOGIN
 	 */
 	app.get('/login', function (req, res) {
-		// Render login.ejs with any potential user credentials and messages.
-		res.render('login', {
-			name: 'login',
-			user: req.user ? req.user._json : null,
-			error: req.flash('error')
-		});
+		// Use passport to check if the user is already authenticated.
+		if (req.isAuthenticated()) return res.redirect('/');
+		// Render login.ejs.
+		res.render('login');
 	});
 
 	/**
@@ -48,11 +45,11 @@ module.exports = function (app, passport) {
 	/**
 	 * DOCUMENTATION
 	 */
-	app.get('/documentation', isLoggedIn, function (req, res) {
+	app.get('/documentation', function (req, res) {
 		// Render documentation.ejs with the user's credentials.
 		res.render('documentation', {
 			name: 'documentation',
-			user: req.user._json,
+			user: req.user ? req.user._json : null,
 			js: 'documentation',
 			css: 'documentation'
 		});
@@ -70,11 +67,7 @@ module.exports = function (app, passport) {
 		// Set redirect URL on successful log-in.
 		successRedirect: '/',
 		// Set redirect URL on failed log-in.
-		failureRedirect: '/login',
-		// Set flash message to display on successful log-in.
-		successFlash: 'You have succesfully logged in.',
-		// Set flash message to display on failed log-in.
-		failureFlash: 'Hosted domain must be port.ac.uk or myport.ac.uk.'
+		failureRedirect: '/login'
 	}));
 };
 
@@ -83,5 +76,5 @@ function isLoggedIn(req, res, next) {
 	// Use passport to check if authenticated.
 	if (req.isAuthenticated()) return next();
 	// Redirect to login page if not.
-	res.redirect('/login');
+	res.redirect('/auth/google');
 }
