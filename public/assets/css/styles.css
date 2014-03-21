@@ -76,8 +76,9 @@ header h1 a {
 	text-decoration: none!important;
 }
 
-header .col-md-3 {
-	margin-top: 10px;
+header .col-md-3 img,
+header .col-md-3 .user {
+	margin-top: 8px;
 }
 
 header .col-md-3 img {
@@ -94,7 +95,7 @@ header .col-md-3 .user a {
 	display: block;
 }
 
-header .col-md-3 .btn-danger {
+header .btn-danger {
 	margin: 0 0 0 auto;
 	display: block;
 	width: 80px;
@@ -186,12 +187,17 @@ footer a {
 
 	header .col-md-3 {
 		clear: both;
-		padding-top: 1em;
+	}
+
+	header .col-md-3 img,
+	header .col-md-3 .user {
+		margin-top: 0;
 	}
 
 	header .col-md-3 img {
 		float: none;
 		display: block;
 		margin: 0 auto;
+		padding-top: 1em;
 	}
 }
