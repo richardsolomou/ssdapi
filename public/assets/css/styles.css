@@ -37,12 +37,12 @@ html, html a {
 }
 
 a {
-	color: #3c3c3c;
+	color: #8361C9;
 }
 
 a:hover,
 a:focus {
-	color: inherit;
+	color: #58369E;
 }
 
 .lead {
