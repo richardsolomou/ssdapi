@@ -6,7 +6,7 @@ module.exports = function (app, passport) {
 		// Render index.ejs with any potential user credentials.
 		res.render('index', {
 			name: 'home',
-			user: req.user ? req.user._json : null,
+			user: req.session.user,
 			css: 'home'
 		});
 	});
@@ -28,7 +28,7 @@ module.exports = function (app, passport) {
 		// Render credentials.ejs with the user's credentials.
 		res.render('credentials', {
 			name: 'credentials',
-			user: req.user._json
+			user: req.session.user
 		});
 	});
 
@@ -49,7 +49,7 @@ module.exports = function (app, passport) {
 		// Render documentation.ejs with the user's credentials.
 		res.render('documentation', {
 			name: 'documentation',
-			user: req.user ? req.user._json : null,
+			user: req.session.user,
 			js: 'documentation',
 			css: 'documentation'
 		});

@@ -49,9 +49,10 @@ passport.use(new GoogleStrategy({
 		clientID: config.passport.client_id,
 		clientSecret: config.passport.client_secret,
 		callbackURL: local.api.base_url + '/auth/google/callback',
-		scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile'
+		scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
+		passReqToCallback: true
 	},
-	function (accessToken, refreshToken, profile, done) {
+	function (req, accessToken, refreshToken, profile, done) {
 		process.nextTick(function () {
 			// Check if the user is signed in under a University of Portsmouth domain.
 			if (profile._json.hd !== 'port.ac.uk' && profile._json.hd !== 'myport.ac.uk') {
@@ -68,6 +69,8 @@ passport.use(new GoogleStrategy({
 
 				// Runs the selected query on the local database.
 				connection.query(query, { id: profile._json.id, given_name: profile._json.given_name, family_name: profile._json.family_name, email: profile._json.email, picture: profile._json.picture, hd: profile._json.hd }, function () {
+					// The user is stored in session.
+					req.session.user = profile._json;
 					// The user's profile is returned to represent the logged-in user.
 					return done(null, profile);
 				});
