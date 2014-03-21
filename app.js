@@ -9,8 +9,7 @@ var express = require('express'),
 	passport = require('passport'),
 	GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
 	LocalAPIKeyStrategy = require('passport-localapikey').Strategy,
-	dns = require('dns'),
-	flash = require('connect-flash');
+	dns = require('dns');
 
 var port = process.env.PORT || 8080;
 	config = require('./config/config'),
@@ -125,7 +124,6 @@ app.configure(function () {
 	app.use(passport.initialize());
 	// Use persistent login sessions.
 	app.use(passport.session());
-	app.use(flash());
 });
 
 
