@@ -48,7 +48,7 @@ passport.deserializeUser(function (obj, done) {
 passport.use(new GoogleStrategy({
 		clientID: config.passport.client_id,
 		clientSecret: config.passport.client_secret,
-		callbackURL: local.url + '/auth/google/callback',
+		callbackURL: local.api.base_url + '/auth/google/callback',
 		scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile'
 	},
 	function (accessToken, refreshToken, profile, done) {
@@ -135,7 +135,7 @@ app.configure(function () {
 require('./app/interface')(app, passport);
 
 // Load the API routes and pass in the application and passport instances.
-require('./app/routes')(app, passport);
+require('./app/routes')(app, passport, connection, mssql_conn);
 
 
 // Listen for connections.

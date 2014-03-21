@@ -1,4 +1,4 @@
-module.exports = function (app, passport) {
+module.exports = function (app, passport, mysql, mssql) {
 	// Middleware to check if the user has provided a valid API key.
 	function isAuthorized(req, res, next) {
 		// Use passport to authenticate with localapikey.
