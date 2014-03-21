@@ -1,0 +1,564 @@
+<% include includes/header %>
+
+	<article id="documentation" class="no-padding-top">
+		<div class="container">
+			<div class="col-md-3 pull-right">
+				<div id="doc_nav">
+					<h3>Navigation</h3>
+					<ul class="nav">
+						<li><a href="#documentation_getting_started" class="scroll">Getting Started</a></li>
+						<li>
+							<a href="#documentation_api_resources" class="scroll">API Resources</a>
+							<ul class="nav">
+								<li>
+									<a href="#documentation_api_resources_buildings" class="scroll">Buildings</a>
+									<ul class="nav">
+										<li><a href="#documentation_api_resources_buildings_openaccess" class="scroll">Open Access Area Availability</a></li>
+										<li><a href="#documentation_api_resources_buildings_openingtimes" class="scroll">Opening Times</a></li>
+										<li>
+											<a href="#documentation_api_resources_buildings_labs" class="scroll">Shared Teaching Spaces</a>
+											<ul class="nav">
+												<li><a href="#documentation_api_resources_buildings_labs_timetables" class="scroll">Timetables</a></li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+								<li><a href="#documentation_api_resources_services" class="scroll">Service Status</a></li>
+								<li><a href="#documentation_api_resources_users" class="scroll">Staff Directory</a></li>
+							</ul>
+						</li>
+						<li><a href="#documentation_jsonp_requests" class="scroll">JSONP Requests</a></li>
+						<li>
+							<a href="#documentation_result_formatting" class="scroll">Result Formatting</a>
+							<ul class="nav">
+								<li><a href="#documentation_result_formatting_field_selection" class="scroll">Field Selection</a></li>
+								<li><a href="#documentation_result_formatting_ordering" class="scroll">Ordering</a></li>
+								<li><a href="#documentation_result_formatting_limiting_results" class="scroll">Limiting results</a></li>
+							</ul>
+						</li>
+						<li><a href="header" class="scroll">Back to top</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="col-md-9 pull-left">
+				<div id="documentation_getting_started">
+					<h1>Getting Started</h1>
+					<p class="lead">Please take note when using this API:</p>
+					<ul>
+						<li>This is a <strong>consumption-only</strong> API - only the HTTP GET method is available on resources.</li>
+						<li><strong>No authentication</strong> is required to access this API. All resources are fully open and available.</li>
+						<li>If you are going to be regularly using the API, it is recommended that you cache data on your service.</li>
+					</ul>
+				</div>
+
+				<div id="documentation_api_resources">
+					<h1>API Resources</h1>
+					<p>This documentation aims to explain how to use the API to enable developers to access some of the core data available at the University of Portsmouth such as the open access area availability, the shared teaching spaces and their timetables, the service status, and the staff directory.</p>
+
+					<div id="documentation_api_resources_buildings">
+						<h2>Buildings</h2>
+						<p>This resource returns information about all campus buildings.</p>
+
+						<p class="lead">GET buildings</p>
+						<div class="example-request">
+							<pre class="request_header">GET <%= api.full_url %>buildings</pre>
+							<pre class="pre-scrollable" data-example-request="buildings"></pre>
+						</div>
+
+						<p class="lead">GET buildings/ID</p>
+						<div class="example-request">
+							<pre class="request_header">GET <%= api.full_url %>buildings/pk</pre>
+							<pre class="pre-scrollable" data-example-request="buildings/pk"></pre>
+						</div>
+
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th>Field Name</th>
+									<th>Description</th>
+									<th>Values</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>id</td>
+									<td>Unique identifier for the building entry.</td>
+									<td>Numeric</td>
+								</tr>
+								<tr>
+									<td>name</td>
+									<td>Name of the building</td>
+									<td>String</td>
+								<tr>
+									<td>reference</td>
+									<td>Short reference string of the building</td>
+									<td>String</td>
+								</tr>
+								<tr>
+									<td>latitude</td>
+									<td>Latitude co-ordinates of the building</td>
+									<td>String</td>
+								</tr>
+								<tr>
+									<td>longitude</td>
+									<td>Longitude co-ordinates of the building</td>
+									<td>String</td>
+								</tr>
+							</tbody>
+						</table>
+
+						<div id="documentation_api_resources_buildings_openaccess">
+							<h3>Open Access Area Availability</h3>
+							<p>This resource returns the computer availability of buildings that are equipped with Open Access machines.</p>
+
+							<p class="lead">GET buildings/openaccess</p>
+							<div class="example-request">
+								<pre class="request_header">GET <%= api.full_url %>buildings/openaccess</pre>
+								<pre class="pre-scrollable" data-example-request="buildings/openaccess"></pre>
+							</div>
+
+							<p class="lead">GET buildings/ID/openaccess</p>
+							<div class="example-request">
+								<pre class="request_header">GET <%= api.full_url %>buildings/pk/openaccess</pre>
+								<pre class="pre-scrollable" data-example-request="buildings/pk/openaccess"></pre>
+							</div>
+
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Field Name</th>
+										<th>Description</th>
+										<th>Values</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>building_id</td>
+										<td>Unique identifier of the building.</td>
+										<td>Boolean</td>
+									</tr>
+									<tr>
+										<td>open</td>
+										<td>Whether the building is open or closed.</td>
+										<td>Boolean</td>
+									</tr>
+									<tr>
+										<td>available</td>
+										<td>The amount of available PCs.</td>
+										<td>Numeric</td>
+									</tr>
+									<tr>
+										<td>in_use</td>
+										<td>The amount of PCs currently being used.</td>
+										<td>Numeric</td>
+									</tr>
+									<tr>
+										<td>total</td>
+										<td>The amount of PCS in total for that area.</td>
+										<td>Numeric</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+
+						<div id="documentation_api_resources_buildings_openingtimes">
+							<h3>Opening Times</h3>
+							<p>This resource returns the opening times for the campus buildings.</p>
+
+							<p class="lead">GET buildings/ID/openingtimes</p>
+							<div class="example-request">
+								<pre class="request_header">GET <%= api.full_url %>buildings/ag/openingtimes</pre>
+								<pre class="pre-scrollable" data-example-request="buildings/ag/openingtimes"></pre>
+							</div>
+
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Field Name</th>
+										<th>Description</th>
+										<th>Values</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>opening_time</td>
+										<td>The opening time of the building.</td>
+										<td>Time</td>
+									</tr>
+									<tr>
+										<td>closing_time</td>
+										<td>The closing time of the building.</td>
+										<td>Time</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+
+						<div id="documentation_api_resources_buildings_labs">
+							<h3>Shared Teaching Spaces</h3>
+							<p>This resource returns details of the shared teaching spaces or labs that exist in some buildings.</p>
+
+							<p class="lead">GET buildings/labs</p>
+							<div class="example-request">
+								<pre class="request_header">GET <%= api.full_url %>buildings/labs</pre>
+								<pre class="pre-scrollable" data-example-request="buildings/labs"></pre>
+							</div>
+
+							<p class="lead">GET buildings/ID/labs</p>
+							<div class="example-request">
+								<pre class="request_header">GET <%= api.full_url %>buildings/ag/labs</pre>
+								<pre class="pre-scrollable" data-example-request="buildings/ag/labs"></pre>
+							</div>
+
+							<p class="lead">GET buildings/ID/labs/ID</p>
+							<div class="example-request">
+								<pre class="request_header">GET <%= api.full_url %>buildings/ag/labs/ag002</pre>
+								<pre class="pre-scrollable" data-example-request="buildings/ag/labs/ag002"></pre>
+							</div>
+
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Field Name</th>
+										<th>Description</th>
+										<th>Values</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>id</td>
+										<td>Unique identifier for the lab entry.</td>
+										<td>Numeric</td>
+									</tr>
+									<tr>
+										<td>building_id</td>
+										<td>The building where the room is located in.</td>
+										<td>Numeric</td>
+									</tr>
+									<tr>
+										<td>room_number</td>
+										<td>Readable format of the room number.</td>
+										<td>String</td>
+									</tr>
+									<tr>
+										<td>short_identifier</td>
+										<td>Unique identifier for the building and room.</td>
+										<td>String</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+
+						<div id="documentation_api_resources_buildings_labs_timetables">
+							<h4>Timetables</h4>
+							<p>This resource returns today's timetabling data for the shared teaching spaces or labs in each building.</p>
+
+							<p class="lead">GET buildings/labs/timetables</p>
+							<div class="example-request">
+								<pre class="request_header">GET <%= api.full_url %>buildings/labs/timetables</pre>
+								<pre class="pre-scrollable" data-example-request="buildings/labs/timetables"></pre>
+							</div>
+
+							<p class="lead">GET buildings/ID/labs/timetables</p>
+							<div class="example-request">
+								<pre class="request_header">GET <%= api.full_url %>buildings/ag/labs/timetables</pre>
+								<pre class="pre-scrollable" data-example-request="buildings/ag/labs/timetables"></pre>
+							</div>
+
+							<p class="lead">GET buildings/ID/labs/ID/timetables</p>
+							<div class="example-request">
+								<pre class="request_header">GET <%= api.full_url %>buildings/ag/labs/ag029/timetables</pre>
+								<pre class="pre-scrollable" data-example-request="buildings/ag/labs/ag029/timetables"></pre>
+							</div>
+
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Field Name</th>
+										<th>Description</th>
+										<th>Values</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>id</td>
+										<td>Unique identifier for the timetable entry.</td>
+										<td>Numeric</td>
+									</tr>
+									<tr>
+										<td>building_id</td>
+										<td>The building that this entry is for.</td>
+										<td>Numeric</td>
+									</tr>
+									<tr>
+										<td>lab_id</td>
+										<td>Lab room that the timetable entry is for.</td>
+										<td>Numeric</td>
+									</tr>
+									<tr>
+										<td>lecturer</td>
+										<td>Name of the timetabled lecturer.</td>
+										<td>String</td>
+									</tr>
+									<tr>
+										<td>start_time</td>
+										<td>Start time of the timetabled entry.</td>
+										<td>Time</td>
+									</tr>
+									<tr>
+										<td>finish_time</td>
+										<td>End time of the timetabled entry.</td>
+										<td>Time</td>
+									</tr>
+									<tr>
+										<td>module_name</td>
+										<td>Module name for the timetabled entry.</td>
+										<td>String</td>
+									</tr>
+									<tr>
+										<td>module_type</td>
+										<td>Type of the module being taught in the room.</td>
+										<td>String <a class="icon" data-toggle="popover" data-placement="left" data-content="<strong>Examples</strong><ul><li>Lab</li><li>Pract (Practical)</li><li>Lect (Lecture)</li><li>Comp</li><li>Sem (Seminar)</li><li>Work</li></ul>"><i class="fa fa-question-circle fa-lg"></i></a></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+
+					</div>
+
+					<div id="documentation_api_resources_services">
+						<h2>Service Status</h2>
+						<p>This resource returns the current service status problems that are currently affecting the network.</p>
+
+						<p class="lead">GET services</p>
+						<div class="example-request">
+							<pre class="request_header">GET <%= api.full_url %>services</pre>
+							<pre class="pre-scrollable" data-example-request="services"></pre>
+						</div>
+
+						<p class="lead">GET services/ID</p>
+						<div class="example-request">
+							<pre class="request_header">GET <%= api.full_url %>services/2</pre>
+							<pre class="pre-scrollable" data-example-request="services/2"></pre>
+						</div>
+
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th>Field Name</th>
+									<th>Description</th>
+									<th>Values</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>id</td>
+									<td>Unique identifier for the status entry.</td>
+									<td>Numeric</td>
+								</tr>
+								<tr>
+									<td>name</td>
+									<td>Name of the affected service.</td>
+									<td>String</td>
+								</tr>
+								<tr>
+									<td>info</td>
+									<td>A headline briefly describing of the issue affecting the service</td>
+									<td>String</td>
+								</tr>
+								<tr>
+									<td>description</td>
+									<td>A full, verbose description of the outage. May include HTML entities.</td>
+									<td>String</td>
+								</tr>
+								<tr>
+									<td>status</td>
+									<td>A value representing the type of issue. </td>
+									<td>String <a class="icon" data-toggle="popover" data-placement="left" data-content="<strong>Examples</strong><ul><li>Service Disruption</li><li>Out of Service</li><li>Under Maintenance</li><li>Service Information</li></ul>"><i class="fa fa-question-circle fa-lg"></i></a></td>
+								</tr>
+								<tr>
+									<td>modified_date</td>
+									<td>The date that this service was reported as affected, in readable format</td>
+									<td>DateTime</td>
+								</tr>
+								<tr>
+									<td>type</td>
+									<td>Displays the customer type that was affected by the issue</td>
+									<td>String <a class="icon" data-toggle="popover" data-placement="left" data-content="<strong>Examples</strong><ul><li>Staff</li><li>Students</li><li>Both</li></ul>"><i class="fa fa-question-circle fa-lg"></i></a></td>
+								</tr>
+								<tr>
+									<td>service_manager</td>
+									<td>The name of the Service Manager responsible for this service.</td>
+									<td>String</td>
+								</tr>
+								<tr>
+									<td>main_link_name</td>
+									<td>The parent service type this issue falls under.</td>
+									<td>String</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<div id="documentation_api_resources_users">
+						<h2>Staff Directory</h2>
+						<p>This resource returns all the staff members that work at the University of Portsmouth.</p>
+
+						<p class="lead">GET users</p>
+						<div class="example-request">
+							<pre class="request_header">GET <%= api.full_url %>users</pre>
+							<pre class="pre-scrollable" data-example-request="users"></pre>
+						</div>
+
+						<p class="lead">GET users/ID</p>
+						<div class="alert alert-info">String identifiers are used in this route. Users can be retrieved by using their username as the string identifier.</div>
+						<div class="example-request">
+							<pre class="request_header">GET <%= api.full_url %>users/SolomouR</pre>
+							<pre class="pre-scrollable" data-example-request="users/SolomouR"></pre>
+						</div>
+
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th>Field Name</th>
+									<th>Description</th>
+									<th>Values</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>id</td>
+									<td>Unique identifier for each user.</td>
+									<td>Numeric</td>
+								</tr>
+								<tr>
+									<td>title</td>
+									<td>The title prefix to the user's name.</td>
+									<td>String</td>
+								</tr>
+								<tr>
+									<td>first_name</td>
+									<td>The staff member's first name.</td>
+									<td>String</td>
+								</tr>
+								<tr>
+									<td>last_name</td>
+									<td>The staff member's last name.</td>
+									<td>String</td>
+								</tr>
+								<tr>
+									<td>job_title</td>
+									<td>The staff member's job title.</td>
+									<td>String</td>
+								</tr>
+								<tr>
+									<td>building</td>
+									<td>The building in which this staff member is stationed in.</td>
+									<td>String</td>
+								</tr>
+								<tr>
+									<td>department</td>
+									<td>The department that this staff member belongs to.</td>
+									<td>String</td>
+								</tr>
+								<tr>
+									<td>extension</td>
+									<td>The user's staff extension number.</td>
+									<td>Numeric</td>
+								</tr>
+								<tr>
+									<td>email</td>
+									<td>The user's staff e-mail address.</td>
+									<td>String</td>
+								</tr>
+								<tr>
+									<td>username</td>
+									<td>The staff member's username.</td>
+									<td>String</td>
+								</tr>
+								<tr>
+									<td>section</td>
+									<td>The section of the Faculty that this user belongs to.</td>
+									<td>String</td>
+								</tr>
+								<tr>
+									<td>faculty</td>
+									<td>The Faculty in which the user belongs to.</td>
+									<td>String</td>
+								</tr>
+								<tr>
+									<td>updated_at</td>
+									<td>Date and time of when this user's details were last updated.</td>
+									<td>DateTime</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+				<div id="documentation_jsonp_requests">
+					<h1>JSONP Requests</h1>
+					<p>JSONP is a workaround for loading data from different domains, something that default AJAX requests alone cannot do. JSONP loads the script into the head of the DOM allowing you to access the information as if it were loaded on your own domain, thus bypassing the cross domain issue.</p>
+
+					<p>Below are some examples on ways you can create a JSONP request to the API using jQuery.</p>
+
+					<pre class="pre-scrollable">
+$.ajax({
+type: 'GET',
+url: '<%= api.full_url %>buildings',
+dataType: 'jsonp',
+success: function (data) {
+	console.dir(data);
+}
+});
+					</pre>
+
+					<pre class="pre-scrollable">
+$.getJSON('<%= api.full_url %>buildings?callback=?', function (data) {
+console.dir(data);
+});
+					</pre>
+				</div>
+
+				<div id="documentation_result_formatting">
+					<h1>Result formatting</h1>
+					<p>You may find that you do not require all the data that is returned from the API. This section explains how to filter, format, sort, limit and search through the returned data.</p>
+
+					<div id="documentation_result_formatting_field_selection">
+						<h2>Field Selection</h2>
+						<p>The <code>fields</code> query parameter takes a comma separated list of fields to include in the results.</p>
+
+						<p class="lead">GET users/SolomouR?fields=first_name,last_name</p>
+						<div class="example-request">
+							<pre class="request_header">GET <%= api.full_url %>users/SolomouR?fields=first_name,last_name</pre>
+							<pre class="pre-scrollable" data-example-request="users/SolomouR?fields=first_name,last_name"></pre>
+						</div>
+					</div>
+
+					<div id="documentation_result_formatting_ordering">
+						<h2>Ordering</h2>
+						<p>The <code>orderby</code> query parameter takes the value of the field to order the results by and the <code>order</code> query parameter can take the value "ASC" (ascending) or "DESC" (descending) to choose how to sort the results.</p>
+
+						<p class="lead">GET buildings?orderby=reference&amp;order=DESC</p>
+						<div class="example-request">
+							<pre class="request_header">GET <%= api.full_url %>buildings?orderby=reference&amp;order=DESC</pre>
+							<pre class="pre-scrollable" data-example-request="buildings?orderby=reference&amp;order=DESC"></pre>
+						</div>
+					</div>
+
+					<div id="documentation_result_formatting_limiting_results">
+						<h2>Limiting results</h2>
+						<p>The <code>limit</code> query parameter can limit the amount of results that are returned by a query.</p>
+
+						<p class="lead">GET users?limit=2</p>
+						<div class="example-request">
+							<pre class="request_header">GET <%= api.full_url %>users?limit=2</pre>
+							<pre class="pre-scrollable" data-example-request="users?limit=2"></pre>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</article>
+
+<% include includes/footer %>
