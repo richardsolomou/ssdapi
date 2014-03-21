@@ -3,11 +3,12 @@ module.exports = function (app, passport) {
 	 * HOME
 	 */
 	app.get('/', function (req, res) {
+		var route = 'index';
 		// Render index.ejs with any potential user credentials.
-		res.render('index', {
-			name: 'home',
+		res.render(route, {
+			name: route,
 			user: req.session.user,
-			css: 'home'
+			css: route
 		});
 	});
 
@@ -25,9 +26,10 @@ module.exports = function (app, passport) {
 	 * CREDENTIALS
 	 */
 	app.get('/credentials', isLoggedIn, function (req, res) {
+		var route = req.route.path.substring(1);
 		// Render credentials.ejs with the user's credentials.
-		res.render('credentials', {
-			name: 'credentials',
+		res.render(route, {
+			name: route,
 			user: req.session.user
 		});
 	});
@@ -46,12 +48,13 @@ module.exports = function (app, passport) {
 	 * DOCUMENTATION
 	 */
 	app.get('/documentation', function (req, res) {
+		var route = req.route.path.substring(1);
 		// Render documentation.ejs with the user's credentials.
-		res.render('documentation', {
-			name: 'documentation',
+		res.render(route, {
+			name: route,
 			user: req.session.user,
-			js: 'documentation',
-			css: 'documentation'
+			js: route,
+			css: route
 		});
 	});
 
