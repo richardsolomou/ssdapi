@@ -12,7 +12,10 @@ $(document).ready(function () {
 			var request = $(this).data('example-request');
 			var pre = $(this);
 
-			$.getJSON(api + '/v1/' + request + '?api_key=test').complete(function (data) {
+			request += request.indexOf('?') !== -1 ? '&' : '?';
+			request += 'api_key=test';
+
+			$.getJSON(api + '/v1/' + request).complete(function (data) {
 				pre.text(JSON.stringify(data.responseJSON, null, '\t'));
 			});
 		});
