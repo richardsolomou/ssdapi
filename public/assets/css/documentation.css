@@ -53,7 +53,7 @@
 
 #documentation a.icon {
 	margin-left: 10px;
-	color: #8361C9;
+	color: #59379E;
 }
 
 #documentation a.icon:hover {
@@ -91,14 +91,14 @@
 
 #doc_nav .nav > li > a:hover,
 #doc_nav .nav > li > a:focus {
-	background-color: #8361C9;
+	background-color: #59379E;
 	color: #f4f4f4;
 }
 
 #doc_nav .nav > li.active > a,
 #doc_nav .nav > li.active > a:hover,
 #doc_nav .nav > li.active > a:focus {
-	border-left: 5px solid #8361C9;
+	border-left: 5px solid #59379E;
 	background-color: #f8f8f8;
 	color: #3c3c3c;
 }

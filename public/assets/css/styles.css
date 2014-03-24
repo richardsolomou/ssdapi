@@ -37,7 +37,7 @@ html, html a {
 }
 
 a {
-	color: #8361C9;
+	color: #59379E;
 }
 
 a:hover,
@@ -61,8 +61,8 @@ a:focus {
 
 header {
 	padding: 3em 0 3.3em 0;
-	background: #8361C9;
-	border-bottom: 2em solid #9172CF;
+	background: #59379E;
+	border-bottom: 2em solid #523294;
 }
 
 header a {
@@ -153,7 +153,7 @@ footer {
 }
 
 footer a {
-	color: #8361C9;
+	color: #59379E;
 }
 
 
