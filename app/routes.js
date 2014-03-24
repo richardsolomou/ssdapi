@@ -1,4 +1,13 @@
 module.exports = function (app, passport, mysql, mssql) {
+	// Route to get all buildings.
+	app.get('/v1/buildings', isAuthorized, function (req, res) {
+		// Runs a MySQL query to get all buildings.
+		mysql.query('SELECT * FROM `buildings`', function (err, buildings) {
+			// Returns all buildings in JSON format.
+			res.json(buildings);
+		});
+	});
+
 	// Middleware to check if the user has provided a valid API key.
 	function isAuthorized(req, res, next) {
 		// Use passport to authenticate with localapikey.
