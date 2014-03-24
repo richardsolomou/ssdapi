@@ -2,9 +2,24 @@ module.exports = function (app, passport, mysql, mssql) {
 	// Route to get all buildings.
 	app.get('/v1/buildings', isAuthorized, function (req, res) {
 		// Runs a MySQL query to get all buildings.
-		mysql.query('SELECT * FROM `buildings`', function (err, buildings) {
+		mysql.query('SELECT * FROM `buildings`', function (err, results) {
+			// Returns appropriate error messages if something went wrong.
+			if (err) return res.json(500, { error: { message: 'Something went wrong.', code: 500, details: err } });
+			if (!results || !results.length) return res.json(404, { error: { message: 'Buildings table is empty.', code: 404 } });
 			// Returns all buildings in JSON format.
-			res.json(buildings);
+			return res.json(results);
+		});
+	});
+
+	// Route to get a specific building.
+	app.get('/v1/buildings/:reference', isAuthorized, function (req, res) {
+		// Runs a MySQL query to get a specific building.
+		mysql.query('SELECT * FROM `buildings` WHERE `reference` = :reference', { reference: req.params.reference }, function (err, results) {
+			// Returns appropriate error messages if something went wrong.
+			if (err) return res.json(500, { error: { message: 'Something went wrong.', code: 500, details: err } });
+			if (!results || !results.length) return res.json(404, { error: { message: 'Invalid building reference', code: 404 } });
+			// Returns a specific building in JSON format.
+			return res.json(results[0]);
 		});
 	});
 
