@@ -102,6 +102,9 @@ passport.use(new LocalAPIKeyStrategy({
 			// Checks the remote machine's IP address against the allowed request origin.
 			if (rows[0].request_origin !== req.ip) return done(null, false, { message: 'Invalid Request Origin' });
 
+			// Checks if the API key has been revoked.
+			if (rows[0].active !== 1) return done(null, false, { message: 'Revoked API Key' });
+
 			// Allows the user to continue if the hostname matches the request origin.
 			return done(null, rows[0].user_id);
 		});
