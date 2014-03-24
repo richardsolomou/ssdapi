@@ -38,6 +38,7 @@ module.exports = function (app, passport) {
 	 * LOGOUT
 	 */
 	app.get('/logout', isLoggedIn, function (req, res) {
+		req.session.user = null;
 		// Use passport to logout user.
 		req.logout();
 		// Redirect user to homepage.
