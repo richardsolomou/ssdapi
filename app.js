@@ -139,7 +139,7 @@ app.configure(function () {
 require('./app/interface')(app, passport);
 
 // Load the API routes and pass in the application and passport instances.
-require('./app/routes')(app, passport, connection, mssql_conn);
+require('./app/routes')(app, passport, connection, mssql, async);
 
 
 // Listen for connections.
