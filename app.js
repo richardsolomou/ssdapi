@@ -69,6 +69,8 @@ passport.use(new GoogleStrategy({
 
 				// Runs the selected query on the local database.
 				connection.query(query, { id: profile._json.id, given_name: profile._json.given_name, family_name: profile._json.family_name, email: profile._json.email, picture: profile._json.picture, hd: profile._json.hd }, function () {
+					// Save user to session.
+					req.session.user = profile._json;
 					// The user's profile is returned to represent the logged-in user.
 					return done(null, profile);
 				});

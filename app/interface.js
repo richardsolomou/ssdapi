@@ -3,13 +3,11 @@ module.exports = function (app, passport) {
 	 * HOME
 	 */
 	app.get('/', function (req, res) {
-		var route = 'index';
-		var user = req.session.passport.user ? req.session.passport.user._json : null;
 		// Render index.ejs with any potential user credentials.
-		res.render(route, {
-			name: route,
-			user: user,
-			css: route
+		res.render('index', {
+			name: 'index',
+			user: req.session.user,
+			css: 'index'
 		});
 	});
 
@@ -27,12 +25,10 @@ module.exports = function (app, passport) {
 	 * CREDENTIALS
 	 */
 	app.get('/credentials', isLoggedIn, function (req, res) {
-		var route = req.route.path.substring(1);
-		var user = req.session.passport.user ? req.session.passport.user._json : null;
 		// Render credentials.ejs with the user's credentials.
-		res.render(route, {
-			name: route,
-			user: user
+		res.render('credentials', {
+			name: 'credentials',
+			user: req.session.user
 		});
 	});
 
@@ -40,6 +36,8 @@ module.exports = function (app, passport) {
 	 * LOGOUT
 	 */
 	app.get('/logout', isLoggedIn, function (req, res) {
+		// Use sessions to logout user.
+		req.session.user = null;
 		// Use passport to logout user.
 		req.logout();
 		// Redirect user to homepage.
@@ -50,14 +48,12 @@ module.exports = function (app, passport) {
 	 * DOCUMENTATION
 	 */
 	app.get('/documentation', function (req, res) {
-		var route = req.route.path.substring(1);
-		var user = req.session.passport.user ? req.session.passport.user._json : null;
 		// Render documentation.ejs with the user's credentials.
-		res.render(route, {
-			name: route,
-			user: user,
-			js: route,
-			css: route
+		res.render('documentation', {
+			name: 'documentation',
+			user: req.session.user,
+			js: 'documentation',
+			css: 'documentation'
 		});
 	});
 
@@ -80,7 +76,7 @@ module.exports = function (app, passport) {
 // Middleware to check if the user is logged in.
 function isLoggedIn(req, res, next) {
 	// Use passport to check if authenticated.
-	if (req.isAuthenticated()) return next();
+	if (req.isAuthenticated() && req.session.user) return next();
 	// Redirect to login page if not.
 	res.redirect('/auth/google');
 }
