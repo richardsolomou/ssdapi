@@ -1,4 +1,16 @@
 module.exports = function (app, passport, mysql, mssql, async) {
+	// Route to get all users.
+	app.get('/v1/users', isAuthorized, function (req, res) {
+		// Runs a MySQL query to get all users.
+		mysql.query('SELECT `title`, `first_name`, `last_name`, `job_title`, `building`, `department`, `extension`, `email`, `username`, `section`, `faculty` FROM `users`', function (err, results) {
+			// Returns appropriate error messages if something went wrong.
+			if (err) return res.json(500, { error: { message: 'Something went wrong.', code: 500, details: err } });
+			if (!results || !results.length) return res.json(404, { error: { message: 'Users table is empty.', code: 404 } });
+			// Returns all users in JSON format.
+			return res.json(results);
+		});
+	});
+
 	// Route to get all service status problems.
 	app.get('/v1/services', isAuthorized, function (req, res) {
 		// Runs a MySQL query to get all service status problems.
