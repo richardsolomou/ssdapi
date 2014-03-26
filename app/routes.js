@@ -1,4 +1,16 @@
 module.exports = function (app, passport, mysql, mssql, async) {
+	// Route to get a specific lab.
+	app.get('/v1/buildings/:reference/labs/:short_identifier', isAuthorized, function (req, res) {
+		// Runs a MySQL query to get the lab.
+		mysql.query('SELECT `labs`.`short_identifier`, `labs`.`room_number` FROM `labs` INNER JOIN `buildings` ON `buildings`.`id` = `labs`.`building_id` AND `buildings`.`reference` = :reference WHERE `labs`.`short_identifier` = :short_identifier', { reference: req.params.reference, short_identifier: req.params.short_identifier }, function (err, results) {
+			// Returns appropriate error messages if something went wrong.
+			if (err) return res.json(500, { error: { message: 'Something went wrong.', code: 500, details: err } });
+			if (!results || !results.length) return res.json(404, { error: { message: 'Invalid lab short identifier.', code: 404 } });
+			// Returns the lab in JSON format.
+			return res.json(results[0]);
+		});
+	});
+
 	// Route to get the shared teaching spaces of a specific building.
 	app.get('/v1/buildings/:reference/labs', isAuthorized, function (req, res) {
 		// Runs a MySQL query to get the shared teaching spaces of the building.
@@ -6,7 +18,7 @@ module.exports = function (app, passport, mysql, mssql, async) {
 			// Returns appropriate error messages if something went wrong.
 			if (err) return res.json(500, { error: { message: 'Something went wrong.', code: 500, details: err } });
 			if (!results || !results.length) return res.json(404, { error: { message: 'There are no labs available for this building.', code: 404 } });
-			// Returns all buildings in JSON format.
+			// Returns all labs in JSON format.
 			return res.json(results);
 		});
 	});
