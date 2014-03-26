@@ -80,11 +80,6 @@
 							</thead>
 							<tbody>
 								<tr>
-									<td>id</td>
-									<td>Unique identifier for the building entry.</td>
-									<td>Numeric</td>
-								</tr>
-								<tr>
 									<td>name</td>
 									<td>Name of the building</td>
 									<td>String</td>
@@ -132,11 +127,6 @@
 								</thead>
 								<tbody>
 									<tr>
-										<td>building</td>
-										<td>Details of the building.</td>
-										<td>Object</td>
-									</tr>
-									<tr>
 										<td>open</td>
 										<td>Whether the building is open or closed.</td>
 										<td>Boolean</td>
@@ -150,6 +140,11 @@
 										<td>total</td>
 										<td>The amount of PCS in total for that area.</td>
 										<td>Numeric</td>
+									</tr>
+									<tr>
+										<td>building</td>
+										<td>Details of the building.</td>
+										<td>Object</td>
 									</tr>
 								</tbody>
 							</table>
@@ -195,6 +190,11 @@
 										<td>The closing time of the building.</td>
 										<td>Time</td>
 									</tr>
+									<tr>
+										<td>building</td>
+										<td>Details of the building.</td>
+										<td>Object</td>
+									</tr>
 								</tbody>
 							</table>
 						</div>
@@ -231,14 +231,9 @@
 								</thead>
 								<tbody>
 									<tr>
-										<td>id</td>
-										<td>Unique identifier for the lab entry.</td>
-										<td>Numeric</td>
-									</tr>
-									<tr>
-										<td>building_id</td>
-										<td>The building where the room is located in.</td>
-										<td>Numeric</td>
+										<td>short_identifier</td>
+										<td>Unique identifier for the building and room.</td>
+										<td>String</td>
 									</tr>
 									<tr>
 										<td>room_number</td>
@@ -246,9 +241,9 @@
 										<td>String</td>
 									</tr>
 									<tr>
-										<td>short_identifier</td>
-										<td>Unique identifier for the building and room.</td>
-										<td>String</td>
+										<td>building</td>
+										<td>Details of the building.</td>
+										<td>Object</td>
 									</tr>
 								</tbody>
 							</table>
