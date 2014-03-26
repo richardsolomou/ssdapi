@@ -1,7 +1,7 @@
 module.exports = function (app, passport, mysql, mssql, async) {
-	// Route to get the opening times of a specific building.
+	// Route to get the shared teaching spaces of a specific building.
 	app.get('/v1/buildings/:reference/labs', isAuthorized, function (req, res) {
-		// Runs a MySQL query to get the opening times of all buildings.
+		// Runs a MySQL query to get the shared teaching spaces of the building.
 		mysql.query('SELECT `labs`.`short_identifier`, `labs`.`room_number` FROM `labs` INNER JOIN `buildings` ON `buildings`.`id` = `labs`.`building_id` AND `buildings`.`reference` = :reference', { reference: req.params.reference }, function (err, results) {
 			// Returns appropriate error messages if something went wrong.
 			if (err) return res.json(500, { error: { message: 'Something went wrong.', code: 500, details: err } });
