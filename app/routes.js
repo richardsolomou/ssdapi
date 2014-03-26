@@ -1,4 +1,31 @@
 module.exports = function (app, passport, mysql, mssql, async) {
+	// Route to get all shared teaching spaces.
+	app.get('/v1/buildings/labs', isAuthorized, function (req, res) {
+		// Runs a MySQL query to get all buildings that have labs.
+		mysql.query('SELECT `buildings`.`id`, `buildings`.`name`, `buildings`.`reference` FROM `buildings` INNER JOIN `labs` ON `labs`.`building_id` = `buildings`.`id` GROUP BY `buildings`.`id`', function (err, results) {
+			// Returns appropriate error messages if something went wrong.
+			if (err) return res.json(500, { error: { message: 'Something went wrong.', code: 500, details: err } });
+			if (!results || !results.length) return res.json(404, { error: { message: 'Buildings table is empty.', code: 404 } });
+			// Loops through all the buildings.
+			async.each(results, function (building, callback) {
+				// Runs a MySQL query to get the labs for the building.
+				mysql.query('SELECT `short_identifier`, `room_number` FROM `labs` WHERE `building_id` = :building_id', { building_id: building.id }, function (err, labs) {
+					// Appends the labs to the building object.
+					building.labs = labs;
+					// Deletes the building id.
+					delete building.id;
+					// Calls the callback function to continue.
+					callback();
+				});
+			// Executes a function after the buildings loop has finished.
+			}, function () {
+				// Returns all labs in JSON format.
+				return res.json(results);
+			});
+		});
+	});
+
+	// Route to get the opening times of a specific building.
 	app.get('/v1/buildings/:reference/openingtimes', isAuthorized, function (req, res) {
 		// Runs a MySQL query to get the opening times of all buildings.
 		mysql.query('SELECT `openingtimes`.* FROM `openingtimes` INNER JOIN `buildings` ON `buildings`.`id` = `openingtimes`.`building_id` AND `buildings`.`reference` = :reference', { reference: req.params.reference }, function (err, results) {
@@ -24,10 +51,11 @@ module.exports = function (app, passport, mysql, mssql, async) {
 		});
 	});
 
+	// Route to get the opening times of all buildings.
 	app.get('/v1/buildings/openingtimes', isAuthorized, function (req, res) {
 		var data;
 		// Runs a MySQL query to get the opening times of all buildings.
-		mysql.query('SELECT * FROM `buildings`', function (err, results) {
+		mysql.query('SELECT `buildings`.* FROM `buildings` INNER JOIN `openingtimes` ON `openingtimes`.`building_id` = `buildings`.`id` GROUP BY `buildings`.`id`', function (err, results) {
 			// Returns appropriate error messages if something went wrong.
 			if (err) return res.json(500, { error: { message: 'Something went wrong.', code: 500, details: err } });
 			if (!results || !results.length) return res.json(404, { error: { message: 'Buildings table is empty.', code: 404 } });
