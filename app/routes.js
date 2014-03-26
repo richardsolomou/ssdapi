@@ -1,19 +1,31 @@
 module.exports = function (app, passport, mysql, mssql, async) {
-	// Route to get all shared teaching spaces.
-	app.get('/v1/buildings/labs', isAuthorized, function (req, res) {
-		// Runs a MySQL query to get all buildings that have labs.
-		mysql.query('SELECT `buildings`.`id`, `buildings`.`name`, `buildings`.`reference` FROM `buildings` INNER JOIN `labs` ON `labs`.`building_id` = `buildings`.`id` GROUP BY `buildings`.`id`', function (err, results) {
+	// Route to get the opening times of a specific building.
+	app.get('/v1/buildings/:reference/labs', isAuthorized, function (req, res) {
+		// Runs a MySQL query to get the opening times of all buildings.
+		mysql.query('SELECT `labs`.`short_identifier`, `labs`.`room_number` FROM `labs` INNER JOIN `buildings` ON `buildings`.`id` = `labs`.`building_id` AND `buildings`.`reference` = :reference', { reference: req.params.reference }, function (err, results) {
 			// Returns appropriate error messages if something went wrong.
 			if (err) return res.json(500, { error: { message: 'Something went wrong.', code: 500, details: err } });
-			if (!results || !results.length) return res.json(404, { error: { message: 'Buildings table is empty.', code: 404 } });
-			// Loops through all the buildings.
-			async.each(results, function (building, callback) {
+			if (!results || !results.length) return res.json(404, { error: { message: 'There are no labs available for this building.', code: 404 } });
+			// Returns all buildings in JSON format.
+			return res.json(results);
+		});
+	});
+
+	// Route to get all shared teaching spaces.
+	app.get('/v1/buildings/labs', isAuthorized, function (req, res) {
+		// Runs a MySQL query to get all labs.
+		mysql.query('SELECT `short_identifier`, `room_number`, `building_id` FROM `labs`', function (err, results) {
+			// Returns appropriate error messages if something went wrong.
+			if (err) return res.json(500, { error: { message: 'Something went wrong.', code: 500, details: err } });
+			if (!results || !results.length) return res.json(404, { error: { message: 'Labs table is empty.', code: 404 } });
+			// Loops through all the labs.
+			async.each(results, function (lab, callback) {
 				// Runs a MySQL query to get the labs for the building.
-				mysql.query('SELECT `short_identifier`, `room_number` FROM `labs` WHERE `building_id` = :building_id', { building_id: building.id }, function (err, labs) {
-					// Appends the labs to the building object.
-					building.labs = labs;
-					// Deletes the building id.
-					delete building.id;
+				mysql.query('SELECT `name`, `reference` FROM `buildings` WHERE `id` = :building_id', { building_id: lab.building_id }, function (err, buildings) {
+					// Appends the building to the lab object.
+					lab.building = buildings[0];
+					// Deletes the lab building id.
+					delete lab.building_id;
 					// Calls the callback function to continue.
 					callback();
 				});
@@ -41,18 +53,18 @@ module.exports = function (app, passport, mysql, mssql, async) {
 	app.get('/v1/buildings/openingtimes', isAuthorized, function (req, res) {
 		var data;
 		// Runs a MySQL query to get the opening times of all buildings.
-		mysql.query('SELECT `buildings`.`id`, `buildings`.`name`, `buildings`.`reference` FROM `buildings` INNER JOIN `openingtimes` ON `openingtimes`.`building_id` = `buildings`.`id` GROUP BY `buildings`.`id`', function (err, results) {
+		mysql.query('SELECT `building_id`, `day_of_the_week`, `opening_time`, `closing_time` FROM `openingtimes`', function (err, results) {
 			// Returns appropriate error messages if something went wrong.
 			if (err) return res.json(500, { error: { message: 'Something went wrong.', code: 500, details: err } });
 			if (!results || !results.length) return res.json(404, { error: { message: 'Buildings table is empty.', code: 404 } });
-			// Loops through all the buildings.
-			async.each(results, function (building, callback) {
-				// Runs a MySQL query for getting the opening times for the building.
-				mysql.query('SELECT `day_of_the_week`, `opening_time`, `closing_time` FROM `openingtimes` WHERE `building_id` = :building_id', { building_id: building.id }, function (err, openingtimes) {
+			// Loops through all the opening times.
+			async.each(results, function (openingtimes, callback) {
+				// Runs a MySQL query for getting the building details.
+				mysql.query('SELECT `name`, `reference` FROM `buildings` WHERE `id` = :building_id', { building_id: openingtimes.building_id }, function (err, buildings) {
 					// Deletes the building's id.
-					delete building.id;
-					// Appends the opening times to the building object.
-					building.openingtimes = openingtimes;
+					delete openingtimes.building_id;
+					// Appends the building data to the opening times object.
+					openingtimes.building = buildings[0];
 					// Calls the callback function to continue.
 					callback();
 				});
@@ -98,6 +110,8 @@ module.exports = function (app, passport, mysql, mssql, async) {
 					});
 					// Runs a MySQL query for getting the open access areas for the building.
 					mysql.query('SELECT * FROM `openaccess` WHERE `building_id` = ' + building.id, function (err, openaccess) {
+						// Deletes the building id.
+						delete building.id;
 						// Runs a series of functions for each open access area in the building.
 						async.each(openaccess, function (openacc, callback) {
 							// Runs a series of functions in parallel for each open access area.
@@ -135,13 +149,10 @@ module.exports = function (app, passport, mysql, mssql, async) {
 						}, function () {
 							// Pushes the building object with its open access area availability data.
 							data.push({
-								'name': building.name,
-								'reference': building.reference,
-								'openaccess': {
-									'open': open,
-									'in_use': in_use,
-									'total': total
-								}
+								'open': open,
+								'in_use': in_use,
+								'total': total,
+								'building': building
 							});
 							// Calls the callback function to continue to the next building.
 							callback();
@@ -149,8 +160,15 @@ module.exports = function (app, passport, mysql, mssql, async) {
 					});
 				// Runs a function after all previous functions have finished executing.
 				}, function () {
+					// Checks if a building reference was passed.
+					if (req.params.reference) {
+						// Uses the first record in the array.
+						data = data[0];
+						// Deletes the building data.
+						delete data.building;
+					}
 					// Returns the open access area availability data.
-					return req.params.reference ? res.json(data[0].openaccess) : res.json(data);
+					return res.json(data);
 				});
 			});
 		});
