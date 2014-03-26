@@ -1,4 +1,16 @@
 module.exports = function (app, passport, mysql, mssql, async) {
+	// Route to get all service status problems.
+	app.get('/v1/services', isAuthorized, function (req, res) {
+		// Runs a MySQL query to get all service status problems.
+		mysql.query('SELECT `name`, `info`, `description`, `status`, `modified_date`, `type`, `service_manager`, `main_link_name` FROM `services`', function (err, results) {
+			// Returns appropriate error messages if something went wrong.
+			if (err) return res.json(500, { error: { message: 'Something went wrong.', code: 500, details: err } });
+			if (!results || !results.length) return res.json(404, { error: { message: 'Service status table is empty.', code: 404 } });
+			// Returns all service status problems in JSON format.
+			return res.json(results);
+		});
+	});
+
 	// Route to get all the timetables for a specific lab.
 	app.get('/v1/buildings/:reference/labs/:short_identifier/timetables', isAuthorized, function (req, res) {
 		// Runs a MySQL query to get the timetables for a specific lab.
