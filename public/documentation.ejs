@@ -331,12 +331,6 @@
 							<pre class="pre-scrollable" data-example-request="services"></pre>
 						</div>
 
-						<p class="lead">GET services/ID</p>
-						<div class="example-request">
-							<pre class="request_header">GET <%= api.full_url %>services/2</pre>
-							<pre class="pre-scrollable" data-example-request="services/2"></pre>
-						</div>
-
 						<table class="table table-striped">
 							<thead>
 								<tr>
@@ -346,11 +340,6 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td>id</td>
-									<td>Unique identifier for the status entry.</td>
-									<td>Numeric</td>
-								</tr>
 								<tr>
 									<td>name</td>
 									<td>Name of the affected service.</td>
@@ -422,11 +411,6 @@
 							</thead>
 							<tbody>
 								<tr>
-									<td>id</td>
-									<td>Unique identifier for each user.</td>
-									<td>Numeric</td>
-								</tr>
-								<tr>
 									<td>title</td>
 									<td>The title prefix to the user's name.</td>
 									<td>String</td>
@@ -480,11 +464,6 @@
 									<td>faculty</td>
 									<td>The Faculty in which the user belongs to.</td>
 									<td>String</td>
-								</tr>
-								<tr>
-									<td>updated_at</td>
-									<td>Date and time of when this user's details were last updated.</td>
-									<td>DateTime</td>
 								</tr>
 							</tbody>
 						</table>
