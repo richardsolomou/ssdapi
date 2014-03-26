@@ -1,4 +1,30 @@
 module.exports = function (app, passport, mysql, mssql, async) {
+	// Route to get all the timetables for a specific building.
+	app.get('/v1/buildings/:reference/labs/timetables', isAuthorized, function (req, res) {
+		// Runs a MySQL query to get the timetables for a specific building.
+		mysql.query('SELECT `lecturer`, `start_time`, `finish_time`, `module_name`, `module_type`, `lab_id` FROM `timetables` INNER JOIN `buildings` ON `buildings`.`id` = `timetables`.`building_id` AND `buildings`.`reference` = :reference', { reference: req.params.reference }, function (err, results) {
+			// Returns appropriate error messages if something went wrong.
+			if (err) return res.json(500, { error: { message: 'Something went wrong.', code: 500, details: err } });
+			if (!results || !results.length) return res.json(404, { error: { message: 'There are no timetables for this building.', code: 404 } });
+			// Loops through all the timetables.
+			async.each(results, function (timetable, callback) {
+				// Runs a MySQL query to get the lab details for the timetable.
+				mysql.query('SELECT `short_identifier`, `room_number` FROM `labs` WHERE `id` = :lab_id', { lab_id: timetable.lab_id }, function (err, labs) {
+					// Appends the lab to the timetable object.
+					timetable.lab = labs[0];
+					// Deletes the timetable lab id.
+					delete timetable.lab_id;
+					// Calls the callback function to continue.
+					callback();
+				});
+			// Executes a function after the buildings loop has finished.
+			}, function () {
+				// Returns all labs in JSON format.
+				return res.json(results);
+			});
+		});
+	});
+
 	// Route to get all the timetables.
 	app.get('/v1/buildings/labs/timetables', isAuthorized, function (req, res) {
 		// Runs a MySQL query to get the timetables.
