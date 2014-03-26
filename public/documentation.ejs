@@ -281,21 +281,6 @@
 								</thead>
 								<tbody>
 									<tr>
-										<td>id</td>
-										<td>Unique identifier for the timetable entry.</td>
-										<td>Numeric</td>
-									</tr>
-									<tr>
-										<td>building_id</td>
-										<td>The building that this entry is for.</td>
-										<td>Numeric</td>
-									</tr>
-									<tr>
-										<td>lab_id</td>
-										<td>Lab room that the timetable entry is for.</td>
-										<td>Numeric</td>
-									</tr>
-									<tr>
 										<td>lecturer</td>
 										<td>Name of the timetabled lecturer.</td>
 										<td>String</td>
@@ -319,6 +304,16 @@
 										<td>module_type</td>
 										<td>Type of the module being taught in the room.</td>
 										<td>String <a class="icon" data-toggle="popover" data-placement="left" data-content="<strong>Examples</strong><ul><li>Lab</li><li>Pract (Practical)</li><li>Lect (Lecture)</li><li>Comp</li><li>Sem (Seminar)</li><li>Work</li></ul>"><i class="fa fa-question-circle fa-lg"></i></a></td>
+									</tr>
+									<tr>
+										<td>building</td>
+										<td>Details of the building.</td>
+										<td>Object</td>
+									</tr>
+									<tr>
+										<td>lab</td>
+										<td>Details of the lab.</td>
+										<td>Object</td>
 									</tr>
 								</tbody>
 							</table>

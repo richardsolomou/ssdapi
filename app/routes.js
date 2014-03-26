@@ -1,4 +1,54 @@
 module.exports = function (app, passport, mysql, mssql, async) {
+	// Route to get all the timetables.
+	app.get('/v1/buildings/labs/timetables', isAuthorized, function (req, res) {
+		// Runs a MySQL query to get the timetables.
+		mysql.query('SELECT * FROM `timetables`', function (err, results) {
+			// Returns appropriate error messages if something went wrong.
+			if (err) return res.json(500, { error: { message: 'Something went wrong.', code: 500, details: err } });
+			if (!results || !results.length) return res.json(404, { error: { message: 'Timetables table is empty.', code: 404 } });
+			// Loops through all the timetables.
+			async.each(results, function (timetable, callback) {
+				// Runs a series of functions in parallel for each timetable.
+				async.parallel([
+					// Runs a function for getting the building details for the timetable.
+					function (callback) {
+						// Runs a MySQL query to get the building details for the timetable.
+						mysql.query('SELECT `name`, `reference` FROM `buildings` WHERE `id` = :building_id', { building_id: timetable.building_id }, function (err, buildings) {
+							// Appends the building to the timetable object.
+							timetable.building = buildings[0];
+							// Deletes the timetable building id.
+							delete timetable.building_id;
+							// Calls the callback function to continue.
+							callback();
+						});
+					},
+					// Runs a function for getting the lab details for the timetable.
+					function (callback) {
+						// Runs a MySQL query to get the lab details for the timetable.
+						mysql.query('SELECT `short_identifier`, `room_number` FROM `labs` WHERE `id` = :lab_id', { lab_id: timetable.lab_id }, function (err, labs) {
+							// Appends the lab to the timetable object.
+							timetable.lab = labs[0];
+							// Deletes the timetable lab id.
+							delete timetable.lab_id;
+							// Calls the callback function to continue.
+							callback();
+						});
+					}
+				// Runs a function after the previous parallel functions have finished executing.
+				], function () {
+					// Deletes the timetable id.
+					delete timetable.id;
+					// Calls the callback function to continue.
+					callback();
+				});
+			// Executes a function after the buildings loop has finished.
+			}, function () {
+				// Returns all labs in JSON format.
+				return res.json(results);
+			});
+		});
+	});
+
 	// Route to get a specific lab.
 	app.get('/v1/buildings/:reference/labs/:short_identifier', isAuthorized, function (req, res) {
 		// Runs a MySQL query to get the lab.
