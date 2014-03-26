@@ -1,4 +1,16 @@
 module.exports = function (app, passport, mysql, mssql, async) {
+	// Route to get a specific user.
+	app.get('/v1/users/:username', isAuthorized, function (req, res) {
+		// Runs a MySQL query to get a specific user.
+		mysql.query('SELECT `title`, `first_name`, `last_name`, `job_title`, `building`, `department`, `extension`, `email`, `username`, `section`, `faculty` FROM `users` WHERE `username` = :username', { username: req.params.username }, function (err, results) {
+			// Returns appropriate error messages if something went wrong.
+			if (err) return res.json(500, { error: { message: 'Something went wrong.', code: 500, details: err } });
+			if (!results || !results.length) return res.json(404, { error: { message: 'Invalid username.', code: 404 } });
+			// Returns the user in JSON format.
+			return res.json(results[0]);
+		});
+	});
+
 	// Route to get all users.
 	app.get('/v1/users', isAuthorized, function (req, res) {
 		// Runs a MySQL query to get all users.
