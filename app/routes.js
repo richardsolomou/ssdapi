@@ -28,26 +28,12 @@ module.exports = function (app, passport, mysql, mssql, async) {
 	// Route to get the opening times of a specific building.
 	app.get('/v1/buildings/:reference/openingtimes', isAuthorized, function (req, res) {
 		// Runs a MySQL query to get the opening times of all buildings.
-		mysql.query('SELECT `openingtimes`.* FROM `openingtimes` INNER JOIN `buildings` ON `buildings`.`id` = `openingtimes`.`building_id` AND `buildings`.`reference` = :reference', { reference: req.params.reference }, function (err, results) {
+		mysql.query('SELECT `openingtimes`.`day_of_the_week`, `openingtimes`.`opening_time`, `openingtimes`.`closing_time` FROM `openingtimes` INNER JOIN `buildings` ON `buildings`.`id` = `openingtimes`.`building_id` AND `buildings`.`reference` = :reference', { reference: req.params.reference }, function (err, results) {
 			// Returns appropriate error messages if something went wrong.
 			if (err) return res.json(500, { error: { message: 'Something went wrong.', code: 500, details: err } });
 			if (!results || !results.length) return res.json(404, { error: { message: 'Opening times are not available for this building.', code: 404 } });
-			// Loops through all the opening times for the building.
-			async.each(results, function (openingtimes, callback) {
-				// Deletes the record's id.
-				delete openingtimes.id;
-				// Runs a MySQL query for getting the building to whose the opening times belong to.
-				mysql.query('SELECT * FROM `buildings` WHERE `id` = :id', { id: openingtimes.building_id }, function (err, buildings) {
-					// Deletes the record's building id.
-					delete openingtimes.building_id;
-					// Calls the callback function to continue.
-					callback();
-				});
-			// Executes a function after the opening times loop as finished.
-			}, function () {
-				// Returns all buildings in JSON format.
-				return res.json(results);
-			});
+			// Returns all buildings in JSON format.
+			return res.json(results);
 		});
 	});
 
@@ -55,28 +41,20 @@ module.exports = function (app, passport, mysql, mssql, async) {
 	app.get('/v1/buildings/openingtimes', isAuthorized, function (req, res) {
 		var data;
 		// Runs a MySQL query to get the opening times of all buildings.
-		mysql.query('SELECT `buildings`.* FROM `buildings` INNER JOIN `openingtimes` ON `openingtimes`.`building_id` = `buildings`.`id` GROUP BY `buildings`.`id`', function (err, results) {
+		mysql.query('SELECT `buildings`.`id`, `buildings`.`name`, `buildings`.`reference` FROM `buildings` INNER JOIN `openingtimes` ON `openingtimes`.`building_id` = `buildings`.`id` GROUP BY `buildings`.`id`', function (err, results) {
 			// Returns appropriate error messages if something went wrong.
 			if (err) return res.json(500, { error: { message: 'Something went wrong.', code: 500, details: err } });
 			if (!results || !results.length) return res.json(404, { error: { message: 'Buildings table is empty.', code: 404 } });
 			// Loops through all the buildings.
 			async.each(results, function (building, callback) {
 				// Runs a MySQL query for getting the opening times for the building.
-				mysql.query('SELECT * FROM `openingtimes` WHERE `building_id` = :building_id', { building_id: building.id }, function (err, openingtimes) {
-					// Loops through all the opening times returned.
-					async.each(openingtimes, function (openingtime, callback) {
-						// Deletes the record's id and building id.
-						delete openingtime.id;
-						delete openingtime.building_id;
-						// Calls the callback function to continue.
-						callback();
-					// Executes a function after the opening times loop has finished.
-					}, function () {
-						// Appends the opening times to the building object.
-						building.openingtimes = openingtimes;
-						// Calls the callback function to continue.
-						callback();
-					});
+				mysql.query('SELECT `day_of_the_week`, `opening_time`, `closing_time` FROM `openingtimes` WHERE `building_id` = :building_id', { building_id: building.id }, function (err, openingtimes) {
+					// Deletes the building's id.
+					delete building.id;
+					// Appends the opening times to the building object.
+					building.openingtimes = openingtimes;
+					// Calls the callback function to continue.
+					callback();
 				});
 			// Executes a function after the buildings loop has finished.
 			}, function () {
