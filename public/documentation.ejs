@@ -28,14 +28,6 @@
 							</ul>
 						</li>
 						<li><a href="#documentation_jsonp_requests" class="scroll">JSONP Requests</a></li>
-						<li>
-							<a href="#documentation_result_formatting" class="scroll">Result Formatting</a>
-							<ul class="nav">
-								<li><a href="#documentation_result_formatting_field_selection" class="scroll">Field Selection</a></li>
-								<li><a href="#documentation_result_formatting_ordering" class="scroll">Ordering</a></li>
-								<li><a href="#documentation_result_formatting_limiting_results" class="scroll">Limiting results</a></li>
-							</ul>
-						</li>
 					</ul>
 				</div>
 			</div>
@@ -492,44 +484,6 @@ $.getJSON('<%= api.full_url %>buildings?callback=?', function (data) {
 console.dir(data);
 });
 					</pre>
-				</div>
-
-				<div id="documentation_result_formatting">
-					<h1>Result formatting</h1>
-					<p>You may find that you do not require all the data that is returned from the API. This section explains how to filter, format, sort, limit and search through the returned data.</p>
-
-					<div id="documentation_result_formatting_field_selection">
-						<h2>Field Selection</h2>
-						<p>The <code>fields</code> query parameter takes a comma separated list of fields to include in the results.</p>
-
-						<p class="lead">GET users/SolomouR?fields=first_name,last_name</p>
-						<div class="example-request">
-							<pre class="request_header">GET <%= api.full_url %>users/SolomouR?fields=first_name,last_name</pre>
-							<pre class="pre-scrollable" data-example-request="users/SolomouR?fields=first_name,last_name"></pre>
-						</div>
-					</div>
-
-					<div id="documentation_result_formatting_ordering">
-						<h2>Ordering</h2>
-						<p>The <code>orderby</code> query parameter takes the value of the field to order the results by and the <code>order</code> query parameter can take the value "ASC" (ascending) or "DESC" (descending) to choose how to sort the results.</p>
-
-						<p class="lead">GET buildings?orderby=reference&amp;order=DESC</p>
-						<div class="example-request">
-							<pre class="request_header">GET <%= api.full_url %>buildings?orderby=reference&amp;order=DESC</pre>
-							<pre class="pre-scrollable" data-example-request="buildings?orderby=reference&amp;order=DESC"></pre>
-						</div>
-					</div>
-
-					<div id="documentation_result_formatting_limiting_results">
-						<h2>Limiting results</h2>
-						<p>The <code>limit</code> query parameter can limit the amount of results that are returned by a query.</p>
-
-						<p class="lead">GET users?limit=2</p>
-						<div class="example-request">
-							<pre class="request_header">GET <%= api.full_url %>users?limit=2</pre>
-							<pre class="pre-scrollable" data-example-request="users?limit=2"></pre>
-						</div>
-					</div>
 				</div>
 			</div>
 		</div>
