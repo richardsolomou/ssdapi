@@ -150,7 +150,7 @@ module.exports = function (app, passport, mysql, mssql, async) {
 				// Runs a function after all previous functions have finished executing.
 				}, function () {
 					// Returns the open access area availability data.
-					return req.params.reference ? res.json(data[0]) : res.json(data);
+					return req.params.reference ? res.json(data[0].openaccess) : res.json(data);
 				});
 			});
 		});
