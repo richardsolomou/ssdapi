@@ -40,6 +40,10 @@ a {
 	color: #59379E;
 }
 
+a i {
+	margin-right: 3px;
+}
+
 a:hover,
 a:focus {
 	color: #58369E;

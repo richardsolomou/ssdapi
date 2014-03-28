@@ -1,0 +1,26 @@
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > td,
+.table > tfoot > tr > td {
+	border-top: none;
+	border-bottom: 1px solid #e5e5e5;
+}
+
+table th {
+	background: #f1f1f1;
+	width: 30%;
+}
+
+h1 {
+	margin-bottom: 0.7em;
+}
+
+.app {
+	padding: 2em 0;
+	border-bottom: 1px solid #e5e5e5;
+}
+
+.app:first-of-type { padding-top: 0!important; }
+.app:last-of-type { border-bottom: none; padding-bottom: 0; }
