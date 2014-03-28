@@ -11,9 +11,10 @@ $(document).ready(function () {
 		$('pre[data-example-request]').each(function () {
 			var request = $(this).data('example-request');
 			var pre = $(this);
-
+			var access_token = '8ac61297-c3c5-4f76-bc6e-603471ff9325';
+			
 			request += request.indexOf('?') !== -1 ? '&' : '?';
-			request += 'api_key=test';
+			request += 'access_token=' + access_token;
 
 			$.getJSON(api + '/v1/' + request).complete(function (data) {
 				pre.text(JSON.stringify(data.responseJSON, null, '\t'));
