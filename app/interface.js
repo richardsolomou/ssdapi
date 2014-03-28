@@ -23,10 +23,42 @@ module.exports = function (app, passport, mysql) {
 
 	// Route to show all the user's apps.
 	app.get('/apps', isLoggedIn, function (req, res) {
-		// Runs a MySQL query to get all the apps for the current user.
+		// Run a MySQL query to get all the apps for the current user.
 		mysql.query('SELECT * FROM `api_apps` WHERE `user_id` = :user_id', { user_id: req.session.user.id }, function (err, apps) {
 			// Render apps.ejs with the user's apps.
 			res.render('apps', { name: 'apps', user: req.session.user, apps: apps, css: 'apps' });
+		});
+	});
+
+	// Route for creating a new application under the user's account.
+	app.post('/apps', isLoggedIn, function (req, res) {
+		// Create an access token variable.
+		var access_token = null;
+		// Run an asynchronous loop.
+		async.whilst(function () {
+			// Run a loop while the access token variable is empty.
+			return access_token == null;
+		// Call a function whilst the above function returns true.
+		}, function (callback) {
+			// Generate an access token.
+			var token = uuid.v4();
+			// Run a MySQL query to check if the access token already exists.
+			mysql.query('SELECT * FROM `api_apps` WHERE `access_token` = :access_token', { access_token: token }, function (err, results) {
+				// Check if no results were found.
+				if (!results || !results.length) {
+					// Assign the token to the access token.
+					access_token = token;
+					// Call the callback function to continue.
+					callback();
+				}
+			});
+		// Run a function after the callback was called.
+		}, function (err) {
+			// Run a MySQL query for creating a new app.
+			mysql.query('INSERT INTO `api_apps` (`user_id`, `access_token`, `request_origin`) VALUES (:user_id, :access_token, :request_origin)', { user_id: req.session.user.id, access_token: access_token, request_origin: '127.0.0.1' }, function (err, apps) {
+				// Render apps.ejs with the user's apps.
+				res.redirect('/apps');
+			});
 		});
 	});
 
