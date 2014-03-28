@@ -13,7 +13,7 @@ var express = require('express'),
 	flash = require('connect-flash');
 
 // Set the port and load the configuration.
-var port = process.env.PORT || 8080;
+var port = process.env.PORT || 8080,
 	config = require('./config/config'),
 	local = require('./config/local');
 
