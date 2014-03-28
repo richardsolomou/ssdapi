@@ -2,15 +2,17 @@
  * Module dependencies.
  */
 
+// Load global module dependencies.
 var express = require('express'),
 	mysql = require('mysql'),
 	mssql = require('mssql'),
-	async = require('async'),
 	passport = require('passport'),
 	GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
 	LocalAPIKeyStrategy = require('passport-localapikey').Strategy,
-	dns = require('dns');
+	dns = require('dns'),
+	flash = require('connect-flash');
 
+// Set the port and load the configuration.
 var port = process.env.PORT || 8080;
 	config = require('./config/config'),
 	local = require('./config/local');
@@ -20,13 +22,15 @@ var port = process.env.PORT || 8080;
  * Module configuration.
  */
 
+// Initialize express.
 var app = express();
-// Setup connection to the databases.
-var connection = mysql.createConnection(config.db.mysql),
-	mssql_conn = mssql.connect(config.db.mssql);
+// Setup connection to the MySQL database.
+var mysql_conn = mysql.createConnection(config.db.mysql);
+// Connect to the MSSQL Database.
+mssql.connect(config.db.mssql);
 
-// Implements a custom format for query escaping.
-connection.config.queryFormat = function (query, values) {
+// Implement a custom format for query escaping.
+mysql_conn.config.queryFormat = function (query, values) {
 	if (!values) return query;
 	return query.replace(/\:(\w+)/g, function (txt, key) {
 		if (values.hasOwnProperty(key)) return this.escape(values[key]);
@@ -56,19 +60,19 @@ passport.use(new GoogleStrategy({
 		process.nextTick(function () {
 			// Check if the user is signed in under a University of Portsmouth domain.
 			if (profile._json.hd !== 'port.ac.uk' && profile._json.hd !== 'myport.ac.uk') {
+				// Sets a session message.
+				req.flash('error', 'Hosted domain must be port.ac.uk or myport.ac.uk');
 				// Disregards successful log-ins from non-local accounts and gives an error.
 				return done(null, false);
 			}
-
 			// Check if the user already exists in the local database.
-			connection.query('SELECT COUNT(`id`) AS `count` FROM `api_users` WHERE `id` = :id', { id: profile._json.id }, function (err, rows) {
+			mysql_conn.query('SELECT COUNT(`id`) AS `count` FROM `api_users` WHERE `id` = :id', { id: profile._json.id }, function (err, rows) {
 				// Sets the query string to create a new record for the user.
-				var query = 'INSERT INTO `api_clients` (`id`, `given_name`, `family_name`, `email`, `picture`, `hd`) VALUES (:id, :given_name, :family_name, :email, :picture, :hd)';
+				var query = 'INSERT INTO `api_users` (`id`, `given_name`, `family_name`, `email`, `picture`, `hd`) VALUES (:id, :given_name, :family_name, :email, :picture, :hd)';
 				// Sets the query string to update the existing user's record.
-				if (rows && rows[0].count > 0) query = 'UPDATE `api_clients` SET `given_name` = :given_name, `family_name` = :family_name, `email` = :email, `picture` = :picture, "`hd` = :hd WHERE `id` = :id';
-
+				if (rows && rows[0].count > 0) query = 'UPDATE `api_users` SET `given_name` = :given_name, `family_name` = :family_name, `email` = :email, `picture` = :picture, "`hd` = :hd WHERE `id` = :id';
 				// Runs the selected query on the local database.
-				connection.query(query, { id: profile._json.id, given_name: profile._json.given_name, family_name: profile._json.family_name, email: profile._json.email, picture: profile._json.picture, hd: profile._json.hd }, function () {
+				mysql_conn.query(query, { id: profile._json.id, given_name: profile._json.given_name, family_name: profile._json.family_name, email: profile._json.email, picture: profile._json.picture, hd: profile._json.hd }, function () {
 					// Save user to session.
 					req.session.user = profile._json;
 					// The user's profile is returned to represent the logged-in user.
@@ -81,16 +85,15 @@ passport.use(new GoogleStrategy({
 
 // Use the LocalAPIKeyStrategy within Passport.
 passport.use(new LocalAPIKeyStrategy({
-		apiKeyField: 'api_key',
+		apiKeyField: 'access_token',
 		passReqToCallback: true
 	},
-	function (req, api_key, done) {
+	function (req, access_token, done) {
 		// Check if the provided access token exists.
-		connection.query('SELECT * FROM `api_keys` WHERE `api_key` = :api_key', { api_key: api_key }, function (err, rows) {
+		mysql_conn.query('SELECT * FROM `api_apps` WHERE `access_token` = :access_token', { access_token: access_token }, function (err, rows) {
 			if (err) return done(err);
-			// Returns a message to the user that the provided API Key is invalid.
-			if (!rows || !rows[0]) return done(null, false, { message: 'Invalid API Key' });
-
+			// Returns a message to the user that the provided access token is invalid.
+			if (!rows || !rows[0]) return done(null, false, { message: 'Invalid access token.' });
 			// Checks the remote machine's hostname against the allowed request origin.
 			dns.reverse(req.ip, function (err, hostnames) {
 				// Loops through any hostnames.
@@ -100,37 +103,34 @@ passport.use(new LocalAPIKeyStrategy({
 				}
 			});
 			// Checks the remote machine's IP address against the allowed request origin.
-			if (rows[0].request_origin !== req.ip) return done(null, false, { message: 'Invalid Request Origin' });
-
-			// Checks if the API key has been revoked.
-			if (rows[0].active !== 1) return done(null, false, { message: 'Revoked API Key' });
-
+			if (rows[0].request_origin !== req.ip) return done(null, false, { message: 'Invalid request origin.' });
 			// Allows the user to continue if the hostname matches the request origin.
 			return done(null, rows[0].user_id);
 		});
 	}
 ));
 
-// Set up the express application.
-app.configure(function () {
-	app.use(express.static(__dirname + '/public'));
-	app.set('views', __dirname + '/public');
-	// Log every request to the console.
-	app.use(express.logger('dev'));
-	// Read cookies needed for authentication.
-	app.use(express.cookieParser());
-	// Get information from HTML forms.
-	app.use(express.json());
-	app.use(express.urlencoded());
-	// Set up ejs for templating.
-	app.locals(local);
-	app.set('view engine', 'ejs');
-	// Session secret.
-	app.use(express.session({ secret: config.express.secret }));
-	app.use(passport.initialize());
-	// Use persistent login sessions.
-	app.use(passport.session());
-});
+// Set the views folder as "public".
+app.use(express.static(__dirname + '/public'));
+app.set('views', __dirname + '/public');
+// Log requests to the console.
+app.use(express.logger('dev'));
+// Read cookies needed for authentication.
+app.use(express.cookieParser());
+// Get information from HTML forms.
+app.use(express.json());
+app.use(express.urlencoded());
+// Set up ejs for templating.
+app.set('view engine', 'ejs');
+// Set up application local variables.
+app.locals(local);
+// Set the session secret.
+app.use(express.session({ secret: config.express.secret }));
+// Initialize passport and use persistent login sessions.
+app.use(passport.initialize());
+app.use(passport.session());
+// Use middleware to store flash messages.
+app.use(flash());
 
 
 /**
@@ -138,10 +138,10 @@ app.configure(function () {
  */
 
 // Load the interface and pass in the application and passport instances.
-require('./app/interface')(app, passport);
+require('./app/interface')(app, passport, mysql_conn);
 
 // Load the API routes and pass in the application and passport instances.
-require('./app/routes')(app, passport, connection, mssql, async);
+require('./app/routes')(app, passport, mysql_conn, mssql);
 
 
 // Listen for connections.

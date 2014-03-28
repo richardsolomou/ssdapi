@@ -11,7 +11,9 @@
 		"ejs": "*",
 		"passport": "*",
 		"passport-google-oauth": "*",
-		"passport-localapikey": "*"
+		"passport-localapikey": "*",
+		"connect-flash": "*",
+		"node-uuid": "*"
 	},
 	"repository": {
 		"type": "git",
