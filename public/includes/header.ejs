@@ -30,7 +30,7 @@
 					</div>
 				<% } else { %>
 					<div class="clearfix">&nbsp;</div>
-					<a href="/auth/google" class="btn btn-danger"><span class="fa fa-google-plus"></span> Login</a>
+					<a href="/auth/google" class="btn btn-danger"><i class="fa fa-google-plus"></i> Login</a>
 				<% } %>
 				</div>
 			</div>
@@ -53,7 +53,7 @@
 					</ul>
 					<% if (locals.user && user) { %>
 					<ul class="nav navbar-nav navbar-right">
-						<li <% if (locals.name && name == 'credentials') { %>class="active"<% } %>><a href="/credentials">Credentials</a></li>
+						<li <% if (locals.name && name == 'apps') { %>class="active"<% } %>><a href="/apps">Apps</a></li>
 					</ul>
 					<% } %>
 				</div>
