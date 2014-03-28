@@ -141,7 +141,7 @@ app.use(flash());
 require('./app/interface')(app, passport, mysql_conn);
 
 // Load the API routes and pass in the application and passport instances.
-require('./app/routes')(app, passport, mysql_conn, mssql);
+require('./app/api')(app, passport, mysql_conn, mssql);
 
 
 // Listen for connections.
