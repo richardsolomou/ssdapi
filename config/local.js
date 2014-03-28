@@ -24,7 +24,11 @@ config.version.date_readable = 'March 21st, 2014';
  */
 config.api = {}
 
+// Hostname of the application.
+config.api.hostname = 'localhost';
+// Port of the application.
+config.api.port = 8080;
 // Base URL of the application.
-config.api.base_url = 'http://localhost:8080';
+config.api.base_url = 'http://' + config.api.hostname + ':' + config.api.port;
 // API URL including version number and trailing slash.
 config.api.full_url = config.api.base_url + '/v' + config.version.number + '/';
