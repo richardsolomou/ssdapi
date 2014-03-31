@@ -65,7 +65,19 @@ module.exports = function (app, passport, mysql) {
 		});
 	});
 
+	// Route for modifying an existing application under the user's account.
+	app.put('/apps', isLoggedIn, function (req, res) {
+		// Get the App ID.
+		var id = req.body.id;
+		// Run a MySQL query to update the app.
+		mysql.query('UPDATE `api_apps` SET `title` = :title, `request_origin` = :request_origin', { title: req.body.title, request_origin: req.body.request_origin }, function (err, results) {
+			// Return the results to the view.
+			res.json(results);
+		});
+	});
+
 	app.delete('/apps', isLoggedIn, function (req, res) {
+		// Get the App ID.
 		var id = req.body.id;
 		// Run a MySQL query for creating a new app.
 		mysql.query('DELETE FROM `api_apps` WHERE `id` = :id', { id: id }, function (err, results) {
