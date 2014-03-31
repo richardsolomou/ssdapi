@@ -7,32 +7,63 @@
 			<div class="col-md-3">
 				<p class="lead">New App</p>
 				<p class="text-justify">By creating a new app, you can share specific data with anyone who uses your application, while keeping sensitive information about your account private.</p><br>
-				<form role="form" method="POST">
-					<button type="submit" class="btn btn-danger"><i class="fa fa-plus"></i> New App</button>
-				</form>
+				<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#newApp"><i class="fa fa-plus"></i> New App</button>
 			</div>
 
-			<div class="col-md-9">
+			<div id="apps" class="col-md-9">
 				<p class="lead">Existing Apps</p>
 				<% for (var i in apps) { %>
 				<div class="app" data-id="<%= apps[i].id %>">
 					<table class="table">
 						<tr>
+							<th>App ID</th>
+							<td><code><%= apps[i].id %></code></td>
+						</tr>
+						<tr>
 							<th>Access Token</th>
-							<td><%= apps[i].access_token %></td>
+							<td><code><%= apps[i].access_token %></code></td>
+						</tr>
+						<tr>
+							<th>Title</th>
+							<td><code><%= apps[i].title %></code></td>
 						</tr>
 						<tr>
 							<th>Request Origin</th>
-							<td><%= apps[i].request_origin %></td>
+							<td><code><%= apps[i].request_origin %></code></td>
 						</tr>
 					</table>
-					<a href="#" class="btn btn-default" data-action="edit"><i class="fa fa-edit"></i> Edit</a>
-					<a href="#" class="btn btn-default" data-action="download_json"><i class="fa fa-download"></i> Download JSON</a>
-					<a href="#" class="btn btn-warning" data-action="delete"><i class="fa fa-times-circle"></i> Delete</a>
+					<a href="#" class="btn btn-default" data-action="update"><i class="fa fa-edit"></i> Update</a><a href="#" class="btn btn-default" data-action="download_json"><i class="fa fa-download"></i> Download JSON</a><a href="#" class="btn btn-warning" data-action="delete"><i class="fa fa-times-circle"></i> Delete</a>
 				</div>
 				<% } %>
 			</div>
 		</div>
 	</article>
+
+	<div class="modal fade" id="newApp" tabindex="-1" role="dialog" aria-labelledby="newAppLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="newAppLabel">New App</h4>
+				</div>
+				<form role="form">
+					<div class="modal-body">
+						<div class="form-group">
+							<label for="title">App Title:</label>
+							<input type="text" name="title" id="title" class="form-control">
+						</div>
+						<div class="form-group">
+							<label for="request_origin">Request Origin:</label>
+							<textarea name="request_origin" id="request_origin" class="form-control"></textarea>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="submit" class="btn btn-danger" data-action="create"> Create</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
 
 <% include includes/footer %>
