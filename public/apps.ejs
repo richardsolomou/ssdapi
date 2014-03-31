@@ -7,7 +7,7 @@
 			<div class="col-md-3">
 				<p class="lead">New App</p>
 				<p class="text-justify">By creating a new app, you can share specific data with anyone who uses your application, while keeping sensitive information about your account private.</p><br>
-				<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#newApp"><i class="fa fa-plus"></i> New App</button>
+				<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#newApp" data-action="create"><i class="fa fa-plus"></i> New App</button>
 			</div>
 
 			<div id="apps" class="col-md-9">
@@ -25,14 +25,14 @@
 						</tr>
 						<tr>
 							<th>Title</th>
-							<td><code><%= apps[i].title %></code></td>
+							<td data-info="title"><code><%= apps[i].title %></code></td>
 						</tr>
 						<tr>
 							<th>Request Origin</th>
-							<td><code><%= apps[i].request_origin %></code></td>
+							<td data-info="request_origin"><code><%= apps[i].request_origin %></code></td>
 						</tr>
 					</table>
-					<a href="#" class="btn btn-default" data-action="update"><i class="fa fa-edit"></i> Update</a><a href="#" class="btn btn-default" data-action="download_json"><i class="fa fa-download"></i> Download JSON</a><a href="#" class="btn btn-warning" data-action="delete"><i class="fa fa-times-circle"></i> Delete</a>
+					<button type="button" class="btn btn-default" data-toggle="modal" data-target="#updateApp" data-action="update"><i class="fa fa-edit"></i> Update</a></button><button type="button" class="btn btn-default" data-action="download_json"><i class="fa fa-download"></i> Download JSON</a></button><button type="button" class="btn btn-warning" data-toggle="modal" data-target="#deleteApp" data-action="delete"><i class="fa fa-times-circle"></i> Delete</a></button>
 				</div>
 				<% } %>
 			</div>
@@ -50,16 +50,66 @@
 					<div class="modal-body">
 						<div class="form-group">
 							<label for="title">App Title:</label>
-							<input type="text" name="title" id="title" class="form-control">
+							<input type="text" name="title" id="new_title" class="form-control">
 						</div>
 						<div class="form-group">
 							<label for="request_origin">Request Origin:</label>
-							<textarea name="request_origin" id="request_origin" class="form-control"></textarea>
+							<textarea name="request_origin" id="new_request_origin" class="form-control"></textarea>
 						</div>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						<button type="submit" class="btn btn-danger" data-action="create"> Create</button>
+						<button type="submit" class="btn btn-primary" data-action="doCreate">Create</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="updateApp" tabindex="-1" role="dialog" aria-labelledby="updateAppLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="updateAppLabel">Update App</h4>
+				</div>
+				<form role="form">
+					<div class="modal-body">
+						<input type="hidden" id="update_id" name="id" value="">
+
+						<div class="form-group">
+							<label for="title">App Title:</label>
+							<input type="text" name="title" id="update_title" class="form-control">
+						</div>
+						<div class="form-group">
+							<label for="request_origin">Request Origin:</label>
+							<textarea name="request_origin" id="update_request_origin" class="form-control"></textarea>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="submit" class="btn btn-primary" data-action="doUpdate">Update</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="deleteApp" tabindex="-1" role="dialog" aria-labelledby="deleteAppLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="deleteAppLabel">Do you want to delete this app?</h4>
+				</div>
+				<form role="form">
+					<div class="modal-body">
+						<input type="hidden" id="delete_id" name="id" value="">
+						<p>Deleting an app will remove all of the app credentials. The app will no longer be usable for accessing the components of your project.</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="submit" class="btn btn-danger" data-action="doDelete">Delete</button>
 					</div>
 				</form>
 			</div>
