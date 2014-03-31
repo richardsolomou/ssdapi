@@ -60,6 +60,8 @@ module.exports = function (app, passport, mysql) {
 			// Run a MySQL query for creating a new app.
 			mysql.query('INSERT INTO `api_apps` (`id`, `user_id`, `access_token`, `title`, `request_origin`) VALUES (:id, :user_id, :access_token, :title, :request_origin)', data, function (err, apps) {
 				// Return the data to the view.
+				console.dir(err);
+				console.dir(apps);
 				res.json(data);
 			});
 		});
@@ -70,7 +72,7 @@ module.exports = function (app, passport, mysql) {
 		// Get the App ID.
 		var id = req.body.id;
 		// Run a MySQL query to update the app.
-		mysql.query('UPDATE `api_apps` SET `title` = :title, `request_origin` = :request_origin', { title: req.body.title, request_origin: req.body.request_origin }, function (err, results) {
+		mysql.query('UPDATE `api_apps` SET `title` = :title, `request_origin` = :request_origin WHERE `id` = :id', { id: req.body.id, title: req.body.title, request_origin: req.body.request_origin }, function (err, results) {
 			// Return the results to the view.
 			res.json(results);
 		});
