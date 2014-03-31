@@ -26,24 +26,26 @@ module.exports = function (app, passport, mysql) {
 		// Run a MySQL query to get all the apps for the current user.
 		mysql.query('SELECT * FROM `api_apps` WHERE `user_id` = :user_id', { user_id: req.session.user.id }, function (err, apps) {
 			// Render apps.ejs with the user's apps.
-			res.render('apps', { name: 'apps', user: req.session.user, apps: apps, css: 'apps' });
+			res.render('apps', { name: 'apps', user: req.session.user, apps: apps, css: 'apps', js: 'apps' });
 		});
 	});
 
 	// Route for creating a new application under the user's account.
 	app.post('/apps', isLoggedIn, function (req, res) {
 		// Create an access token variable.
-		var access_token = null;
+		var id = access_token = null;
 		// Run an asynchronous loop.
 		async.whilst(function () {
 			// Run a loop while the access token variable is empty.
 			return access_token == null;
 		// Call a function whilst the above function returns true.
 		}, function (callback) {
+			// Generate an id.
+			id = uuid.v1();
 			// Generate an access token.
 			var token = uuid.v4();
 			// Run a MySQL query to check if the access token already exists.
-			mysql.query('SELECT * FROM `api_apps` WHERE `access_token` = :access_token', { access_token: token }, function (err, results) {
+			mysql.query('SELECT * FROM `api_apps` WHERE `access_token` IN [:id, :access_token] OR `id` IN [:id, :access_token]', { id: id, access_token: token }, function (err, results) {
 				// Check if no results were found.
 				if (!results || !results.length) {
 					// Assign the token to the access token.
@@ -54,11 +56,21 @@ module.exports = function (app, passport, mysql) {
 			});
 		// Run a function after the callback was called.
 		}, function (err) {
+			var data = { id: id, user_id: req.session.user.id, access_token: access_token, title: req.body.title, request_origin: req.body.request_origin };
 			// Run a MySQL query for creating a new app.
-			mysql.query('INSERT INTO `api_apps` (`user_id`, `access_token`, `request_origin`) VALUES (:user_id, :access_token, :request_origin)', { user_id: req.session.user.id, access_token: access_token, request_origin: '127.0.0.1' }, function (err, apps) {
-				// Render apps.ejs with the user's apps.
-				res.redirect('/apps');
+			mysql.query('INSERT INTO `api_apps` (`id`, `user_id`, `access_token`, `title`, `request_origin`) VALUES (:id, :user_id, :access_token, :title, :request_origin)', data, function (err, apps) {
+				// Return the data to the view.
+				res.json(data);
 			});
+		});
+	});
+
+	app.delete('/apps', isLoggedIn, function (req, res) {
+		var id = req.body.id;
+		// Run a MySQL query for creating a new app.
+		mysql.query('DELETE FROM `api_apps` WHERE `id` = :id', { id: id }, function (err, results) {
+			// Return the results to the view.
+			res.json(results);
 		});
 	});
 
