@@ -9,7 +9,6 @@ var express = require('express'),
 	passport = require('passport'),
 	GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
 	LocalAPIKeyStrategy = require('passport-localapikey').Strategy,
-	dns = require('dns'),
 	flash = require('connect-flash');
 
 // Set the port and load the configuration.
@@ -94,16 +93,8 @@ passport.use(new LocalAPIKeyStrategy({
 			if (err) return done(err);
 			// Returns a message to the user that the provided access token is invalid.
 			if (!rows || !rows[0]) return done(null, false, { message: 'Invalid access token.' });
-			// Checks the remote machine's hostname against the allowed request origin.
-			dns.reverse(req.ip, function (err, hostnames) {
-				// Loops through any hostnames.
-				for (var i in hostnames) {
-					// Allows the user to continue if the hostname matches the request origin.
-					if (rows[0].request_origin == hostnames[i]) return done(null, rows[0].user_id);
-				}
-			});
 			// Checks the remote machine's IP address against the allowed request origin.
-			if (rows[0].request_origin !== req.ip) return done(null, false, { message: 'Invalid request origin.' });
+			if (rows[0].request_origin !== req.ip ) return done(null, false, { message: 'Invalid request origin.' });
 			// Allows the user to continue if the hostname matches the request origin.
 			return done(null, rows[0].user_id);
 		});
