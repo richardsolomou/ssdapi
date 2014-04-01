@@ -21,6 +21,12 @@ module.exports = function (app, passport, mysql) {
 		res.render('login', { user: req.session.user, error: error });
 	});
 
+	// Route to show the console.
+	app.get('/console', isLoggedIn, function (req, res) {
+		// Render console.ejs.
+		res.render('console', { name: 'console', user: req.session.user, css: 'console', js: 'console' });
+	});
+
 	// Route to show all the user's apps.
 	app.get('/apps', isLoggedIn, function (req, res) {
 		// Run a MySQL query to get all the apps for the current user.
