@@ -9,7 +9,9 @@ var express = require('express'),
 	passport = require('passport'),
 	GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
 	LocalAPIKeyStrategy = require('passport-localapikey').Strategy,
-	flash = require('connect-flash');
+	flash = require('connect-flash'),
+	url = require('url'),
+	dns = require('dns');
 
 // Set the port and load the configuration.
 var port = process.env.PORT || 8080,
@@ -94,9 +96,21 @@ passport.use(new LocalAPIKeyStrategy({
 			// Returns a message to the user that the provided access token is invalid.
 			if (!rows || !rows[0]) return done(null, false, { message: 'Invalid access token.' });
 			// Checks the remote machine's IP address against the allowed request origin.
-			if (rows[0].request_origin !== req.ip ) return done(null, false, { message: 'Invalid request origin.' });
-			// Allows the user to continue if the hostname matches the request origin.
-			return done(null, rows[0].user_id);
+			if (req.ip == rows[0].request_origin) return done(null, rows[0].user_id);
+			// Checks if there is no referer header.
+			if (!req.headers.referer) return done(null, false, { message: 'Invalid request origin.' });
+			// Parses the referer header into a URL object.
+			var referer = url.parse(req.headers.referer);
+			// Checks if the referer host is an allowed request origin.
+			if (referer.host == rows[0].request_origin) return done(null, rows[0].user_id);
+			// Resolves the referer host to get its IPs.
+			dns.resolve(referer.host, function (err, ips) {
+				// Loops through all of the returned IPs.
+				for (var i in ips) {
+					// Checks if the IP against the allowed request origin.
+					if (ips[i] == rows[0].request_origin) return done(null, rows[0].user_id);
+				}
+			});
 		});
 	}
 ));
@@ -122,6 +136,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 // Use middleware to store flash messages.
 app.use(flash());
+// Allows JSONP requests.
+app.set('jsonp callback', true);
 
 
 /**
