@@ -53,6 +53,7 @@
 					</ul>
 					<% if (locals.user && user) { %>
 					<ul class="nav navbar-nav navbar-right">
+						<li <% if (locals.name && name == 'console') { %>class="active"<% } %>><a href="/console">Console</a></li>
 						<li <% if (locals.name && name == 'apps') { %>class="active"<% } %>><a href="/apps">Apps</a></li>
 					</ul>
 					<% } %>
