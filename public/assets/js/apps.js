@@ -90,7 +90,7 @@ $(document).ready(function () {
 			}
 		});
 
-		// Prevents default action and stops propagation.
+		// Prevent default action and stops propagation.
 		return false;
 	});
 
@@ -117,7 +117,7 @@ $(document).ready(function () {
 			}
 		});
 
-		// Prevents default action and stops propagation.
+		// Prevent default action and stops propagation.
 		return false;
 	});
 
@@ -143,7 +143,7 @@ $(document).ready(function () {
 			}
 		});
 
-		// Prevents default action and stops propagation.
+		// Prevent default action and stops propagation.
 		return false;
 	});
 });
