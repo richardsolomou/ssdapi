@@ -36,7 +36,7 @@ $(document).ready(function () {
 		$(window).off('.affix');
 		$('#doc_nav').removeData('bs.affix').removeData('affix').removeAttr('class').affix({
 			offset: {
-				top: $('header').outerHeight(true) + $('.navbar-inverse').outerHeight(true) + 50
+				top: $('header').outerHeight(true) + $('.navbar-inverse').outerHeight(true)
 			}
 		});
 		

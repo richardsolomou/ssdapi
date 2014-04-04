@@ -2,7 +2,7 @@
 $(document).ready(function () {
 
 	// Set local API folder.
-	var api_folder = '/api';
+	var api = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
 
 	// Set variables for the modals.
 	var newAppModal = $('#newAppModal'),
@@ -57,7 +57,7 @@ $(document).ready(function () {
 		// Perform an AJAX request to add the new app using the data stored in the input fields on the New App modal.
 		$.ajax({
 			type: 'POST',
-			url: api_folder + '/apps',
+			url: api + '/apps',
 			data: { title: newAppTitle.val(), request_origin: newAppRequestOrigin.val() },
 			success: function (app) {
 				// Hide the New App modal.
@@ -105,7 +105,7 @@ $(document).ready(function () {
 		// Perform an AJAX request to update the app using the data stored in the input fields on the Edit App modal.
 		$.ajax({
 			type: 'PUT',
-			url: api_folder + '/apps',
+			url: api + '/apps',
 			data: { id: editAppId.val(), title: editAppTitle.val(), request_origin: editAppRequestOrigin.val() },
 			success: function (data) {
 				// Hide the Edit App modal.
@@ -129,7 +129,7 @@ $(document).ready(function () {
 		// Perform an AJAX request to delete the current app.
 		$.ajax({
 			type: 'DELETE',
-			url: api_folder + '/apps',
+			url: api + '/apps',
 			data: { id: deleteAppId.val() },
 			success: function (data) {
 				// Hide the Delete App modal.
