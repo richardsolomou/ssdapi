@@ -25,7 +25,7 @@
 				<% if (locals.user && user) { %>
 					<img src="<%= user.picture %>" width="50" class="img-rounded">
 					<div class="user">
-						<a href="<%= locals.api.folder %>/credentials"><strong><%= user.given_name %> <%= user.family_name %></strong></a>
+						<a href="<%= locals.api.folder %>/apps"><strong><%= user.given_name %> <%= user.family_name %></strong></a>
 						<a href="<%= locals.api.folder %>/logout">Logout</a>
 					</div>
 				<% } else { %>
