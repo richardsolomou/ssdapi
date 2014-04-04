@@ -12,11 +12,11 @@ config.version = {};
 // Official version number as shown in the URL.
 config.version.number = '1';
 // Real version number with increments.
-config.version.real_number = '0.0.4';
+config.version.real_number = '0.0.5';
 // Last version update in SQL format.
-config.version.date = '2014-04-01';
+config.version.date = '2014-04-04';
 // Last version update (readable).
-config.version.date_readable = 'April 1st, 2014';
+config.version.date_readable = 'April 4th, 2014';
 
 
 /**
@@ -25,10 +25,10 @@ config.version.date_readable = 'April 1st, 2014';
 config.api = {}
 
 // Hostname of the application.
-config.api.hostname = 'localhost';
-// Port of the application.
-config.api.port = 8080;
+config.api.hostname = 'dsign-web-01.uni.ds.port.ac.uk';
+// Folder of the application.
+config.api.folder = '/api';
 // Base URL of the application.
-config.api.base_url = 'http://' + config.api.hostname + ':' + config.api.port;
+config.api.base_url = 'http://' + config.api.hostname + config.api.folder;
 // API URL including version number and trailing slash.
 config.api.full_url = config.api.base_url + '/v' + config.version.number + '/';
