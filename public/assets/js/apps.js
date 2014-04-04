@@ -1,6 +1,9 @@
 // Specify a function to execute when the DOM is fully loaded.
 $(document).ready(function () {
 
+	// Set local API folder.
+	var api_folder = '/api';
+
 	// Set variables for the modals.
 	var newAppModal = $('#newAppModal'),
 		editAppModal = $('#editAppModal'),
@@ -54,7 +57,7 @@ $(document).ready(function () {
 		// Perform an AJAX request to add the new app using the data stored in the input fields on the New App modal.
 		$.ajax({
 			type: 'POST',
-			url: '/apps',
+			url: api_folder + '/apps',
 			data: { title: newAppTitle.val(), request_origin: newAppRequestOrigin.val() },
 			success: function (app) {
 				// Hide the New App modal.
@@ -83,7 +86,7 @@ $(document).ready(function () {
 					$('<button/>', { 'type': 'button', 'class': 'btn btn-default', 'data-toggle': 'modal', 'data-target': '#editAppModal', 'data-action': 'openEditAppModal' }).text('Update').prepend(' ').prepend($('<i/>', { 'class': 'fa fa-edit' })),
 					$('<button/>', { 'type': 'button', 'class': 'btn btn-default', 'data-action': 'downloadJSON' }).text('Download JSON').prepend(' ').prepend($('<i/>', { 'class': 'fa fa-download' })),
 					$('<button/>', { 'type': 'button', 'class': 'btn btn-warning', 'data-toggle': 'modal', 'data-target': '#deleteAppModal', 'data-action': 'openDeleteAppModal' }).text('Delete').prepend(' ').prepend($('<i/>', { 'class': 'fa fa-times-circle' }))
-				).appendTo('#apps');
+				).prependTo('#apps');
 			}
 		});
 
@@ -102,7 +105,7 @@ $(document).ready(function () {
 		// Perform an AJAX request to update the app using the data stored in the input fields on the Edit App modal.
 		$.ajax({
 			type: 'PUT',
-			url: '/apps',
+			url: api_folder + '/apps',
 			data: { id: editAppId.val(), title: editAppTitle.val(), request_origin: editAppRequestOrigin.val() },
 			success: function (data) {
 				// Hide the Edit App modal.
@@ -126,7 +129,7 @@ $(document).ready(function () {
 		// Perform an AJAX request to delete the current app.
 		$.ajax({
 			type: 'DELETE',
-			url: '/apps',
+			url: api_folder + '/apps',
 			data: { id: deleteAppId.val() },
 			success: function (data) {
 				// Hide the Delete App modal.
