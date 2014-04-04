@@ -1,4 +1,4 @@
-module.exports = function (app, passport, mysql) {
+module.exports = function (app, passport, mysql, local) {
 	// Load module dependencies.
 	var async = require('async'),
 		uuid = require('node-uuid');
@@ -14,9 +14,9 @@ module.exports = function (app, passport, mysql) {
 		// Create a variable with an error flash message.
 		var error = req.flash('error') || [];
 		// Use passport to check if the user is already authenticated.
-		if (req.isAuthenticated() && req.session.user) return res.redirect('/api');
+		if (req.isAuthenticated() && req.session.user) return res.redirect(local.api.folder);
 		// Check that there isn't an error.
-		if (error.length == 0) return res.redirect('/api/auth/google');
+		if (error.length == 0) return res.redirect(local.api.folder + '/auth/google');
 		// Render login.ejs with any potential user credentials and error messages.
 		res.render('login', { user: req.session.user, error: error });
 	});
@@ -100,7 +100,7 @@ module.exports = function (app, passport, mysql) {
 		// Use passport to logout user.
 		req.logout();
 		// Redirect user to homepage.
-		res.redirect('/api');
+		res.redirect(local.api.folder);
 	});
 
 	// Route for displaying the API documentation.
@@ -115,9 +115,9 @@ module.exports = function (app, passport, mysql) {
 	// Route for the google authentication callback.
 	app.get('/auth/google/callback', passport.authenticate('google', {
 		// Set redirect URL on successful log-in.
-		successRedirect: '/api',
+		successRedirect: local.api.folder,
 		// Set redirect URL on failed log-in.
-		failureRedirect: '/api/login'
+		failureRedirect: local.api.folder + '/login'
 	}));
 };
 
@@ -126,5 +126,5 @@ function isLoggedIn(req, res, next) {
 	// Use passport to check if authenticated.
 	if (req.isAuthenticated() && req.session.user) return next();
 	// Redirect to login page if not.
-	res.redirect('/api/auth/google');
+	res.redirect(local.api.folder + '/auth/google');
 }
