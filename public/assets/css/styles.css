@@ -58,6 +58,28 @@ a:focus {
 	cursor: pointer;
 }
 
+.btn,
+.alert,
+.form-control {
+	border-radius: 0;
+}
+
+.btn-uop {
+	color: #fff;
+	background-color: #59379E;
+	border-color: #523294;
+}
+
+.btn-uop:hover,
+.btn-uop:focus,
+.btn-uop:active,
+.btn-uop.active,
+.open .dropdown-toggle.btn-uop {
+	color: #fff;
+	background-color: #523294;
+	border-color: #59379E;
+}
+
 
 /**
  * HEADER
@@ -69,7 +91,7 @@ header {
 	border-bottom: 2em solid #523294;
 }
 
-header a {
+header a:not(.btn) {
 	color: #f4f4f4!important;
 }
 

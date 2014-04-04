@@ -2,12 +2,10 @@
 
 	<article>
 		<div class="container">
-			<h1>Apps</h1>
-
 			<div class="col-md-3">
 				<p class="lead">New App</p>
 				<p class="text-justify">By creating a new app, you can share specific data with anyone who uses your application, while keeping sensitive information about your account private.</p><br>
-				<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#newAppModal" data-action="openNewAppModal"><i class="fa fa-plus"></i> New App</button>
+				<button type="button" class="btn btn-uop" data-toggle="modal" data-target="#newAppModal" data-action="openNewAppModal"><i class="fa fa-plus"></i> New App</button>
 			</div>
 
 			<div class="col-md-9">
@@ -33,7 +31,7 @@
 								<td data-info="request_origin"><code><%= apps[i].request_origin %></code></td>
 							</tr>
 						</table>
-						<button type="button" class="btn btn-default" data-toggle="modal" data-target="#editAppModal" data-action="openEditAppModal"><i class="fa fa-edit"></i> Update</a></button><button type="button" class="btn btn-default" data-action="downloadJSON"><i class="fa fa-download"></i> Download JSON</a></button><button type="button" class="btn btn-warning" data-toggle="modal" data-target="#deleteAppModal" data-action="openDeleteAppModal"><i class="fa fa-times-circle"></i> Delete</a></button>
+						<button type="button" class="btn btn-default" data-toggle="modal" data-target="#editAppModal" data-action="openEditAppModal"><i class="fa fa-edit"></i> Edit</a></button><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteAppModal" data-action="openDeleteAppModal"><i class="fa fa-times-circle"></i> Delete</a></button>
 					</div>
 					<% } %>
 				</div>
@@ -50,6 +48,7 @@
 				</div>
 				<form role="form">
 					<div class="modal-body">
+						<div class="alert alert-danger collapse"></div>
 						<div class="form-group">
 							<label for="title">App Title:</label>
 							<p class="help-block">A title for your app to help you remember what it's for.</p>
@@ -65,7 +64,7 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						<button type="submit" class="btn btn-primary" data-action="newApp">Create New App</button>
+						<button type="submit" class="btn btn-uop" data-action="newApp">Create New App</button>
 					</div>
 				</form>
 			</div>
@@ -81,6 +80,7 @@
 				</div>
 				<form role="form">
 					<div class="modal-body">
+						<div class="alert alert-danger collapse"></div>
 						<input type="hidden" name="id" value="">
 
 						<div class="form-group">

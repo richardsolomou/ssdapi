@@ -15,12 +15,18 @@ $(document).ready(function () {
 		newAppRequestOrigin = $('#newAppModal [name=request_origin]'),
 		editAppRequestOrigin = $('#editAppModal [name=request_origin]');
 
+	// Set variables for the alerts for the new and edit application modals.
+	var newAppAlert = $('#newAppModal .alert'),
+		editAppAlert = $('#editAppModal .alert');
+
 	// Set variables for the ID fields on the edit and delete application modals.
 	var editAppId = $('#editAppModal [name=id]'),
 		deleteAppId = $('#deleteAppModal [name=id]');
 
 	// Set a function for when the New App button is pressed to open the New App modal.
 	$(document).on('click', '[data-action=openNewAppModal]', function () {
+		// Hides the alert.
+		newAppAlert.text('').removeClass('in');
 		// Empty the input fields on the New App modal.
 		newAppTitle.val('');
 		newAppRequestOrigin.val('');
@@ -35,6 +41,8 @@ $(document).ready(function () {
 			title = app.find('[data-info=title] code').text(),
 			request_origin = app.find('[data-info=request_origin] code').text();
 
+		// Hides the alert.
+		editAppAlert.text('').removeClass('in');
 		// Append the App ID, title and request origin to the input fields in the Edit App modal.
 		editAppId.val(id);
 		editAppTitle.val(title);
@@ -83,10 +91,16 @@ $(document).ready(function () {
 							$('<td/>', { 'data-info': 'request_origin' }).html($('<code/>').text(app.request_origin))
 						)
 					),
-					$('<button/>', { 'type': 'button', 'class': 'btn btn-default', 'data-toggle': 'modal', 'data-target': '#editAppModal', 'data-action': 'openEditAppModal' }).text('Update').prepend(' ').prepend($('<i/>', { 'class': 'fa fa-edit' })),
-					$('<button/>', { 'type': 'button', 'class': 'btn btn-default', 'data-action': 'downloadJSON' }).text('Download JSON').prepend(' ').prepend($('<i/>', { 'class': 'fa fa-download' })),
-					$('<button/>', { 'type': 'button', 'class': 'btn btn-warning', 'data-toggle': 'modal', 'data-target': '#deleteAppModal', 'data-action': 'openDeleteAppModal' }).text('Delete').prepend(' ').prepend($('<i/>', { 'class': 'fa fa-times-circle' }))
+					$('<button/>', { 'type': 'button', 'class': 'btn btn-default', 'data-toggle': 'modal', 'data-target': '#editAppModal', 'data-action': 'openEditAppModal' }).text('Edit').prepend(' ').prepend($('<i/>', { 'class': 'fa fa-edit' })),
+					$('<button/>', { 'type': 'button', 'class': 'btn btn-danger', 'data-toggle': 'modal', 'data-target': '#deleteAppModal', 'data-action': 'openDeleteAppModal' }).text('Delete').prepend(' ').prepend($('<i/>', { 'class': 'fa fa-times-circle' }))
 				).prependTo('#apps');
+			},
+			error: function (data) {
+				console.dir(data.responseJSON);
+				// Sets the error message.
+				var err = data.responseJSON.error;
+				// Sets and shows the alert.
+				newAppAlert.text(err.message).addClass('in');
 			}
 		});
 
@@ -114,6 +128,12 @@ $(document).ready(function () {
 				// Update the contents of the title and request origin fields with the new data.
 				title.text(editAppTitle.val());
 				request_origin.text(editAppRequestOrigin.val());
+			},
+			error: function (data) {
+				// Sets the error message.
+				var err = data.responseJSON.error;
+				// Sets and shows the alert.
+				editAppAlert.text(err.message).addClass('in');
 			}
 		});
 
