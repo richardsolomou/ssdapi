@@ -13,7 +13,8 @@
 		"passport-google-oauth": "*",
 		"passport-localapikey": "*",
 		"connect-flash": "*",
-		"node-uuid": "*"
+		"node-uuid": "*",
+		"ipv6": "*"
 	},
 	"repository": {
 		"type": "git",
