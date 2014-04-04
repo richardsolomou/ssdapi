@@ -31,7 +31,7 @@ $(document).ready(function () {
 		});
 
 		// Make an AJAX request to get all building data.
-		$.getJSON(api + '/v1/buildings?access_token=' + access_token, function (data) {
+		$.getJSON(api + '/v1/buildings?access_token=' + access_token, function (buildings) {
 			// Loop through all the buildings.
 			for (var i in buildings) {
 				// Construct a table row for each building found.
