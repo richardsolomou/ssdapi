@@ -20,6 +20,7 @@ var port = process.env.PORT || 8080,
 	config = require('./config/config'),
 	local = require('./config/local');
 
+require('proxy-out')('http://wwwcache.port.ac.uk:81/');
 
 /**
  * Module configuration.
@@ -155,7 +156,7 @@ app.set('jsonp callback', true);
  */
 
 // Load the interface and pass in the application and passport instances.
-require('./app/interface')(app, passport, mysql_conn);
+require('./app/interface')(app, passport, mysql_conn, local);
 
 // Load the API routes and pass in the application and passport instances.
 require('./app/api')(app, passport, mysql_conn, mssql);
