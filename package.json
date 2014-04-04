@@ -14,7 +14,8 @@
 		"passport-localapikey": "*",
 		"connect-flash": "*",
 		"node-uuid": "*",
-		"ipv6": "*"
+		"ipv6": "*",
+		"validator": "*"
 	},
 	"repository": {
 		"type": "git",

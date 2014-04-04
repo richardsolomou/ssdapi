@@ -1,7 +1,8 @@
 module.exports = function (app, passport, mysql, local) {
 	// Load module dependencies.
 	var async = require('async'),
-		uuid = require('node-uuid');
+		uuid = require('node-uuid'),
+		validator = require('validator');
 
 	// Route to display the homepage.
 	app.get('/', function (req, res) {
@@ -32,6 +33,12 @@ module.exports = function (app, passport, mysql, local) {
 
 	// Route for creating a new application under the user's account.
 	app.post('/apps', isLoggedIn, function (req, res) {
+		// Checks if the title is empty.
+		if (validator.equals(req.body.title, '')) return res.json(403, { error: { message: 'Title cannot be empty.', code: 403 } });
+		// Checks if the request origin is empty.
+		if (validator.equals(req.body.request_origin, '')) return res.json(403, { error: { message: 'Request origin cannot be empty.', code: 403 } });
+		// Checks if the request origin is a valid URL or IP.
+		if (!validator.isURL(req.body.request_origin) && !validator.isIP(req.body.request_origin) || validator.contains(req.body.request_origin, '*') || req.body.request_origin.slice(-1) == '/') return res.json(403, { error: { message: 'Request origin is not a valid URL or IP address.', code: 403 } });
 		// Create an access token variable.
 		var id = access_token = null;
 		// Run an asynchronous loop.
@@ -68,6 +75,12 @@ module.exports = function (app, passport, mysql, local) {
 
 	// Route for modifying an existing application under the user's account.
 	app.put('/apps', isLoggedIn, function (req, res) {
+		// Checks if the title is empty.
+		if (validator.equals(req.body.title, '')) return res.json(403, { error: { message: 'Title cannot be empty.', code: 403 } });
+		// Checks if the request origin is empty.
+		if (validator.equals(req.body.request_origin, '')) return res.json(403, { error: { message: 'Request origin cannot be empty.', code: 403 } });
+		// Checks if the request origin is a valid URL or IP.
+		if (!validator.isURL(req.body.request_origin) && !validator.isIP(req.body.request_origin) || validator.contains(req.body.request_origin, '*') || req.body.request_origin.slice(-1) == '/') return res.json(403, { error: { message: 'Request origin is not a valid URL or IP address.', code: 403 } });
 		// Get the App ID.
 		var id = req.body.id;
 		// Run a MySQL query to update the app.
