@@ -119,12 +119,12 @@ module.exports = function (app, passport, mysql, local) {
 		// Set redirect URL on failed log-in.
 		failureRedirect: local.api.folder + '/login'
 	}));
+	
+	// Middleware to check if the user is logged in.
+	function isLoggedIn(req, res, next) {
+		// Use passport to check if authenticated.
+		if (req.isAuthenticated() && req.session.user) return next();
+		// Redirect to login page if not.
+		res.redirect(local.api.folder + '/auth/google');
+	}
 };
-
-// Middleware to check if the user is logged in.
-function isLoggedIn(req, res, next) {
-	// Use passport to check if authenticated.
-	if (req.isAuthenticated() && req.session.user) return next();
-	// Redirect to login page if not.
-	res.redirect(local.api.folder + '/auth/google');
-}
