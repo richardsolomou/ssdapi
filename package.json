@@ -1,6 +1,6 @@
 {
 	"name": "uopwebapi",
-	"version": "0.0.1",
+	"version": "0.0.6",
 	"author": "Richard Solomou",
 	"description": "University of Portsmouth API",
 	"dependencies": {
