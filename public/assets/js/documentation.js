@@ -47,7 +47,7 @@ $(document).ready(function () {
 		// Delete affix data from the documentation navigation and set its offset.
 		$('#doc_nav').removeData('bs.affix').removeData('affix').removeAttr('class').affix({
 			offset: {
-				top: $('header').outerHeight(true) + $('.navbar-inverse').outerHeight(true)
+				top: $('header').outerHeight(true) + $('.navbar-inverse').outerHeight(true) + $('#intro').outerHeight(true)
 			}
 		});
 		
