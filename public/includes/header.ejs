@@ -9,12 +9,35 @@
 		<link rel="stylesheet" href="<%= locals.api.folder %>/assets/css/bootstrap.min.css">
 		<link rel="stylesheet" href="<%= locals.api.folder %>/assets/css/font-awesome.min.css">
 		<link rel="stylesheet" href="<%= locals.api.folder %>/assets/css/styles.css">
-		<% if (locals.css) { %><link rel="stylesheet" href="<%= locals.api.folder %>/assets/css/<%= css %>.css"><% } %>
 		<script src="<%= locals.api.folder %>/assets/js/jquery.min.js"></script>
 		<script src="<%= locals.api.folder %>/assets/js/bootstrap.min.js"></script>
-		<% if (locals.js) { %><script src="<%= locals.api.folder %>/assets/js/<%= js %>.js"></script><% } %>
 	</head>
 	<body>
+		<% if (locals.user && user) { %>
+		<nav class="navbar navbar-inverse" role="navigation">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+				</div>
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li <% if (locals.name && name == 'index') { %>class="active"<% } %>><a href="<%= locals.api.folder %>/">Home</a></li>
+					</ul>
+					<% if (locals.user && user) { %>
+					<ul class="nav navbar-nav navbar-right">
+						<li <% if (locals.name && name == 'apps') { %>class="active"<% } %>><a href="<%= locals.api.folder %>/apps">Apps</a></li>
+					</ul>
+					<% } %>
+				</div>
+			</div>
+		</nav>
+		<% } %>
+		
 		<header>
 			<div class="container">
 				<div class="col-md-9">
@@ -30,32 +53,8 @@
 					</div>
 				<% } else { %>
 					<div class="clearfix">&nbsp;</div>
-					<a href="<%= locals.api.folder %>/auth/google" class="btn btn-danger"><i class="fa fa-google-plus"></i> Login</a>
+					<a href="<%= locals.api.folder %>/login" class="btn btn-danger"><i class="fa fa-google-plus"></i> Login</a>
 				<% } %>
 				</div>
 			</div>
 		</header>
-		
-		<nav class="navbar navbar-inverse" role="navigation">
-			<div class="container">
-				<div class="navbar-header">
-					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-						<span class="sr-only">Toggle navigation</span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-					</button>
-				</div>
-				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-					<ul class="nav navbar-nav">
-						<li <% if (locals.name && name == 'index') { %>class="active"<% } %>><a href="<%= locals.api.folder %>/">Home</a></li>
-						<li <% if (locals.name && name == 'documentation') { %>class="active"<% } %>><a href="<%= locals.api.folder %>/documentation">Documentation</a></li>
-					</ul>
-					<% if (locals.user && user) { %>
-					<ul class="nav navbar-nav navbar-right">
-						<li <% if (locals.name && name == 'apps') { %>class="active"<% } %>><a href="<%= locals.api.folder %>/apps">Apps</a></li>
-					</ul>
-					<% } %>
-				</div>
-			</div>
-		</nav>
