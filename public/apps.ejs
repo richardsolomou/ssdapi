@@ -1,14 +1,16 @@
 <% include includes/header %>
 
+	<script src="<%= locals.api.folder %>/assets/js/apps.js"></script>
+
+	<article id="intro">
+		<div class="container">
+			<h2 class="text-center">Apps</h2>
+		</div>
+	</article>
+
 	<article>
 		<div class="container">
-			<div class="col-md-3">
-				<p class="lead">New App</p>
-				<p class="text-justify">By creating a new app, you can share specific data with anyone who uses your application, while keeping sensitive information about your account private.</p><br>
-				<button type="button" class="btn btn-uop" data-toggle="modal" data-target="#newAppModal" data-action="openNewAppModal"><i class="fa fa-plus"></i> New App</button>
-			</div>
-
-			<div class="col-md-9">
+			<div class="col-md-8">
 				<p class="lead">Existing Apps</p>
 				<div id="apps">
 					<% for (var i in apps) { %>
@@ -35,6 +37,12 @@
 					</div>
 					<% } %>
 				</div>
+			</div>
+
+			<div class="col-md-offset-1 col-md-3">
+				<p class="lead">New App</p>
+				<p class="text-justify">By creating a new app, you can share specific data with anyone who uses your application, while keeping sensitive information about your account private.</p><br>
+				<button type="button" class="btn btn-uop" data-toggle="modal" data-target="#newAppModal" data-action="openNewAppModal"><i class="fa fa-plus"></i> New App</button>
 			</div>
 		</div>
 	</article>

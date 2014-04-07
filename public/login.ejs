@@ -1,15 +1,20 @@
 <% include includes/header %>
 
-	<article class="no-padding-top">
+	<article id="intro">
 		<div class="container">
-			<h1><span class="fa fa-sign-in"></span> Login</h1><br>
-			<% if (error.length > 0) { %>
-				<div class="alert alert-danger"><%= error %></div>
-			<% } else { %>
-				<div class="alert alert-danger">Something went wrong.</div>
-			<% } %>
-				<a href="/auth/google">Click here</a> to try again.
-			</div>
+			<h2 class="text-center">Login</h2>
+		</div>
+	</article>
+
+	<article>
+		<div class="container">
+		<% if (error.length > 0) { %>
+			<div class="alert alert-danger"><%= error %></div>
+		<% } else { %>
+			<div class="alert alert-danger">Something went wrong.</div>
+		<% } %>
+			<a href="/auth/google">Click here</a> to try again.
+		</div>
 	</article>
 
 <% include includes/footer %>
