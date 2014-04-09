@@ -7,7 +7,7 @@ module.exports = function (app, passport, mysql, local) {
 	// Route to display the homepage.
 	app.get('/', function (req, res) {
 		// Render index.ejs with any potential user credentials.
-		res.render('index', { name: 'index', user: req.session.user, css: 'index' });
+		res.render('index', { name: 'index', user: req.session.user });
 	});
 
 	// Route for logging in to the API.
@@ -27,7 +27,7 @@ module.exports = function (app, passport, mysql, local) {
 		// Run a MySQL query to get all the apps for the current user.
 		mysql.query('SELECT * FROM `api_apps` WHERE `user_id` = :user_id ORDER BY `created_at` DESC', { user_id: req.session.user.id }, function (err, apps) {
 			// Render apps.ejs with the user's apps.
-			res.render('apps', { name: 'apps', user: req.session.user, apps: apps, css: 'apps', js: 'apps' });
+			res.render('apps', { name: 'apps', user: req.session.user, apps: apps });
 		});
 	});
 
@@ -108,12 +108,6 @@ module.exports = function (app, passport, mysql, local) {
 		req.logout();
 		// Redirect user to homepage.
 		res.redirect(local.api.folder);
-	});
-
-	// Route for displaying the API documentation.
-	app.get('/documentation', function (req, res) {
-		// Render documentation.ejs with the user's credentials.
-		res.render('documentation', { name: 'documentation', user: req.session.user, js: 'documentation', css: 'documentation' });
 	});
 
 	// Route for google authentication.
