@@ -1,8 +1,22 @@
 {
 	"name": "uopwebapi",
-	"version": "0.0.6",
-	"author": "Richard Solomou",
+	"version": "0.0.7",
 	"description": "University of Portsmouth API",
+	"homepage": "http://dsign-web-01.uni.ds.port.ac.uk/api",
+	"bugs": {
+		"url": "https://github.com/rsolomou/uopwebapi/issues",
+		"email": "richard.solomou@port.ac.uk"
+	},
+	"license": "MIT",
+	"author": {
+		"name": "Richard Solomou",
+		"email": "richard.solomou@port.ac.uk",
+		"url": "http://www.richardsolomou.com/"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/rsolomou/uopwebapi.git"
+	},
 	"dependencies": {
 		"express": "3.*",
 		"mysql": "2.*",
@@ -16,9 +30,5 @@
 		"node-uuid": "*",
 		"ipv6": "*",
 		"validator": "*"
-	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/rsolomou/uopwebapi"
 	}
 }
