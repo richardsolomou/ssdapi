@@ -71,6 +71,12 @@ $(document).ready(function () {
 				// Hide the New App modal.
 				newAppModal.modal('hide');
 
+				// Hide the no apps found div by fading it to transparent.
+				$('.no-apps-found').fadeOut('slow', function () {
+					// Remove the no apps found element from the DOM.
+					$(this).remove();
+				});
+
 				// Construct a section with the new data and append it to the existing apps section.
 				$('<div/>', { 'class': 'app', 'data-id': app.id }).append(
 					$('<table/>', { 'class': 'table' }).append(
@@ -96,7 +102,6 @@ $(document).ready(function () {
 				).prependTo('#apps');
 			},
 			error: function (data) {
-				console.dir(data.responseJSON);
 				// Sets the error message.
 				var err = data.responseJSON.error;
 				// Sets and shows the alert.
@@ -159,6 +164,11 @@ $(document).ready(function () {
 				app.fadeOut('slow', function () {
 					// Remove the app element from the DOM.
 					$(this).remove();
+					// Check if there aren't any more apps.
+					if ($('#apps').children().length == 0) {
+						// Create a div displaying no results.
+						$('<div/>', { 'class': 'no-apps-found' }).text('No apps found.').prependTo('#apps');
+					}
 				});
 			}
 		});

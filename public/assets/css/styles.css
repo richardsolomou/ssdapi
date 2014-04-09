@@ -302,6 +302,11 @@ article.no-padding-top {
  * APPS
  */
 
+#apps .no-apps-found {
+	border: 1px solid #e5e5e5;
+	padding: 1em;
+}
+
 .app {
 	padding: 2em 0;
 	border-bottom: 1px solid #e5e5e5;

@@ -8,33 +8,37 @@
 		</div>
 	</article>
 
-	<article>
+	<article class="no-padding-top">
 		<div class="container">
 			<div class="col-md-8">
 				<p class="lead">Existing Apps</p>
 				<div id="apps">
-					<% for (var i in apps) { %>
-					<div class="app" data-id="<%= apps[i].id %>">
-						<table class="table">
-							<tr>
-								<th>App ID</th>
-								<td><code><%= apps[i].id %></code></td>
-							</tr>
-							<tr>
-								<th>Access Token</th>
-								<td><code><%= apps[i].access_token %></code></td>
-							</tr>
-							<tr>
-								<th>Title</th>
-								<td data-info="title"><code><%= apps[i].title %></code></td>
-							</tr>
-							<tr>
-								<th>Request Origin</th>
-								<td data-info="request_origin"><code><%= apps[i].request_origin %></code></td>
-							</tr>
-						</table>
-						<button type="button" class="btn btn-default" data-toggle="modal" data-target="#editAppModal" data-action="openEditAppModal"><i class="fa fa-edit"></i> Edit</a></button><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteAppModal" data-action="openDeleteAppModal"><i class="fa fa-times-circle"></i> Delete</a></button>
-					</div>
+					<% if (apps.length > 0) { %>
+						<% for (var i in apps) { %>
+						<div class="app" data-id="<%= apps[i].id %>">
+							<table class="table">
+								<tr>
+									<th>App ID</th>
+									<td><code><%= apps[i].id %></code></td>
+								</tr>
+								<tr>
+									<th>Access Token</th>
+									<td><code><%= apps[i].access_token %></code></td>
+								</tr>
+								<tr>
+									<th>Title</th>
+									<td data-info="title"><code><%= apps[i].title %></code></td>
+								</tr>
+								<tr>
+									<th>Request Origin</th>
+									<td data-info="request_origin"><code><%= apps[i].request_origin %></code></td>
+								</tr>
+							</table>
+							<button type="button" class="btn btn-default" data-toggle="modal" data-target="#editAppModal" data-action="openEditAppModal"><i class="fa fa-edit"></i> Edit</a></button><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteAppModal" data-action="openDeleteAppModal"><i class="fa fa-times-circle"></i> Delete</a></button>
+						</div>
+						<% } %>
+					<% } else { %>
+					<div class="no-apps-found">No apps found.</div>
 					<% } %>
 				</div>
 			</div>
