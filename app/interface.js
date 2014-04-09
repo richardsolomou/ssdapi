@@ -111,7 +111,7 @@ module.exports = function (app, passport, mysql, local) {
 	});
 
 	// Route for google authentication.
-	app.get('/auth/google', passport.authenticate('google'));
+	app.get('/auth/google', passport.authenticate('google', { approvalPrompt: 'force', loginHint: 'port.ac.uk' }));
 
 	// Route for the google authentication callback.
 	app.get('/auth/google/callback', passport.authenticate('google', {
