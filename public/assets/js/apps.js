@@ -2,7 +2,7 @@
 $(document).ready(function () {
 
 	// Set local API folder.
-	var api = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
+	var api = '/api';
 
 	// Set variables for the modals.
 	var newAppModal = $('#newAppModal'),

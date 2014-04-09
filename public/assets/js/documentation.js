@@ -2,7 +2,7 @@
 $(document).ready(function () {
 
 	// Set local API folder.
-	var api = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
+	var api = '/api';
 	// Set the access token to be used.
 	var access_token = '8ac61297-c3c5-4f76-bc6e-603471ff9325';
 
