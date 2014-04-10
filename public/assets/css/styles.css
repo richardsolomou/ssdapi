@@ -90,18 +90,17 @@ a:focus {
 	background: #444;
 	border-radius: 0;
 	border: none;
-	padding: 5px;
 	min-height: 0;
 }
 
 .navbar-inverse .navbar-nav > .active > a,
 .navbar-inverse .navbar-nav > .active > a:hover,
 .navbar-inverse .navbar-nav > .active > a:focus {
-	background-color: #5c5c5c;
+	background-color: #59379E;
 }
 
 .nav > li > a {
-	padding: 5px 10px;
+	padding: 10px 15px;
 }
 
 
@@ -112,6 +111,7 @@ a:focus {
 header {
 	padding: 4em 0 4.5em 0;
 	background: #59379E;
+	color: #f4f4f4;
 }
 
 header a:not(.btn) {

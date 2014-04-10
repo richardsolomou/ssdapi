@@ -1,0 +1,52 @@
+<% include includes/header %>
+
+	<script src="<%= locals.api.folder %>/assets/js/documentation.js"></script>
+
+	<article id="intro">
+		<div class="container">
+			<h2 class="text-center">Documentation</h2>
+		</div>
+	</article>
+	
+	<article id="documentation" class="no-padding-top">
+		<div class="container">
+			<div class="col-md-3 pull-right">
+				<div id="doc_nav">
+					<h3>Navigation</h3>
+					<ul class="nav">
+						<li class="active"><a href="#documentation_getting_started" class="scroll">Getting Started</a></li>
+						<li>
+							<a href="#documentation_api_resources" class="scroll">API Resources</a>
+							<ul class="nav">
+								<li>
+									<a href="#documentation_api_resources_buildings" class="scroll">Buildings</a>
+									<ul class="nav">
+										<li><a href="#documentation_api_resources_buildings_openaccess" class="scroll">Open Access Area Availability</a></li>
+										<li><a href="#documentation_api_resources_buildings_openingtimes" class="scroll">Opening Times</a></li>
+										<li>
+											<a href="#documentation_api_resources_buildings_labs" class="scroll">Shared Teaching Spaces</a>
+											<ul class="nav">
+												<li><a href="#documentation_api_resources_buildings_labs_timetables" class="scroll">Timetables</a></li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+								<li><a href="#documentation_api_resources_services" class="scroll">Service Status</a></li>
+								<li><a href="#documentation_api_resources_users" class="scroll">Staff Directory</a></li>
+							</ul>
+						</li>
+						<li><a href="#documentation_jsonp_requests" class="scroll">JSONP Requests</a></li>
+						<li><a href="#documentation_string_identifiers" class="scroll">String Identifiers</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="col-md-9 pull-left">
+				<% include documentation/getting_started %>
+				<% include documentation/api_resources %>
+				<% include documentation/jsonp_requests %>
+				<% include documentation/string_identifiers %>
+			</div>
+		</div>
+	</article>
+
+<% include includes/footer %>

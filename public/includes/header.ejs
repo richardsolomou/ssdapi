@@ -30,6 +30,7 @@
 					</ul>
 					<% if (locals.user && user) { %>
 					<ul class="nav navbar-nav navbar-right">
+						<li <% if (locals.name && name == 'documentation') { %>class="active"<% } %>><a href="<%= locals.api.folder %>/documentation">Documentation</a></li>
 						<li <% if (locals.name && name == 'apps') { %>class="active"<% } %>><a href="<%= locals.api.folder %>/apps">Apps</a></li>
 					</ul>
 					<% } %>
@@ -48,7 +49,7 @@
 				<% if (locals.user && user) { %>
 					<img src="<%= user.picture %>" width="50" class="img-rounded">
 					<div class="user">
-						<a href="<%= locals.api.folder %>/apps"><strong><%= user.given_name %> <%= user.family_name %></strong></a>
+						<strong><%= user.given_name %> <%= user.family_name %></strong>
 						<a href="<%= locals.api.folder %>/logout">Logout</a>
 					</div>
 				<% } else { %>
