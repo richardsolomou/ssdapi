@@ -64,6 +64,14 @@ a:focus {
 	border-radius: 0;
 }
 
+.color-uop {
+	color: #59379E;
+}
+
+.bg-uop {
+	background-color: rgba(89, 55, 158, 0.1);
+}
+
 .btn-uop {
 	color: #fff;
 	background-color: #59379E;
