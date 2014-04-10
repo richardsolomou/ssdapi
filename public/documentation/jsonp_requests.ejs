@@ -7,7 +7,7 @@
 	<pre class="pre-scrollable">
 $.ajax({
 	type: 'GET',
-	url: '<%= api.full_url %>buildings',
+	url: '<%= api.full_url %>buildings?access_token=test',
 	dataType: 'jsonp',
 	success: function (data) {
 		console.dir(data);
@@ -16,7 +16,7 @@ $.ajax({
 	</pre>
 
 	<pre class="pre-scrollable">
-$.getJSON('<%= api.full_url %>buildings?callback=?', function (data) {
+$.getJSON('<%= api.full_url %>buildings?access_token=test&amp;callback=?', function (data) {
 	console.dir(data);
 });
 	</pre>
