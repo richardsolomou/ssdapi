@@ -21,6 +21,8 @@ module.exports = function (app, passport, mysql, mssql) {
 			// Return appropriate error messages if something went wrong.
 			if (err) return res.jsonp(500, { error: { message: 'Something went wrong.', code: 500, details: err } });
 			if (!results || !results.length) return res.jsonp(404, { error: { message: 'Invalid username.', code: 404 } });
+			// Logs the operation.
+			logger.info('Specific user retrieved.', { path: req._parsedUrl.pathname, query: req._parsedUrl.query });
 			// Return the user in JSON format.
 			return res.jsonp(results[0]);
 		});
@@ -33,6 +35,8 @@ module.exports = function (app, passport, mysql, mssql) {
 			// Return appropriate error messages if something went wrong.
 			if (err) return res.jsonp(500, { error: { message: 'Something went wrong.', code: 500, details: err } });
 			if (!results || !results.length) return res.jsonp(404, { error: { message: 'Users table is empty.', code: 404 } });
+			// Logs the operation.
+			logger.info('All users retrieved.', { path: req._parsedUrl.pathname, query: req._parsedUrl.query });
 			// Return all users in JSON format.
 			return res.jsonp(results);
 		});
@@ -45,6 +49,8 @@ module.exports = function (app, passport, mysql, mssql) {
 			// Return appropriate error messages if something went wrong.
 			if (err) return res.jsonp(500, { error: { message: 'Something went wrong.', code: 500, details: err } });
 			if (!results || !results.length) return res.jsonp(404, { error: { message: 'Service status table is empty.', code: 404 } });
+			// Logs the operation.
+			logger.info('All services retrieved.', { path: req._parsedUrl.pathname, query: req._parsedUrl.query });
 			// Return all service status problems in JSON format.
 			return res.jsonp(results);
 		});
@@ -57,6 +63,8 @@ module.exports = function (app, passport, mysql, mssql) {
 			// Return appropriate error messages if something went wrong.
 			if (err) return res.jsonp(500, { error: { message: 'Something went wrong.', code: 500, details: err } });
 			if (!results || !results.length) return res.jsonp(404, { error: { message: 'There are no timetables for this building.', code: 404 } });
+			// Logs the operation.
+			logger.info('All timetables for specific lab of specific building retrieved.', { path: req._parsedUrl.pathname, query: req._parsedUrl.query });
 			// Return the timetables in JSON format.
 			return res.jsonp(results);
 		});
@@ -82,6 +90,8 @@ module.exports = function (app, passport, mysql, mssql) {
 				});
 			// Execute a function after the buildings loop has finished.
 			}, function () {
+				// Logs the operation.
+				logger.info('All timetables for specific building retrieved.', { path: req._parsedUrl.pathname, query: req._parsedUrl.query });
 				// Return timetables timetables in JSON format.
 				return res.jsonp(results);
 			});
@@ -132,6 +142,8 @@ module.exports = function (app, passport, mysql, mssql) {
 				});
 			// Execute a function after the buildings loop has finished.
 			}, function () {
+				// Logs the operation.
+				logger.info('All timetables retrieved.', { path: req._parsedUrl.pathname, query: req._parsedUrl.query });
 				// Return the timetables in JSON format.
 				return res.jsonp(results);
 			});
@@ -145,6 +157,8 @@ module.exports = function (app, passport, mysql, mssql) {
 			// Return appropriate error messages if something went wrong.
 			if (err) return res.jsonp(500, { error: { message: 'Something went wrong.', code: 500, details: err } });
 			if (!results || !results.length) return res.jsonp(404, { error: { message: 'Invalid lab short identifier.', code: 404 } });
+			// Logs the operation.
+			logger.info('Specific lab of specific building retrieved.', { path: req._parsedUrl.pathname, query: req._parsedUrl.query });
 			// Return the lab in JSON format.
 			return res.jsonp(results[0]);
 		});
@@ -157,6 +171,8 @@ module.exports = function (app, passport, mysql, mssql) {
 			// Return appropriate error messages if something went wrong.
 			if (err) return res.jsonp(500, { error: { message: 'Something went wrong.', code: 500, details: err } });
 			if (!results || !results.length) return res.jsonp(404, { error: { message: 'There are no labs available for this building.', code: 404 } });
+			// Logs the operation.
+			logger.info('All labs of specific building retrieved.', { path: req._parsedUrl.pathname, query: req._parsedUrl.query });
 			// Return all labs in JSON format.
 			return res.jsonp(results);
 		});
@@ -182,6 +198,8 @@ module.exports = function (app, passport, mysql, mssql) {
 				});
 			// Execute a function after the buildings loop has finished.
 			}, function () {
+				// Logs the operation.
+				logger.info('All labs retrieved.', { path: req._parsedUrl.pathname, query: req._parsedUrl.query });
 				// Return all labs in JSON format.
 				return res.jsonp(results);
 			});
@@ -195,6 +213,8 @@ module.exports = function (app, passport, mysql, mssql) {
 			// Return appropriate error messages if something went wrong.
 			if (err) return res.jsonp(500, { error: { message: 'Something went wrong.', code: 500, details: err } });
 			if (!results || !results.length) return res.jsonp(404, { error: { message: 'Opening times are not available for this building.', code: 404 } });
+			// Logs the operation.
+			logger.info('Opening times for specific building retrieved.', { path: req._parsedUrl.pathname, query: req._parsedUrl.query });
 			// Return all buildings in JSON format.
 			return res.jsonp(results);
 		});
@@ -221,6 +241,8 @@ module.exports = function (app, passport, mysql, mssql) {
 				});
 			// Execute a function after the buildings loop has finished.
 			}, function () {
+				// Logs the operation.
+				logger.info('Opening times for all buildings retrieved.', { path: req._parsedUrl.pathname, query: req._parsedUrl.query });
 				// Return all buildings and their opening times in JSON format.
 				return res.jsonp(results);
 			});
@@ -318,6 +340,8 @@ module.exports = function (app, passport, mysql, mssql) {
 						// Delete the building data.
 						delete data.building;
 					}
+					// Logs the operation.
+					logger.info('Open access area availability retrieved.', { path: req._parsedUrl.pathname, query: req._parsedUrl.query });
 					// Return the open access area availability data.
 					return res.jsonp(data);
 				});
@@ -332,6 +356,8 @@ module.exports = function (app, passport, mysql, mssql) {
 			// Return appropriate error messages if something went wrong.
 			if (err) return res.jsonp(500, { error: { message: 'Something went wrong.', code: 500, details: err } });
 			if (!results || !results.length) return res.jsonp(404, { error: { message: 'Invalid building reference.', code: 404 } });
+			// Logs the operation.
+			logger.info('Specific building retrieved.', { path: req._parsedUrl.pathname, query: req._parsedUrl.query });
 			// Return a specific building in JSON format.
 			return res.jsonp(results[0]);
 		});
@@ -344,6 +370,8 @@ module.exports = function (app, passport, mysql, mssql) {
 			// Return appropriate error messages if something went wrong.
 			if (err) return res.jsonp(500, { error: { message: 'Something went wrong.', code: 500, details: err } });
 			if (!results || !results.length) return res.jsonp(404, { error: { message: 'Buildings table is empty.', code: 404 } });
+			// Logs the operation.
+			logger.info('All buildings retrieved.', { path: req._parsedUrl.pathname, query: req._parsedUrl.query });
 			// Return all buildings in JSON format.
 			return res.jsonp(results);
 		});
