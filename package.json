@@ -18,17 +18,18 @@
 		"url": "https://github.com/rsolomou/uopwebapi.git"
 	},
 	"dependencies": {
-		"express": "3.*",
-		"mysql": "2.*",
-		"mssql": "*",
 		"async": "*",
+		"connect-flash": "*",
 		"ejs": "*",
+		"express": "3.*",
+		"ipv6": "*",
+		"mssql": "*",
+		"mysql": "2.*",
+		"node-uuid": "*",
 		"passport": "*",
 		"passport-google-oauth": "*",
 		"passport-localapikey": "*",
-		"connect-flash": "*",
-		"node-uuid": "*",
-		"ipv6": "*",
-		"validator": "*"
+		"validator": "*",
+		"winston": "*"
 	}
 }
