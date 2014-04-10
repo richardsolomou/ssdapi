@@ -1,0 +1,51 @@
+<div id="documentation_api_resources_buildings">
+	<h2>Buildings</h2>
+	<p>This resource returns information about all campus buildings.</p>
+
+	<p class="lead">GET buildings</p>
+	<div class="example-request">
+		<pre class="request_header">GET <%= api.full_url %>buildings</pre>
+		<pre class="pre-scrollable" data-example-request="buildings"></pre>
+	</div>
+
+	<p class="lead">GET buildings/ID</p>
+	<div class="example-request">
+		<pre class="request_header">GET <%= api.full_url %>buildings/pk</pre>
+		<pre class="pre-scrollable" data-example-request="buildings/pk"></pre>
+	</div>
+
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Field Name</th>
+				<th>Description</th>
+				<th>Values</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>name</td>
+				<td>Name of the building</td>
+				<td>String</td>
+			<tr>
+				<td>reference</td>
+				<td>Short reference string of the building</td>
+				<td>String</td>
+			</tr>
+			<tr>
+				<td>latitude</td>
+				<td>Latitude co-ordinates of the building</td>
+				<td>String</td>
+			</tr>
+			<tr>
+				<td>longitude</td>
+				<td>Longitude co-ordinates of the building</td>
+				<td>String</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<% include buildings/openaccess %>
+	<% include buildings/openingtimes %>
+	<% include buildings/labs %>
+</div>

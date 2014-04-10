@@ -1,0 +1,51 @@
+<div id="documentation_api_resources_buildings_labs">
+	<h3>Shared Teaching Spaces</h3>
+	<p>This resource returns details of the shared teaching spaces or labs that exist in some buildings.</p>
+
+	<p class="lead">GET buildings/labs</p>
+	<div class="example-request">
+		<pre class="request_header">GET <%= api.full_url %>buildings/labs</pre>
+		<pre class="pre-scrollable" data-example-request="buildings/labs"></pre>
+	</div>
+
+	<p class="lead">GET buildings/ID/labs</p>
+	<div class="example-request">
+		<pre class="request_header">GET <%= api.full_url %>buildings/ag/labs</pre>
+		<pre class="pre-scrollable" data-example-request="buildings/ag/labs"></pre>
+	</div>
+
+	<p class="lead">GET buildings/ID/labs/ID</p>
+	<div class="example-request">
+		<pre class="request_header">GET <%= api.full_url %>buildings/ag/labs/ag002</pre>
+		<pre class="pre-scrollable" data-example-request="buildings/ag/labs/ag002"></pre>
+	</div>
+
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Field Name</th>
+				<th>Description</th>
+				<th>Values</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>short_identifier</td>
+				<td>Unique identifier for the building and room.</td>
+				<td>String</td>
+			</tr>
+			<tr>
+				<td>room_number</td>
+				<td>Readable format of the room number.</td>
+				<td>String</td>
+			</tr>
+			<tr>
+				<td>building</td>
+				<td>Details of the building.</td>
+				<td>Object</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<% include labs/timetables %>
+</div>

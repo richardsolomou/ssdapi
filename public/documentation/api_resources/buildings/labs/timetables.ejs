@@ -1,0 +1,69 @@
+<div id="documentation_api_resources_buildings_labs_timetables">
+	<h4>Timetables</h4>
+	<p>This resource returns today's timetabling data for the shared teaching spaces or labs in each building.</p>
+
+	<p class="lead">GET buildings/labs/timetables</p>
+	<div class="example-request">
+		<pre class="request_header">GET <%= api.full_url %>buildings/labs/timetables</pre>
+		<pre class="pre-scrollable" data-example-request="buildings/labs/timetables"></pre>
+	</div>
+
+	<p class="lead">GET buildings/ID/labs/timetables</p>
+	<div class="example-request">
+		<pre class="request_header">GET <%= api.full_url %>buildings/ag/labs/timetables</pre>
+		<pre class="pre-scrollable" data-example-request="buildings/ag/labs/timetables"></pre>
+	</div>
+
+	<p class="lead">GET buildings/ID/labs/ID/timetables</p>
+	<div class="example-request">
+		<pre class="request_header">GET <%= api.full_url %>buildings/ag/labs/ag029/timetables</pre>
+		<pre class="pre-scrollable" data-example-request="buildings/ag/labs/ag029/timetables"></pre>
+	</div>
+
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Field Name</th>
+				<th>Description</th>
+				<th>Values</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>lecturer</td>
+				<td>Name of the timetabled lecturer.</td>
+				<td>String</td>
+			</tr>
+			<tr>
+				<td>start_time</td>
+				<td>Start time of the timetabled entry.</td>
+				<td>Time</td>
+			</tr>
+			<tr>
+				<td>finish_time</td>
+				<td>End time of the timetabled entry.</td>
+				<td>Time</td>
+			</tr>
+			<tr>
+				<td>module_name</td>
+				<td>Module name for the timetabled entry.</td>
+				<td>String</td>
+			</tr>
+			<tr>
+				<td>module_type</td>
+				<td>Type of the module being taught in the room.</td>
+				<td>String <a class="icon" data-toggle="popover" data-placement="left" data-content="<strong>Examples</strong><ul><li>Lab</li><li>Pract (Practical)</li><li>Lect (Lecture)</li><li>Comp</li><li>Sem (Seminar)</li><li>Work</li></ul>"><i class="fa fa-question-circle fa-lg"></i></a></td>
+			</tr>
+			<tr>
+				<td>building</td>
+				<td>Details of the building.</td>
+				<td>Object</td>
+			</tr>
+			<tr>
+				<td>lab</td>
+				<td>Details of the lab.</td>
+				<td>Object</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

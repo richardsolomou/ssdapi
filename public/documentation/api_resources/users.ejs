@@ -1,0 +1,84 @@
+<div id="documentation_api_resources_users">
+	<h2>Staff Directory</h2>
+	<p>This resource returns all the staff members that work at the University of Portsmouth.</p>
+
+	<p class="lead">GET users</p>
+	<div class="example-request">
+		<pre class="request_header">GET <%= api.full_url %>users</pre>
+		<pre class="pre-scrollable" data-example-request="users"></pre>
+	</div>
+
+	<p class="lead">GET users/ID</p>
+	<div class="alert alert-info">String identifiers are used in this route. Users can be retrieved by using their username as the string identifier.</div>
+	<div class="example-request">
+		<pre class="request_header">GET <%= api.full_url %>users/SolomouR</pre>
+		<pre class="pre-scrollable" data-example-request="users/SolomouR"></pre>
+	</div>
+
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Field Name</th>
+				<th>Description</th>
+				<th>Values</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>title</td>
+				<td>The title prefix to the user's name.</td>
+				<td>String</td>
+			</tr>
+			<tr>
+				<td>first_name</td>
+				<td>The staff member's first name.</td>
+				<td>String</td>
+			</tr>
+			<tr>
+				<td>last_name</td>
+				<td>The staff member's last name.</td>
+				<td>String</td>
+			</tr>
+			<tr>
+				<td>job_title</td>
+				<td>The staff member's job title.</td>
+				<td>String</td>
+			</tr>
+			<tr>
+				<td>building</td>
+				<td>The building in which this staff member is stationed in.</td>
+				<td>String</td>
+			</tr>
+			<tr>
+				<td>department</td>
+				<td>The department that this staff member belongs to.</td>
+				<td>String</td>
+			</tr>
+			<tr>
+				<td>extension</td>
+				<td>The user's staff extension number.</td>
+				<td>Numeric</td>
+			</tr>
+			<tr>
+				<td>email</td>
+				<td>The user's staff e-mail address.</td>
+				<td>String</td>
+			</tr>
+			<tr>
+				<td>username</td>
+				<td>The staff member's username.</td>
+				<td>String</td>
+			</tr>
+			<tr>
+				<td>section</td>
+				<td>The section of the Faculty that this user belongs to.</td>
+				<td>String</td>
+			</tr>
+			<tr>
+				<td>faculty</td>
+				<td>The Faculty in which the user belongs to.</td>
+				<td>String</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
