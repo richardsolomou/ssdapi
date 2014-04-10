@@ -1,6 +1,18 @@
 module.exports = function (app, passport, mysql, mssql) {
 	// Load module dependencies.
-	var async = require('async');
+	var async = require('async'),
+		winston = require('winston');
+
+	// Setup logging module.
+	var logger = new winston.Logger({
+		transports: [
+			new winston.transports.File({ filename: require('path').dirname(require.main.filename) + '/logs/debug.log' })
+		],
+		exceptionHandlers: [
+			new winston.transports.File({ filename: require('path').dirname(require.main.filename) + '/logs/exceptions.log' })
+		],
+		exitOnError: false
+	});
 	
 	// Route to get a specific user.
 	app.get('/v1/users/:username', isAuthorized, function (req, res) {
