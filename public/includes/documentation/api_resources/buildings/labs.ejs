@@ -5,19 +5,162 @@
 	<p class="lead">GET buildings/labs</p>
 	<div class="example-request">
 		<pre class="request_header">GET <%= api.full_url %>buildings/labs</pre>
-		<pre class="pre-scrollable" data-example-request="buildings/labs"></pre>
+		<pre class="pre-scrollable" data-example-request="buildings/labs">
+[
+	{
+		"short_identifier": "ag001",
+		"room_number": "0.01",
+		"building": {
+			"name": "Anglesea",
+			"reference": "ag"
+		}
+	},
+	{
+		"short_identifier": "ag002",
+		"room_number": "0.02",
+		"building": {
+			"name": "Anglesea",
+			"reference": "ag"
+		}
+	},
+	{
+		"short_identifier": "ag029",
+		"room_number": "0.29",
+		"building": {
+			"name": "Anglesea",
+			"reference": "ag"
+		}
+	},
+	{
+		"short_identifier": "bk007",
+		"room_number": "0.07",
+		"building": {
+			"name": "Buckingham",
+			"reference": "bk"
+		}
+	},
+	{
+		"short_identifier": "kh107",
+		"room_number": "1.07",
+		"building": {
+			"name": "King Henry",
+			"reference": "kh"
+		}
+	},
+	{
+		"short_identifier": "uloa3",
+		"room_number": "OA3",
+		"building": {
+			"name": "Library",
+			"reference": "ul"
+		}
+	},
+	{
+		"short_identifier": "lg014a",
+		"room_number": "0.14a",
+		"building": {
+			"name": "Lion Gate",
+			"reference": "lg"
+		}
+	},
+	{
+		"short_identifier": "lg014b",
+		"room_number": "0.14b",
+		"building": {
+			"name": "Lion Gate",
+			"reference": "lg"
+		}
+	},
+	{
+		"short_identifier": "pk012",
+		"room_number": "0.12",
+		"building": {
+			"name": "Park",
+			"reference": "pk"
+		}
+	},
+	{
+		"short_identifier": "pk013",
+		"room_number": "0.13",
+		"building": {
+			"name": "Park",
+			"reference": "pk"
+		}
+	},
+	{
+		"short_identifier": "po133",
+		"room_number": "1.33",
+		"building": {
+			"name": "Portland",
+			"reference": "po"
+		}
+	},
+	{
+		"short_identifier": "po137",
+		"room_number": "1.37",
+		"building": {
+			"name": "Portland",
+			"reference": "po"
+		}
+	},
+	{
+		"short_identifier": "rb103",
+		"room_number": "1.03",
+		"building": {
+			"name": "Richmond",
+			"reference": "rb"
+		}
+	},
+	{
+		"short_identifier": "rb104",
+		"room_number": "1.04",
+		"building": {
+			"name": "Richmond",
+			"reference": "rb"
+		}
+	},
+	{
+		"short_identifier": "rb105",
+		"room_number": "1.05",
+		"building": {
+			"name": "Richmond",
+			"reference": "rb"
+		}
+	}
+]
+		</pre>
 	</div>
 
 	<p class="lead">GET buildings/ID/labs</p>
 	<div class="example-request">
 		<pre class="request_header">GET <%= api.full_url %>buildings/ag/labs</pre>
-		<pre class="pre-scrollable" data-example-request="buildings/ag/labs"></pre>
+		<pre class="pre-scrollable" data-example-request="buildings/ag/labs">
+[
+	{
+		"short_identifier": "ag001",
+		"room_number": "0.01"
+	},
+	{
+		"short_identifier": "ag002",
+		"room_number": "0.02"
+	},
+	{
+		"short_identifier": "ag029",
+		"room_number": "0.29"
+	}
+]
+		</pre>
 	</div>
 
 	<p class="lead">GET buildings/ID/labs/ID</p>
 	<div class="example-request">
 		<pre class="request_header">GET <%= api.full_url %>buildings/ag/labs/ag002</pre>
-		<pre class="pre-scrollable" data-example-request="buildings/ag/labs/ag002"></pre>
+		<pre class="pre-scrollable" data-example-request="buildings/ag/labs/ag002">
+{
+	"short_identifier": "ag002",
+	"room_number": "0.02"
+}
+		</pre>
 	</div>
 
 	<table class="table table-striped">

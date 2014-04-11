@@ -5,13 +5,58 @@
 	<p class="lead">GET buildings/openaccess</p>
 	<div class="example-request">
 		<pre class="request_header">GET <%= api.full_url %>buildings/openaccess</pre>
-		<pre class="pre-scrollable" data-example-request="buildings/openaccess"></pre>
+		<pre class="pre-scrollable" data-example-request="buildings/openaccess">
+[
+	{
+		"open": true,
+		"in_use": 5,
+		"total": 12,
+		"building": {
+			"name": "Anglesea",
+			"reference": "ag"
+		}
+	},
+	{
+		"open": true,
+		"in_use": 12,
+		"total": 48,
+		"building": {
+			"name": "Burnaby",
+			"reference": "bb"
+		}
+	},
+	{
+		"open": true,
+		"in_use": 121,
+		"total": 280,
+		"building": {
+			"name": "Library",
+			"reference": "ul"
+		}
+	},
+	{
+		"open": true,
+		"in_use": 14,
+		"total": 69,
+		"building": {
+			"name": "Park",
+			"reference": "pk"
+		}
+	}
+]
+		</pre>
 	</div>
 
 	<p class="lead">GET buildings/ID/openaccess</p>
 	<div class="example-request">
 		<pre class="request_header">GET <%= api.full_url %>buildings/pk/openaccess</pre>
-		<pre class="pre-scrollable" data-example-request="buildings/pk/openaccess"></pre>
+		<pre class="pre-scrollable" data-example-request="buildings/pk/openaccess">
+{
+	"open": true,
+	"in_use": 14,
+	"total": 69
+}
+		</pre>
 	</div>
 
 	<table class="table table-striped">

@@ -11,25 +11,6 @@ $(document).ready(function () {
 
 	// Create a self-executing anonymous function.
 	$(function () {
-		// Loop through all example request <pre> elements.
-		$('pre[data-example-request]').each(function () {
-			// Set a variable for the request and element.
-			var request = $(this).data('example-request');
-			var pre = $(this);
-			
-			// Append the access token to the request.
-			request += request.indexOf('?') !== -1 ? '&' : '?';
-			request += 'access_token=' + access_token;
-
-			// Make an AJAX request to get the data.
-			$.getJSON(api + '/v1/' + request).complete(function (data) {
-				// Append the returned data to the element.
-				pre.text(JSON.stringify(data.responseJSON, null, '\t'));
-				// Refresh the scrollspy.
-				$('body').scrollspy('refresh');
-			});
-		});
-
 		// Make an AJAX request to get all building data.
 		$.getJSON(api + '/v1/buildings?access_token=' + access_token, function (buildings) {
 			// Loop through all the buildings.
