@@ -471,3 +471,9 @@ footer .pull-right {
 		width: 215px;
 	}
 }
+
+@media (max-width: 1455px) {
+	.github-ribbon {
+		display: none;
+	}
+}
