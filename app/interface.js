@@ -23,7 +23,7 @@ module.exports = function (app, passport, mysql, local) {
 	});
 
 	// Route to show the documentation.
-	app.get('/documentation', isLoggedIn, function (req, res) {
+	app.get('/documentation', function (req, res) {
 		// Render documentation.ejs .
 		res.render('documentation', { name: 'documentation', user: req.session.user });
 	});

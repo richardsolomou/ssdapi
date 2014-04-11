@@ -26,10 +26,10 @@
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav">
 						<li <% if (locals.name && name == 'index') { %>class="active"<% } %>><a href="<%= locals.api.folder %>/">Home</a></li>
+						<li <% if (locals.name && name == 'documentation') { %>class="active"<% } %>><a href="<%= locals.api.folder %>/documentation">Documentation</a></li>
 					</ul>
 					<% if (locals.user && user) { %>
 					<ul class="nav navbar-nav navbar-right">
-						<li <% if (locals.name && name == 'documentation') { %>class="active"<% } %>><a href="<%= locals.api.folder %>/documentation">Documentation</a></li>
 						<li <% if (locals.name && name == 'apps') { %>class="active"<% } %>><a href="<%= locals.api.folder %>/apps">Apps</a></li>
 					</ul>
 					<% } %>
