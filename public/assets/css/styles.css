@@ -26,11 +26,6 @@ p {
 	line-height: 1.8;
 }
 
-html, html a {
-	-webkit-font-smoothing: antialiased!important;
-	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.004);
-}
-
 * {
 	outline: 0!important;
 	font-family: 'Open Sans', sans-serif;

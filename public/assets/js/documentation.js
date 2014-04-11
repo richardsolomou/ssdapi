@@ -3,26 +3,12 @@ $(document).ready(function () {
 
 	// Set local API folder.
 	var api = '/api';
-	// Set the access token to be used.
-	var access_token = '8ac61297-c3c5-4f76-bc6e-603471ff9325';
 
 	// Set up popover notifications and allow them to display HTML.
 	$('[data-toggle=popover]').popover({ html: true });
 
 	// Create a self-executing anonymous function.
 	$(function () {
-		// Make an AJAX request to get all building data.
-		$.getJSON(api + '/v1/buildings?access_token=' + access_token, function (buildings) {
-			// Loop through all the buildings.
-			for (var i in buildings) {
-				// Construct a table row for each building found.
-				$('<tr/>').append(
-					$('<td/>').text(buildings[i].name),
-					$('<td/>').html($('<code/>').text(buildings[i].reference))
-				).appendTo($('#documentation_string_identifiers table tbody'));
-			}
-		});
-	
 		// Disable the navigation affix.
 		$(window).off('.affix');
 		// Delete affix data from the documentation navigation and set its offset.
