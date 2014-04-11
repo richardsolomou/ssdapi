@@ -12,7 +12,7 @@
 					</span>
 					<h4><strong>What is this?</strong></h4>
 				</div>
-					<p>This is a full RESTful API linked to multiple extensive databases around the University of Portsmouth that displays all kinds of data to allow developers to interact with applications.</p>
+					<p>This is an interface for communicating with applications and databases from the University of Portsmouth. The data returned can be used by developers to build their own applications.</p>
 			</div>
 			<div class="col-md-4">
 				<div class="text-center">
@@ -22,7 +22,7 @@
 					</span>
 					<h4>How can I start using the API?</h4>
 				</div>
-					<p>We have an awesome <a href="/documentation">documentation</a> on how to use this API. It takes minutes to get started. This API will always be publicly available and will never require any extensive setup process to consume.</p>
+					<p>We have an awesome <a href="<%= locals.api.folder %>/documentation">documentation</a> on how to use this API. It takes minutes to get started. This API will always be publicly available and will never require any extensive setup process to consume.</p>
 			</div>
 			<div class="col-md-4">
 				<div class="text-center">
@@ -32,48 +32,23 @@
 					</span>
 					<h4>I want to help.</h4>
 				</div>
-					<p>Think you can help? Contact us at <a href="mailto:is-student-service-delivery-group@port.ac.uk">is-student-service-delivery-group@port.ac.uk</a> with the subject line "API Support" and let us know how you can help.</p>
+					<p>Do you have any ideas or suggestions? Even better, do you have any data that you want to make available on the API? Contact us <a href="mailto:is-student-service-delivery-group@port.ac.uk">here</a> and let us know how you can help.</p>
 			</div>
 		</div>
 	</article>
-	
-	<article id="documentation" class="no-padding-top">
+
+	<article>
 		<div class="container">
-			<div class="col-md-3 pull-right">
-				<div id="doc_nav">
-					<h3>Navigation</h3>
-					<ul class="nav">
-						<li class="active"><a href="#documentation_getting_started" class="scroll">Getting Started</a></li>
-						<li>
-							<a href="#documentation_api_resources" class="scroll">API Resources</a>
-							<ul class="nav">
-								<li>
-									<a href="#documentation_api_resources_buildings" class="scroll">Buildings</a>
-									<ul class="nav">
-										<li><a href="#documentation_api_resources_buildings_openaccess" class="scroll">Open Access Area Availability</a></li>
-										<li><a href="#documentation_api_resources_buildings_openingtimes" class="scroll">Opening Times</a></li>
-										<li>
-											<a href="#documentation_api_resources_buildings_labs" class="scroll">Shared Teaching Spaces</a>
-											<ul class="nav">
-												<li><a href="#documentation_api_resources_buildings_labs_timetables" class="scroll">Timetables</a></li>
-											</ul>
-										</li>
-									</ul>
-								</li>
-								<li><a href="#documentation_api_resources_services" class="scroll">Service Status</a></li>
-								<li><a href="#documentation_api_resources_users" class="scroll">Staff Directory</a></li>
-							</ul>
-						</li>
-						<li><a href="#documentation_jsonp_requests" class="scroll">JSONP Requests</a></li>
-						<li><a href="#documentation_string_identifiers" class="scroll">String Identifiers</a></li>
-					</ul>
-				</div>
+			<div class="col-md-6 text-justify">
+				<h2 class="color-uop"><strong>Build your own apps</strong></h2>
+				<p>The University of Portsmouth API allows anyone to build their own applications using data from the University of Portsmouth databases. The API currently features up to 15 methods of accessing various datasets across the University's network.</p>
+				<p>By using the University of Portsmouth API, you can now make individual applications communicate or interface with each other, enhancing their features and adding more functionality.</p>
 			</div>
-			<div class="col-md-9 pull-left">
-				<% include documentation/getting_started %>
-				<% include documentation/api_resources %>
-				<% include documentation/jsonp_requests %>
-				<% include documentation/string_identifiers %>
+			<div class="col-md-6">
+				<div class="img">
+					<img src="<%= locals.api.folder %>/assets/img/ithelp.png">
+					<legend>The <a href="http://ithelp.port.ac.uk" target="_blank">IT Help</a> website shown using the API as its datasource.</legend>
+				</div>
 			</div>
 		</div>
 	</article>
