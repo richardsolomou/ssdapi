@@ -63,8 +63,9 @@ a:focus {
 	color: #59379E;
 }
 
-.bg-uop {
-	background-color: #EEECF9;
+.bg-uop,
+#documentation_getting_started {
+	background-color: #f0f0f0;
 }
 
 .btn-uop {
@@ -279,7 +280,6 @@ article.no-padding-top {
 }
 
 #documentation_getting_started {
-	background: #f4f4f4;
 	border: 5px solid #e3e3e3!important;
 	padding: 0 2em 2em 2em;
 	margin-top: 2em!important;
