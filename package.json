@@ -1,10 +1,10 @@
 {
-	"name": "uopwebapi",
-	"version": "0.0.7",
-	"description": "University of Portsmouth API",
-	"homepage": "http://dsign-web-01.uni.ds.port.ac.uk/api",
+	"name": "ssdapi",
+	"version": "0.0.8",
+	"description": "Student Service Delivery API",
+	"homepage": "http://ssd.api.port.ac.uk/",
 	"bugs": {
-		"url": "https://github.com/rsolomou/uopwebapi/issues",
+		"url": "https://github.com/rsolomou/ssdapi/issues",
 		"email": "richard.solomou@port.ac.uk"
 	},
 	"license": "MIT",
@@ -15,16 +15,20 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/rsolomou/uopwebapi.git"
+		"url": "https://github.com/rsolomou/ssdapi.git"
 	},
 	"dependencies": {
 		"async": "*",
+		"body-parser": "*",
 		"connect-flash": "*",
+		"cookie-parser": "*",
 		"ejs": "*",
-		"express": "3.*",
+		"express": "*",
+		"express-session": "*",
 		"ipv6": "*",
+		"morgan": "*",
 		"mssql": "*",
-		"mysql": "2.*",
+		"mysql": "*",
 		"node-uuid": "*",
 		"passport": "*",
 		"passport-google-oauth": "*",
