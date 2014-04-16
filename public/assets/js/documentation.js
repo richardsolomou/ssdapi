@@ -1,9 +1,6 @@
 // Specify a function to execute when the DOM is fully loaded.
 $(document).ready(function () {
 
-	// Set local API folder.
-	var api = '/api';
-
 	// Set up popover notifications and allow them to display HTML.
 	$('[data-toggle=popover]').popover({ html: true });
 

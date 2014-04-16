@@ -1,9 +1,6 @@
 // Specify a function to execute when the DOM is fully loaded.
 $(document).ready(function () {
 
-	// Set local API folder.
-	var api = '/api';
-
 	// Set variables for the modals.
 	var newAppModal = $('#newAppModal'),
 		editAppModal = $('#editAppModal'),
@@ -65,7 +62,7 @@ $(document).ready(function () {
 		// Perform an AJAX request to add the new app using the data stored in the input fields on the New App modal.
 		$.ajax({
 			type: 'POST',
-			url: api + '/apps',
+			url: '/apps',
 			data: { title: newAppTitle.val(), request_origin: newAppRequestOrigin.val() },
 			success: function (app) {
 				// Hide the New App modal.
@@ -124,7 +121,7 @@ $(document).ready(function () {
 		// Perform an AJAX request to update the app using the data stored in the input fields on the Edit App modal.
 		$.ajax({
 			type: 'PUT',
-			url: api + '/apps',
+			url: '/apps',
 			data: { id: editAppId.val(), title: editAppTitle.val(), request_origin: editAppRequestOrigin.val() },
 			success: function (data) {
 				// Hide the Edit App modal.
@@ -154,7 +151,7 @@ $(document).ready(function () {
 		// Perform an AJAX request to delete the current app.
 		$.ajax({
 			type: 'DELETE',
-			url: api + '/apps',
+			url: '/apps',
 			data: { id: deleteAppId.val() },
 			success: function (data) {
 				// Hide the Delete App modal.
