@@ -4,6 +4,10 @@
 
 // Load global module dependencies.
 var express = require('express'),
+	bodyParser = require('body-parser'),
+	morgan = require('morgan'),
+	cookieParser = require('cookie-parser'),
+	session = require('express-session'),
 	mysql = require('mysql'),
 	mssql = require('mssql'),
 	passport = require('passport'),
@@ -129,18 +133,17 @@ passport.use(new LocalAPIKeyStrategy({
 app.use(express.static(__dirname + '/public'));
 app.set('views', __dirname + '/public');
 // Log requests to the console.
-app.use(express.logger('dev'));
+app.use(morgan('dev'));
 // Read cookies needed for authentication.
-app.use(express.cookieParser());
+app.use(cookieParser());
 // Get information from HTML forms.
-app.use(express.json());
-app.use(express.urlencoded());
+app.use(bodyParser());
 // Set up ejs for templating.
 app.set('view engine', 'ejs');
 // Set up application local variables.
-app.locals(local);
+app.locals = local;
 // Set the session secret.
-app.use(express.session({ secret: config.express.secret }));
+app.use(session({ secret: config.express.secret }));
 // Initialize passport and use persistent login sessions.
 app.use(passport.initialize());
 app.use(passport.session());
