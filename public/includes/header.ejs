@@ -4,13 +4,13 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title><%= title %></title>
-		<link rel="icon" href="<%= locals.api.folder %>/assets/img/favicon.ico" type="image/x-icon">
+		<link rel="icon" href="/assets/img/favicon.ico" type="image/x-icon">
 		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans">
-		<link rel="stylesheet" href="<%= locals.api.folder %>/assets/css/bootstrap.min.css">
-		<link rel="stylesheet" href="<%= locals.api.folder %>/assets/css/font-awesome.min.css">
-		<link rel="stylesheet" href="<%= locals.api.folder %>/assets/css/styles.css">
-		<script src="<%= locals.api.folder %>/assets/js/jquery.min.js"></script>
-		<script src="<%= locals.api.folder %>/assets/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/assets/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/assets/css/styles.css">
+		<script src="/assets/js/jquery.min.js"></script>
+		<script src="/assets/js/bootstrap.min.js"></script>
 	</head>
 	<body>
 		<nav class="navbar navbar-inverse" role="navigation">
@@ -25,12 +25,12 @@
 				</div>
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav">
-						<li <% if (locals.name && name == 'index') { %>class="active"<% } %>><a href="<%= locals.api.folder %>/">Home</a></li>
-						<li <% if (locals.name && name == 'documentation') { %>class="active"<% } %>><a href="<%= locals.api.folder %>/documentation">Documentation</a></li>
+						<li <% if (locals.name && name == 'index') { %>class="active"<% } %>><a href="/">Home</a></li>
+						<li <% if (locals.name && name == 'documentation') { %>class="active"<% } %>><a href="/documentation">Documentation</a></li>
 					</ul>
 					<% if (locals.user && user) { %>
 					<ul class="nav navbar-nav navbar-right">
-						<li <% if (locals.name && name == 'apps') { %>class="active"<% } %>><a href="<%= locals.api.folder %>/apps">Apps</a></li>
+						<li <% if (locals.name && name == 'apps') { %>class="active"<% } %>><a href="/apps">Apps</a></li>
 					</ul>
 					<% } %>
 				</div>
@@ -40,7 +40,7 @@
 		<header>
 			<div class="container">
 				<div class="col-md-9">
-					<h1><a href="<%= locals.api.folder %>/"><%= title %></a></h1>
+					<h1><a href="/"><%= title %></a></h1>
 				</div>
 
 				<div class="col-md-3">
@@ -48,11 +48,11 @@
 					<img src="<%= user.picture %>" width="50" class="img-rounded">
 					<div class="user">
 						<strong><%= user.given_name %> <%= user.family_name %></strong>
-						<a href="<%= locals.api.folder %>/logout">Logout</a>
+						<a href="/logout">Logout</a>
 					</div>
 				<% } else { %>
 					<div class="clearfix">&nbsp;</div>
-					<a href="<%= locals.api.folder %>/login" class="btn btn-danger"><i class="fa fa-google-plus"></i> Login</a>
+					<a href="/login" class="btn btn-danger"><i class="fa fa-google-plus"></i> Login</a>
 				<% } %>
 				</div>
 			</div>
