@@ -24,6 +24,9 @@ var port = process.env.PORT || 8080,
 	config = require('./config/config'),
 	local = require('./config/local');
 
+// Set up the firewall bypass proxy.
+require('proxy-out')('http://wwwcache.port.ac.uk:81/');
+
 
 /**
  * Module configuration.
