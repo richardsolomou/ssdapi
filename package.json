@@ -33,6 +33,7 @@
 		"passport": "*",
 		"passport-google-oauth": "*",
 		"passport-localapikey": "*",
+		"proxy-out": "*",
 		"validator": "*",
 		"winston": "*"
 	}
