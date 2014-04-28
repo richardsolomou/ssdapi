@@ -14,34 +14,6 @@ module.exports = function (app, passport, mysql, mssql) {
 		exitOnError: false
 	});
 	
-	// Route to get a specific user.
-	app.get('/v1/users/:username', isAuthorized, isAuthorizedPort, function (req, res) {
-		// Run a MySQL query to get a specific user.
-		mysql.query('SELECT `title`, `first_name`, `last_name`, `job_title`, `building`, `department`, `extension`, `email`, `username`, `section`, `faculty` FROM `users` WHERE `username` = :username', { username: req.params.username }, function (err, results) {
-			// Return appropriate error messages if something went wrong.
-			if (err) return res.jsonp(500, { error: { message: 'Something went wrong.', code: 500, details: err } });
-			if (!results || !results.length) return res.jsonp(404, { error: { message: 'Invalid username.', code: 404 } });
-			// Logs the operation.
-			logger.info('Specific user retrieved.', { path: req._parsedUrl.pathname, query: req._parsedUrl.query });
-			// Return the user in JSON format.
-			return res.jsonp(results[0]);
-		});
-	});
-
-	// Route to get all users.
-	app.get('/v1/users', isAuthorized, function (req, res) {
-		// Run a MySQL query to get all users.
-		mysql.query('SELECT `title`, `first_name`, `last_name`, `job_title`, `building`, `department`, `extension`, `email`, `username`, `section`, `faculty` FROM `users`', function (err, results) {
-			// Return appropriate error messages if something went wrong.
-			if (err) return res.jsonp(500, { error: { message: 'Something went wrong.', code: 500, details: err } });
-			if (!results || !results.length) return res.jsonp(404, { error: { message: 'Users table is empty.', code: 404 } });
-			// Logs the operation.
-			logger.info('All users retrieved.', { path: req._parsedUrl.pathname, query: req._parsedUrl.query });
-			// Return all users in JSON format.
-			return res.jsonp(results);
-		});
-	});
-
 	// Route to get all service status problems.
 	app.get('/v1/services', isAuthorized, function (req, res) {
 		// Run a MySQL query to get all service status problems.
@@ -387,17 +359,6 @@ module.exports = function (app, passport, mysql, mssql) {
 			// Attempt to authenticate the user.
 			req.logIn(user, function (err) {
 				if (err) return next(err);
-				return next();
-			});
-		})(req, res, next);
-	}
-
-	// Middleware to check if the user is authorized as a staff member.
-	function isAuthorizedPort(req, res, next) {
-		// Use passport to authenticate with localapikey.
-		passport.authenticate('localapikey', function (err, user, info) {
-			mysql.query('SELECT `hd` FROM `api_users` WHERE `id` = :id AND `hd` = :hd', { id: user, hd: 'port.ac.uk' }, function (err, results) {
-				if (!results || !results.length) return res.jsonp(401, { error: { message: 'Insufficient access.', code: 401 } });
 				return next();
 			});
 		})(req, res, next);
