@@ -1,6 +1,6 @@
 {
 	"name": "ssdapi",
-	"version": "0.0.8",
+	"version": "0.0.9",
 	"description": "Student Service Delivery API",
 	"homepage": "http://ssd.api.port.ac.uk/",
 	"bugs": {

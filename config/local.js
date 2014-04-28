@@ -12,11 +12,11 @@ config.version = {};
 // Official version number as shown in the URL.
 config.version.number = '1';
 // Real version number with increments.
-config.version.real_number = '0.0.8';
+config.version.real_number = '0.0.9';
 // Last version update in SQL format.
-config.version.date = '2014-04-16';
+config.version.date = '2014-04-28';
 // Last version update (readable).
-config.version.date_readable = 'April 16th, 2014';
+config.version.date_readable = 'April 28th, 2014';
 
 
 /**
