@@ -5,111 +5,33 @@
 	<p class="lead">GET users</p>
 	<div class="example-request">
 		<pre class="request_header">GET <%= api.full_url %>users</pre>
-		<pre class="pre-scrollable" data-example-request="users">
+		<pre class="pre-scrollable">
 [
 	{
-		"title": "Ms",
-		"first_name": "Yu",
-		"last_name": "Li",
-		"job_title": "Visiting Scholar",
-		"building": "Park Building",
-		"department": "SLAS",
-		"extension": "6137",
-		"email": "yu.li@port.ac.uk",
-		"username": "LiY1",
-		"section": "SLAS",
-		"faculty": "Humanities and Social Sciences"
-	},
-	{
 		"title": "Mr",
-		"first_name": "William",
-		"last_name": "Coleman",
-		"job_title": "PTHP Lecturer in American History",
-		"building": "Park Building",
-		"department": "SLAS",
-		"extension": "6174",
-		"email": "william.coleman@port.ac.uk",
-		"username": "ColemanW",
-		"section": "SLAS",
-		"faculty": "Humanities and Social Sciences"
-	},
-	{
-		"title": "Ms",
-		"first_name": "Lili",
-		"last_name": "Tang",
-		"job_title": "Visiting Scholar",
-		"building": "Park Building",
-		"department": "SLAS",
-		"extension": "6137",
-		"email": "lili.tang@port.ac.uk",
-		"username": "TangL",
-		"section": "SLAS",
-		"faculty": "Humanities and Social Sciences"
-	},
-	{
-		"title": "Mr",
-		"first_name": "Lu",
-		"last_name": "Feng",
-		"job_title": "Visiting Scholar",
-		"building": "Park Building",
-		"department": "SLAS",
-		"extension": "6137",
-		"email": "lu.feng@port.ac.uk",
-		"username": "FengLu",
-		"section": "SLAS",
-		"faculty": "Humanities and Social Sciences"
-	},
-	{
-		"title": "Ms",
-		"first_name": "Xingmei",
-		"last_name": "Zhang",
-		"job_title": "Visiting Scholar",
-		"building": "Park Building",
-		"department": "SLAS",
-		"extension": "6137",
-		"email": "xingmei.zhang@port.ac.uk",
-		"username": "zhangxin",
-		"section": "SLAS",
-		"faculty": "Humanities and Social Sciences"
-	},
-	{
-		"title": "Miss",
-		"first_name": "Gemma",
-		"last_name": "Milligan",
-		"job_title": "Research Assistant",
-		"building": "Spinnaker Building",
-		"department": "Sport &amp; Exercise Science",
-		"extension": "5358",
-		"email": "Gemma.Milligan@port.ac.uk",
-		"username": "MilligaG",
-		"section": "PCSS Technical Division",
-		"faculty": "Science"
-	},
-	{
-		"title": "Dr",
-		"first_name": "Peter",
-		"last_name": "Coxhead",
-		"job_title": "Technical Manager",
-		"building": "St Michael's Building",
-		"department": "School of Biological Sciences",
-		"extension": "2052",
-		"email": "peter.coxhead@port.ac.uk",
-		"username": "CoxheadP",
-		"section": "Biological Sciences - Technical Support",
-		"faculty": "Science"
-	},
-	{
-		"title": "Dr",
-		"first_name": "Heather",
-		"last_name": "Lunt",
+		"first_name": "John",
+		"last_name": "Doe",
 		"job_title": "Lecturer",
-		"building": "Spinnaker Building",
-		"department": "Sport &amp; Exercise Science",
-		"extension": "3545",
-		"email": "Heather.Lunt@port.ac.uk",
-		"username": "LuntH",
-		"section": "PCSS Technical Division",
-		"faculty": "Science"
+		"building": "Richmond Building",
+		"department": "Information Services",
+		"extension": "9999",
+		"email": "John.Doe@port.ac.uk",
+		"username": "DoeJ",
+		"section": "Student Service Delivery",
+		"faculty": ""
+	},
+	{
+		"title": "Mr",
+		"first_name": "Jane",
+		"last_name": "Doe",
+		"job_title": "Lecturer",
+		"building": "Richmond Building",
+		"department": "Information Services",
+		"extension": "9999",
+		"email": "Jane.Doe@port.ac.uk",
+		"username": "DoeJ1",
+		"section": "Student Service Delivery",
+		"faculty": ""
 	}
 ]
 ...
@@ -119,19 +41,19 @@
 	<p class="lead">GET users/ID</p>
 	<div class="alert alert-info">String identifiers are used in this route. Users can be retrieved by using their username as the string identifier.</div>
 	<div class="example-request">
-		<pre class="request_header">GET <%= api.full_url %>users/SolomouR</pre>
-		<pre class="pre-scrollable" data-example-request="users/SolomouR">
+		<pre class="request_header">GET <%= api.full_url %>users/DoeJ</pre>
+		<pre class="pre-scrollable">
 {
 	"title": "Mr",
-	"first_name": "Richard",
-	"last_name": "Solomou",
-	"job_title": "Student Placement",
-	"building": "St Andrews Court",
+	"first_name": "John",
+	"last_name": "Doe",
+	"job_title": "Lecturer",
+	"building": "Richmond Building",
 	"department": "Information Services",
-	"extension": "5428",
-	"email": "richard.solomou@port.ac.uk",
-	"username": "SolomouR",
-	"section": "Student Support Services",
+	"extension": "9999",
+	"email": "John.Doe@port.ac.uk",
+	"username": "DoeJ",
+	"section": "Student Service Delivery",
 	"faculty": ""
 }
 		</pre>
