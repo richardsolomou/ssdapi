@@ -15,7 +15,7 @@ module.exports = function (app, passport, mysql, mssql) {
 	});
 	
 	// Route to get a specific user.
-	app.get('/v1/users/:username', isAuthorized, function (req, res) {
+	app.get('/v1/users/:username', isAuthorized, isAuthorizedPort, function (req, res) {
 		// Run a MySQL query to get a specific user.
 		mysql.query('SELECT `title`, `first_name`, `last_name`, `job_title`, `building`, `department`, `extension`, `email`, `username`, `section`, `faculty` FROM `users` WHERE `username` = :username', { username: req.params.username }, function (err, results) {
 			// Return appropriate error messages if something went wrong.
@@ -45,7 +45,7 @@ module.exports = function (app, passport, mysql, mssql) {
 	// Route to get all service status problems.
 	app.get('/v1/services', isAuthorized, function (req, res) {
 		// Run a MySQL query to get all service status problems.
-		mysql.query('SELECT `name`, `info`, `description`, `status`, `modified_date`, `type`, `service_manager`, `main_link_name` FROM `services`', function (err, results) {
+		mysql.query('SELECT `name`, `info`, `description`, `status`, `state`, `modified_date`, `type`, `service_manager`, `main_link_name` FROM `services`', function (err, results) {
 			// Return appropriate error messages if something went wrong.
 			if (err) return res.jsonp(500, { error: { message: 'Something went wrong.', code: 500, details: err } });
 			if (!results || !results.length) return res.jsonp(404, { error: { message: 'Service status table is empty.', code: 404 } });
@@ -387,6 +387,17 @@ module.exports = function (app, passport, mysql, mssql) {
 			// Attempt to authenticate the user.
 			req.logIn(user, function (err) {
 				if (err) return next(err);
+				return next();
+			});
+		})(req, res, next);
+	}
+
+	// Middleware to check if the user is authorized as a staff member.
+	function isAuthorizedPort(req, res, next) {
+		// Use passport to authenticate with localapikey.
+		passport.authenticate('localapikey', function (err, user, info) {
+			mysql.query('SELECT `hd` FROM `api_users` WHERE `id` = :id AND `hd` = :hd', { id: user, hd: 'port.ac.uk' }, function (err, results) {
+				if (!results || !results.length) return res.jsonp(401, { error: { message: 'Insufficient access.', code: 401 } });
 				return next();
 			});
 		})(req, res, next);
