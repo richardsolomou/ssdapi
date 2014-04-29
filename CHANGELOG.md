@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.0.9 (2014-04-28)
+
+- Readded proxy bypass.
+- Removed staff directory route.
+
 ## 0.0.8 (2014-04-16)
 
 - Renamed service to Student Service Delivery API.
