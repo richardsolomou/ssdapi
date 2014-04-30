@@ -39,9 +39,768 @@
 				</div>
 			</div>
 			<div class="col-md-9 pull-left">
-				<% include includes/documentation/getting_started %>
-				<% include includes/documentation/api_resources %>
-				<% include includes/documentation/string_identifiers %>
+				<div id="documentation_getting_started">
+					<h1>Getting Started</h1>
+					<p class="lead">Please take note when using this API:</p>
+					<ul>
+						<li>This is a <strong>consumption-only</strong> API - only the HTTP GET method is available on resources.</li>
+						<li><strong>Authentication</strong> is required to access this API. All resources are protected by request origin.</li>
+						<li>If you are going to be regularly using the API, it is recommended that you cache data on your service.</li>
+					</ul>
+				</div>
+				<div id="documentation_api_resources">
+					<h1>API Resources</h1>
+					<p>This documentation aims to explain how to use the API to enable developers to access some of the core data available at the University of Portsmouth such as the open access area availability, the shared teaching spaces and their timetables, the service status, and the staff directory.</p>
+					<br>
+					<div class="alert alert-info">Results shown here are not necessarily up to date with current data.</div>
+
+					<div id="documentation_api_resources_buildings">
+						<h2>Buildings</h2>
+						<p>This resource returns information about all campus buildings.</p>
+
+						<p class="lead">GET buildings</p>
+						<div class="example-request">
+							<pre class="request_header">GET <%= api.full_url %>buildings</pre>
+							<pre class="pre-scrollable" data-example-request="buildings">
+[
+	{
+		"name": "Anglesea",
+		"reference": "ag",
+		"latitude": "50.797749",
+		"longitude": "-1.096585"
+	},
+	{
+		"name": "Buckingham",
+		"reference": "bk",
+		"latitude": "50.798365",
+		"longitude": "-1.098529"
+	},
+	{
+		"name": "Burnaby",
+		"reference": "bb",
+		"latitude": "50.798136",
+		"longitude": "-1.097974"
+	},
+	{
+		"name": "Guildhall",
+		"reference": "gh",
+		"latitude": "50.796517",
+		"longitude": "-1.090803"
+	},
+	{
+		"name": "King Henry",
+		"reference": "kh",
+		"latitude": "50.797337",
+		"longitude": "-1.095287"
+	},
+	...
+]
+							</pre>
+						</div>
+
+						<p class="lead">GET buildings/ID</p>
+						<div class="example-request">
+							<pre class="request_header">GET <%= api.full_url %>buildings/pk</pre>
+							<pre class="pre-scrollable" data-example-request="buildings/pk">
+{
+	"name": "Park",
+	"reference": "pk",
+	"latitude": "50.797671",
+	"longitude": "-1.094111"
+}
+							</pre>
+						</div>
+
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th>Field Name</th>
+									<th>Description</th>
+									<th>Values</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>name</td>
+									<td>Name of the building</td>
+									<td>String</td>
+								<tr>
+									<td>reference</td>
+									<td>Short reference string of the building</td>
+									<td>String</td>
+								</tr>
+								<tr>
+									<td>latitude</td>
+									<td>Latitude co-ordinates of the building</td>
+									<td>String</td>
+								</tr>
+								<tr>
+									<td>longitude</td>
+									<td>Longitude co-ordinates of the building</td>
+									<td>String</td>
+								</tr>
+							</tbody>
+						</table>
+
+						<div id="documentation_api_resources_buildings_openaccess">
+							<h3>Open Access Area Availability</h3>
+							<p>This resource returns the computer availability of buildings that are equipped with Open Access machines.</p>
+
+							<p class="lead">GET buildings/openaccess</p>
+							<div class="example-request">
+								<pre class="request_header">GET <%= api.full_url %>buildings/openaccess</pre>
+								<pre class="pre-scrollable" data-example-request="buildings/openaccess">
+[
+	{
+		"open": true,
+		"in_use": 5,
+		"total": 12,
+		"building": {
+			"name": "Anglesea",
+			"reference": "ag"
+		}
+	},
+	{
+		"open": true,
+		"in_use": 12,
+		"total": 48,
+		"building": {
+			"name": "Burnaby",
+			"reference": "bb"
+		}
+	},
+	{
+		"open": true,
+		"in_use": 121,
+		"total": 280,
+		"building": {
+			"name": "Library",
+			"reference": "ul"
+		}
+	},
+	{
+		"open": true,
+		"in_use": 14,
+		"total": 69,
+		"building": {
+			"name": "Park",
+			"reference": "pk"
+		}
+	}
+]
+								</pre>
+							</div>
+
+							<p class="lead">GET buildings/ID/openaccess</p>
+							<div class="example-request">
+								<pre class="request_header">GET <%= api.full_url %>buildings/pk/openaccess</pre>
+								<pre class="pre-scrollable" data-example-request="buildings/pk/openaccess">
+{
+	"open": true,
+	"in_use": 14,
+	"total": 69
+}
+								</pre>
+							</div>
+
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Field Name</th>
+										<th>Description</th>
+										<th>Values</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>open</td>
+										<td>Whether the building is open or closed.</td>
+										<td>Boolean</td>
+									</tr>
+									<tr>
+										<td>in_use</td>
+										<td>The amount of PCs currently being used.</td>
+										<td>Numeric</td>
+									</tr>
+									<tr>
+										<td>total</td>
+										<td>The amount of PCS in total for that area.</td>
+										<td>Numeric</td>
+									</tr>
+									<tr>
+										<td>building</td>
+										<td>Details of the building.</td>
+										<td>Object</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div id="documentation_api_resources_buildings_openingtimes">
+							<h3>Opening Times</h3>
+							<p>This resource returns the opening times for the campus buildings.</p>
+
+							<p class="lead">GET buildings/openingtimes</p>
+							<div class="example-request">
+								<pre class="request_header">GET <%= api.full_url %>buildings/openingtimes</pre>
+								<pre class="pre-scrollable" data-example-request="buildings/openingtimes">
+[
+	{
+		"day_of_the_week": "Monday",
+		"opening_time": "08:30:00",
+		"closing_time": "17:30:00",
+		"building": {
+			"name": "Anglesea",
+			"reference": "ag"
+		}
+	},
+	{
+		"day_of_the_week": "Tuesday",
+		"opening_time": "08:30:00",
+		"closing_time": "17:30:00",
+		"building": {
+			"name": "Anglesea",
+			"reference": "ag"
+		}
+	},
+	{
+		"day_of_the_week": "Wednesday",
+		"opening_time": "08:30:00",
+		"closing_time": "17:30:00",
+		"building": {
+			"name": "Anglesea",
+			"reference": "ag"
+		}
+	},
+	{
+		"day_of_the_week": "Thursday",
+		"opening_time": "08:30:00",
+		"closing_time": "17:30:00",
+		"building": {
+			"name": "Anglesea",
+			"reference": "ag"
+		}
+	},
+	{
+		"day_of_the_week": "Friday",
+		"opening_time": "08:30:00",
+		"closing_time": "17:30:00",
+		"building": {
+			"name": "Anglesea",
+			"reference": "ag"
+		}
+	},
+	...
+]
+								</pre>
+							</div>
+
+							<p class="lead">GET buildings/ID/openingtimes</p>
+							<div class="example-request">
+								<pre class="request_header">GET <%= api.full_url %>buildings/ag/openingtimes</pre>
+								<pre class="pre-scrollable" data-example-request="buildings/ag/openingtimes">
+[
+	{
+		"day_of_the_week": "Monday",
+		"opening_time": "08:30:00",
+		"closing_time": "17:30:00"
+	},
+	{
+		"day_of_the_week": "Tuesday",
+		"opening_time": "08:30:00",
+		"closing_time": "17:30:00"
+	},
+	{
+		"day_of_the_week": "Wednesday",
+		"opening_time": "08:30:00",
+		"closing_time": "17:30:00"
+	},
+	{
+		"day_of_the_week": "Thursday",
+		"opening_time": "08:30:00",
+		"closing_time": "17:30:00"
+	},
+	{
+		"day_of_the_week": "Friday",
+		"opening_time": "08:30:00",
+		"closing_time": "17:30:00"
+	},
+	...
+]
+								</pre>
+							</div>
+
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Field Name</th>
+										<th>Description</th>
+										<th>Values</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>day_of_the_week</td>
+										<td>String representation of the day of the week.</td>
+										<td>String</td>
+									</tr>
+									<tr>
+										<td>opening_time</td>
+										<td>The opening time of the building.</td>
+										<td>Time</td>
+									</tr>
+									<tr>
+										<td>closing_time</td>
+										<td>The closing time of the building.</td>
+										<td>Time</td>
+									</tr>
+									<tr>
+										<td>building</td>
+										<td>Details of the building.</td>
+										<td>Object</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div id="documentation_api_resources_buildings_labs">
+							<h3>Shared Teaching Spaces</h3>
+							<p>This resource returns details of the shared teaching spaces or labs that exist in some buildings.</p>
+
+							<p class="lead">GET buildings/labs</p>
+							<div class="example-request">
+								<pre class="request_header">GET <%= api.full_url %>buildings/labs</pre>
+								<pre class="pre-scrollable" data-example-request="buildings/labs">
+[
+	{
+		"short_identifier": "ag001",
+		"room_number": "0.01",
+		"building": {
+			"name": "Anglesea",
+			"reference": "ag"
+		}
+	},
+	{
+		"short_identifier": "ag002",
+		"room_number": "0.02",
+		"building": {
+			"name": "Anglesea",
+			"reference": "ag"
+		}
+	},
+	{
+		"short_identifier": "ag029",
+		"room_number": "0.29",
+		"building": {
+			"name": "Anglesea",
+			"reference": "ag"
+		}
+	},
+	{
+		"short_identifier": "bk007",
+		"room_number": "0.07",
+		"building": {
+			"name": "Buckingham",
+			"reference": "bk"
+		}
+	},
+	{
+		"short_identifier": "kh107",
+		"room_number": "1.07",
+		"building": {
+			"name": "King Henry",
+			"reference": "kh"
+		}
+	},
+	...
+]
+								</pre>
+							</div>
+
+							<p class="lead">GET buildings/ID/labs</p>
+							<div class="example-request">
+								<pre class="request_header">GET <%= api.full_url %>buildings/ag/labs</pre>
+								<pre class="pre-scrollable" data-example-request="buildings/ag/labs">
+[
+	{
+		"short_identifier": "ag001",
+		"room_number": "0.01"
+	},
+	{
+		"short_identifier": "ag002",
+		"room_number": "0.02"
+	},
+	{
+		"short_identifier": "ag029",
+		"room_number": "0.29"
+	}
+]
+								</pre>
+							</div>
+
+							<p class="lead">GET buildings/ID/labs/ID</p>
+							<div class="example-request">
+								<pre class="request_header">GET <%= api.full_url %>buildings/ag/labs/ag002</pre>
+								<pre class="pre-scrollable" data-example-request="buildings/ag/labs/ag002">
+{
+	"short_identifier": "ag002",
+	"room_number": "0.02"
+}
+								</pre>
+							</div>
+
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Field Name</th>
+										<th>Description</th>
+										<th>Values</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>short_identifier</td>
+										<td>Unique identifier for the building and room.</td>
+										<td>String</td>
+									</tr>
+									<tr>
+										<td>room_number</td>
+										<td>Readable format of the room number.</td>
+										<td>String</td>
+									</tr>
+									<tr>
+										<td>building</td>
+										<td>Details of the building.</td>
+										<td>Object</td>
+									</tr>
+								</tbody>
+							</table>
+
+							<div id="documentation_api_resources_buildings_labs_timetables">
+								<h4>Timetables</h4>
+								<p>This resource returns today's timetabling data for the shared teaching spaces or labs in each building.</p>
+
+								<p class="lead">GET buildings/labs/timetables</p>
+								<div class="example-request">
+									<pre class="request_header">GET http://ssd.api.port.ac.uk/v1/buildings/labs/timetables</pre>
+									<pre class="pre-scrollable" data-example-request="buildings/labs/timetables">
+[
+	{
+		"start_time": "19:00:00",
+		"finish_time": "22:00:00",
+		"module_name": "Unknown",
+		"module_type": "Unknown",
+		"building": {
+			"name": "Richmond",
+			"reference": "rb"
+		},
+		"lab": {
+			"short_identifier": "rb105",
+			"room_number": "1.05"
+		}
+	},
+	{
+		"start_time": "19:00:00",
+		"finish_time": "22:00:00",
+		"module_name": "Unknown",
+		"module_type": "Unknown",
+		"building": {
+			"name": "Portland",
+			"reference": "po"
+		},
+		"lab": {
+			"short_identifier": "po133",
+			"room_number": "1.33"
+		}
+	},
+	{
+		"start_time": "18:00:00",
+		"finish_time": "23:00:00",
+		"module_name": "Unknown",
+		"module_type": "Unknown",
+		"building": {
+			"name": "Library",
+			"reference": "ul"
+		},
+		"lab": {
+			"short_identifier": "uloa3",
+			"room_number": "OA3"
+		}
+	},
+	{
+		"start_time": "07:00:00",
+		"finish_time": "09:00:00",
+		"module_name": "Unknown",
+		"module_type": "Unknown",
+		"building": {
+			"name": "Library",
+			"reference": "ul"
+		},
+		"lab": {
+			"short_identifier": "uloa3",
+			"room_number": "OA3"
+		}
+	},
+	{
+		"start_time": "19:00:00",
+		"finish_time": "22:00:00",
+		"module_name": "Unknown",
+		"module_type": "Unknown",
+		"building": {
+			"name": "Richmond",
+			"reference": "rb"
+		},
+		"lab": {
+			"short_identifier": "rb103",
+			"room_number": "1.03"
+		}
+	},
+	...
+]
+									</pre>
+								</div>
+
+								<p class="lead">GET buildings/ID/labs/timetables</p>
+								<div class="example-request">
+									<pre class="request_header">GET http://ssd.api.port.ac.uk/v1/buildings/ag/labs/timetables</pre>
+									<pre class="pre-scrollable" data-example-request="buildings/ag/labs/timetables">
+[
+	{
+		"start_time": "19:00:00",
+		"finish_time": "22:00:00",
+		"module_name": "Unknown",
+		"module_type": "Unknown",
+		"lab": {
+			"short_identifier": "ag029",
+			"room_number": "0.29"
+		}
+	},
+	{
+		"start_time": "19:00:00",
+		"finish_time": "22:00:00",
+		"module_name": "Unknown",
+		"module_type": "Unknown",
+		"lab": {
+			"short_identifier": "ag001",
+			"room_number": "0.01"
+		}
+	},
+	{
+		"start_time": "19:00:00",
+		"finish_time": "22:00:00",
+		"module_name": "Unknown",
+		"module_type": "Unknown",
+		"lab": {
+			"short_identifier": "ag002",
+			"room_number": "0.02"
+		}
+	}
+]
+									</pre>
+								</div>
+
+								<p class="lead">GET buildings/ID/labs/ID/timetables</p>
+								<div class="example-request">
+									<pre class="request_header">GET http://ssd.api.port.ac.uk/v1/buildings/ag/labs/ag029/timetables</pre>
+									<pre class="pre-scrollable" data-example-request="buildings/ag/labs/ag029/timetables">
+[
+	{
+		"start_time": "19:00:00",
+		"finish_time": "22:00:00",
+		"module_name": "Unknown",
+		"module_type": "Unknown"
+	}
+]
+									</pre>
+								</div>
+
+								<table class="table table-striped">
+									<thead>
+										<tr>
+											<th>Field Name</th>
+											<th>Description</th>
+											<th>Values</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>start_time</td>
+											<td>Start time of the timetabled entry.</td>
+											<td>Time</td>
+										</tr>
+										<tr>
+											<td>finish_time</td>
+											<td>End time of the timetabled entry.</td>
+											<td>Time</td>
+										</tr>
+										<tr>
+											<td>module_name</td>
+											<td>Module name for the timetabled entry.</td>
+											<td>String</td>
+										</tr>
+										<tr>
+											<td>module_type</td>
+											<td>Type of the module being taught in the room.</td>
+											<td>String <a class="icon" data-toggle="popover" data-placement="left" data-content="<strong>Examples</strong><ul><li>Lab</li><li>Pract (Practical)</li><li>Lect (Lecture)</li><li>Comp</li><li>Sem (Seminar)</li><li>Work</li></ul>" data-original-title="" title=""><i class="fa fa-question-circle fa-lg"></i></a></td>
+										</tr>
+										<tr>
+											<td>building</td>
+											<td>Details of the building.</td>
+											<td>Object</td>
+										</tr>
+										<tr>
+											<td>lab</td>
+											<td>Details of the lab.</td>
+											<td>Object</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<div id="documentation_api_resources_services">
+						<h2>Service Status</h2>
+						<p>This resource returns the current service status problems that are currently affecting the network.</p>
+
+						<p class="lead">GET services</p>
+						<div class="example-request">
+							<pre class="request_header">GET <%= api.full_url %>services</pre>
+							<pre class="pre-scrollable" data-example-request="services">
+[
+	{
+		"name": "Wireless Error",
+		"info": "Students have mentioned problems with wireless.",
+		"description": "",
+		"status": "Service Information",
+		"modified_date": "2014-04-03T13:59:54.000Z",
+		"type": "Staff",
+		"service_manager": "",
+		"main_link_name": "Business Systems"
+	},
+	{
+		"name": "Moodle",
+		"info": "Moodle will be undergoing planned maintenance and will be temporarily unavailable.",
+		"description": "Moodle is the University's approved Virtual Learning Environment.",
+		"status": "Service Information",
+		"modified_date": "2014-04-03T13:57:47.000Z",
+		"type": "Both",
+		"service_manager": "",
+		"main_link_name": "Virtual Learning Environment (VLE)"
+	}
+]
+							</pre>
+						</div>
+
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th>Field Name</th>
+									<th>Description</th>
+									<th>Values</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>name</td>
+									<td>Name of the affected service.</td>
+									<td>String</td>
+								</tr>
+								<tr>
+									<td>info</td>
+									<td>A headline briefly describing of the issue affecting the service</td>
+									<td>String</td>
+								</tr>
+								<tr>
+									<td>description</td>
+									<td>A full, verbose description of the outage. May include HTML entities.</td>
+									<td>String</td>
+								</tr>
+								<tr>
+									<td>status</td>
+									<td>A value representing the type of issue. </td>
+									<td>String <a class="icon" data-toggle="popover" data-placement="left" data-content="<strong>Examples</strong><ul><li>Service Disruption</li><li>Out of Service</li><li>Under Maintenance</li><li>Service Information</li></ul>"><i class="fa fa-question-circle fa-lg"></i></a></td>
+								</tr>
+								<tr>
+									<td>modified_date</td>
+									<td>The date that this service was reported as affected, in readable format</td>
+									<td>DateTime</td>
+								</tr>
+								<tr>
+									<td>type</td>
+									<td>Displays the customer type that was affected by the issue</td>
+									<td>String <a class="icon" data-toggle="popover" data-placement="left" data-content="<strong>Examples</strong><ul><li>Staff</li><li>Students</li><li>Both</li></ul>"><i class="fa fa-question-circle fa-lg"></i></a></td>
+								</tr>
+								<tr>
+									<td>service_manager</td>
+									<td>The name of the Service Manager responsible for this service.</td>
+									<td>String</td>
+								</tr>
+								<tr>
+									<td>main_link_name</td>
+									<td>The parent service type this issue falls under.</td>
+									<td>String</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div id="documentation_string_identifiers">
+					<h1>String Identifiers</h1>
+					<p>String identifiers are short identifiers for buildings in string format. The table below shows all string identifiers and their representation.</p>
+					<table class="table table-striped table-bordered">
+						<thead>
+							<th>Name</th>
+							<th>Reference</th>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Anglesea</td>
+								<td><code>ag</code></td>
+							</tr>
+								<tr><td>Buckingham</td>
+								<td><code>bk</code></td>
+							</tr>
+							<tr>
+								<td>Burnaby</td>
+								<td><code>bb</code></td>
+							</tr>
+							<tr>
+								<td>Guildhall</td>
+								<td><code>gh</code></td>
+							</tr>
+							<tr>
+								<td>King Henry</td>
+								<td><code>kh</code></td>
+							</tr>
+							<tr>
+								<td>Langstone</td>
+								<td><code>la</code></td>
+							</tr>
+							<tr>
+								<td>Library</td>
+								<td><code>ul</code></td>
+							</tr>
+							<tr>
+								<td>Lion Gate</td>
+								<td><code>lg</code></td>
+							</tr>
+							<tr>
+								<td>Park</td>
+								<td><code>pk</code></td>
+							</tr>
+							<tr>
+								<td>Portland</td>
+								<td><code>po</code></td>
+							</tr>
+							<tr>
+								<td>Richmond</td>
+								<td><code>rb</code></td>
+							</tr>
+							<tr>
+								<td>Student IT Help Centre</td>
+								<td><code>hc</code></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
 	</article>
