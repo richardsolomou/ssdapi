@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.0 (2014-04-29)
+
+- Removed lecturer names from the timetable routes.
+
 ## 0.0.9 (2014-04-28)
 
 - Readded proxy bypass.
