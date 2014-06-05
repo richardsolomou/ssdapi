@@ -32,6 +32,13 @@
 									</ul>
 								</li>
 								<li><a href="#documentation_api_resources_services" class="scroll">Service Status</a></li>
+								<li>
+									<a href="#documentation_api_resources_bus" class="scroll">University Bus</a>
+									<ul class="nav">
+										<li><a href="#documentation_api_resources_bus_timetable" class="scroll">Timetable</a></li>
+										<li><a href="#documentation_api_resources_bus_journeys" class="scroll">Journeys</a></li>
+									</ul>
+								</li>
 							</ul>
 						</li>
 						<li><a href="#documentation_string_identifiers" class="scroll">String Identifiers</a></li>
@@ -476,7 +483,7 @@
 							</table>
 
 							<div id="documentation_api_resources_buildings_labs_timetables">
-								<h4>Timetables</h4>
+								<h3>Timetables</h3>
 								<p>This resource returns today's timetabling data for the shared teaching spaces or labs in each building.</p>
 
 								<p class="lead">GET buildings/labs/timetables</p>
@@ -741,6 +748,299 @@
 								</tr>
 							</tbody>
 						</table>
+					</div>
+					<div id="documentation_api_resources_bus">
+						<h2>University Bus</h2>
+						<p>This resource returns the bus stop entries and locations.</p>
+
+						<p class="lead">GET bus</p>
+						<div class="example-request">
+							<pre class="request_header">GET <%= api.full %>/bus</pre>
+							<pre class="pre-scrollable">
+[
+	{
+		"id": 1,
+		"name": "Langstone Campus (Departure)",
+		"direction": "South",
+		"latitude": "50.795894",
+		"longitude": "-1.042242"
+	},
+	{
+		"id": 2,
+		"name": "Locksway Road (Milton)",
+		"direction": "West",
+		"latitude": "50.793330",
+		"longitude": "-1.057310"
+	},
+	{
+		"id": 3,
+		"name": "Goldsmith Avenue (Lidl)",
+		"direction": "West",
+		"latitude": "50.794920",
+		"longitude": "-1.069770"
+	},
+	{
+		"id": 4,
+		"name": "Fratton Railway Station",
+		"direction": "West",
+		"latitude": "50.795930",
+		"longitude": "-1.076000"
+	}
+	...
+]
+							</pre>
+						</div>
+
+						<p class="lead">GET bus/ID</p>
+						<div class="example-request">
+							<pre class="request_header">GET <%= api.full %>/bus/ID</pre>
+							<pre class="pre-scrollable">
+{
+	"id": 1,
+	"name": "Langstone Campus (Departure)",
+	"direction": "South",
+	"latitude": "50.795894",
+	"longitude": "-1.042242"
+}
+							</pre>
+						</div>
+
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th>Field Name</th>
+									<th>Description</th>
+									<th>Values</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>id</td>
+									<td>Unique identifier of the bus stop.</td>
+									<td>Integer</td>
+								</tr>
+								<tr>
+									<td>name</td>
+									<td>Name of the bus stop location.</td>
+									<td>String</td>
+								</tr>
+								<tr>
+									<td>direction</td>
+									<td>Direction the bus is heading while passing the bus stop.</td>
+									<td>String</td>
+								</tr>
+								<tr>
+									<td>latitude</td>
+									<td>Latitude co-ordinates of the building</td>
+									<td>String</td>
+								</tr>
+								<tr>
+									<td>longitude</td>
+									<td>Longitude co-ordinates of the building</td>
+									<td>String</td>
+								</tr>
+							</tbody>
+						</table>
+
+						<div id="documentation_api_resources_bus_timetable">
+							<h3>Timetable</h3>
+							<p>This resource returns the bus stop timetables.</p>
+
+							<p class="lead">GET bus/ID/timetable</p>
+							<div class="example-request">
+								<pre class="request_header">GET <%= api.full %>/bus/1/timetable</pre>
+								<pre class="pre-scrollable">
+{
+	"weekday": [
+		{
+			"journey": 1
+			"time": "07:40:00",
+		},
+		{
+			"journey": 2
+			"time": "08:00:00",
+		},
+		...
+	],
+	"weekend": [
+		{
+			"journey": 1
+			"time": "10:00:00",
+		},
+		{
+			"journey": 2
+			"time": "10:40:00",
+		},
+		...
+	]
+}
+								</pre>
+							</div>
+
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Field Name</th>
+										<th>Description</th>
+										<th>Values</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr class="warning">
+										<td>weekday</td>
+										<td>Journeys that take place on a weekday.</td>
+										<td>Array</td>
+									</tr>
+									<tr class="warning">
+										<td>weekend</td>
+										<td>Journeys that take place on a weekend.</td>
+										<td>Array</td>
+									</tr>
+									<tr>
+										<td>time</td>
+										<td>The time that the bus reaches the bus stop.</td>
+										<td>Time</td>
+									</tr>
+									<tr>
+										<td>journey</td>
+										<td>The unique identifier (per week category) of the journey.</td>
+										<td>Integer</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+
+						<div id="documentation_api_resources_bus_journeys">
+							<h3>Journeys</h3>
+							<p>This resource returns the bus journeys through each bus stop.</p>
+
+							<p class="lead">GET bus/journeys</p>
+							<div class="example-request">
+								<pre class="request_header">GET <%= api.full %>/bus/journeys</pre>
+								<pre class="pre-scrollable">
+{
+	"weekday": [
+		{
+			"journey": 1
+			"time": "07:40:00"
+		},
+		{
+			"journey": 2
+			"time": "08:00:00"
+		},
+		...
+	],
+	"weekend": [
+		{
+			"journey": 1
+			"time": "10:00:00"
+		},
+		{
+			"journey": 2
+			"time": "10:40:00"
+		},
+		...
+	]
+}
+								</pre>
+							</div>
+
+							<p class="lead">GET bus/journeys/ID</p>
+							<div class="example-request">
+								<pre class="request_header">GET <%= api.full %>/bus/journeys/ID</pre>
+								<pre class="pre-scrollable">
+{
+	"weekday": [
+		{
+			"time": "07:40:00",
+			"stop": {
+				"id": 1,
+				"name": "Langstone Campus (Departure)",
+				"direction": "South",
+				"latitude": "50.795894",
+				"longitude": "-1.042242"
+			}
+		},
+		{
+			"time": "07:43:00",
+			"stop": {
+				"id": 2,
+				"name": "Locksway Road (Milton)",
+				"direction": "West",
+				"latitude": "50.793330",
+				"longitude": "-1.057310"
+			}
+		},
+		...
+	],
+	"weekend": [
+		{
+			"time": "10:00:00",
+			"stop": {
+				"id": 1,
+				"name": "Langstone Campus (Departure)",
+				"direction": "South",
+				"latitude": "50.795894",
+				"longitude": "-1.042242"
+			}
+		},
+		{
+			"time": "10:04:00",
+			"stop": {
+				"id": 2,
+				"name": "Locksway Road (Milton)",
+				"direction": "West",
+				"latitude": "50.793330",
+				"longitude": "-1.057310"
+			}
+		},
+	]
+}
+								</pre>
+							</div>
+
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Field Name</th>
+										<th>Description</th>
+										<th>Values</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr class="warning">
+										<td>weekday</td>
+										<td>Journeys that take place on a weekday.</td>
+										<td>Array</td>
+									</tr>
+									<tr class="warning">
+										<td>weekend</td>
+										<td>Journeys that take place on a weekend.</td>
+										<td>Array</td>
+									</tr>
+									<tr>
+										<td>journey</td>
+										<td>The unique identifier (per week category) of the journey.</td>
+										<td>Integer</td>
+									</tr>
+									<tr>
+										<td>start_time</td>
+										<td>The starting time of the journey.</td>
+										<td>Time</td>
+									</tr>
+									<tr>
+										<td>time</td>
+										<td>The time that the bus will reach the bus stop during the journey.</td>
+										<td>Time</td>
+									</tr>
+									<tr>
+										<td>stop</td>
+										<td>The bus stop details.</td>
+										<td>Object</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
 				<!-- END OF API RESOURCES -->
