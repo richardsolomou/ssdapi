@@ -1,6 +1,6 @@
 <% include includes/header %>
 
-	<script src="/assets/js/documentation.js"></script>
+	<script src="<%= api.public %>/assets/js/documentation.js"></script>
 
 	<article id="intro">
 		<div class="container">
@@ -61,8 +61,8 @@
 
 						<p class="lead">GET buildings</p>
 						<div class="example-request">
-							<pre class="request_header">GET <%= api.full_url %>buildings</pre>
-							<pre class="pre-scrollable" data-example-request="buildings">
+							<pre class="request_header">GET <%= api.full %>/buildings</pre>
+							<pre class="pre-scrollable">
 [
 	{
 		"name": "Anglesea",
@@ -101,8 +101,8 @@
 
 						<p class="lead">GET buildings/ID</p>
 						<div class="example-request">
-							<pre class="request_header">GET <%= api.full_url %>buildings/pk</pre>
-							<pre class="pre-scrollable" data-example-request="buildings/pk">
+							<pre class="request_header">GET <%= api.full %>/buildings/pk</pre>
+							<pre class="pre-scrollable">
 {
 	"name": "Park",
 	"reference": "pk",
@@ -149,8 +149,8 @@
 
 							<p class="lead">GET buildings/openaccess</p>
 							<div class="example-request">
-								<pre class="request_header">GET <%= api.full_url %>buildings/openaccess</pre>
-								<pre class="pre-scrollable" data-example-request="buildings/openaccess">
+								<pre class="request_header">GET <%= api.full %>/buildings/openaccess</pre>
+								<pre class="pre-scrollable">
 [
 	{
 		"open": true,
@@ -194,8 +194,8 @@
 
 							<p class="lead">GET buildings/ID/openaccess</p>
 							<div class="example-request">
-								<pre class="request_header">GET <%= api.full_url %>buildings/pk/openaccess</pre>
-								<pre class="pre-scrollable" data-example-request="buildings/pk/openaccess">
+								<pre class="request_header">GET <%= api.full %>/buildings/pk/openaccess</pre>
+								<pre class="pre-scrollable">
 {
 	"open": true,
 	"in_use": 14,
@@ -242,8 +242,8 @@
 
 							<p class="lead">GET buildings/openingtimes</p>
 							<div class="example-request">
-								<pre class="request_header">GET <%= api.full_url %>buildings/openingtimes</pre>
-								<pre class="pre-scrollable" data-example-request="buildings/openingtimes">
+								<pre class="request_header">GET <%= api.full %>/buildings/openingtimes</pre>
+								<pre class="pre-scrollable">
 [
 	{
 		"day_of_the_week": "Monday",
@@ -297,8 +297,8 @@
 
 							<p class="lead">GET buildings/ID/openingtimes</p>
 							<div class="example-request">
-								<pre class="request_header">GET <%= api.full_url %>buildings/ag/openingtimes</pre>
-								<pre class="pre-scrollable" data-example-request="buildings/ag/openingtimes">
+								<pre class="request_header">GET <%= api.full %>/buildings/ag/openingtimes</pre>
+								<pre class="pre-scrollable">
 [
 	{
 		"day_of_the_week": "Monday",
@@ -368,8 +368,8 @@
 
 							<p class="lead">GET buildings/labs</p>
 							<div class="example-request">
-								<pre class="request_header">GET <%= api.full_url %>buildings/labs</pre>
-								<pre class="pre-scrollable" data-example-request="buildings/labs">
+								<pre class="request_header">GET <%= api.full %>/buildings/labs</pre>
+								<pre class="pre-scrollable">
 [
 	{
 		"short_identifier": "ag001",
@@ -418,8 +418,8 @@
 
 							<p class="lead">GET buildings/ID/labs</p>
 							<div class="example-request">
-								<pre class="request_header">GET <%= api.full_url %>buildings/ag/labs</pre>
-								<pre class="pre-scrollable" data-example-request="buildings/ag/labs">
+								<pre class="request_header">GET <%= api.full %>/buildings/ag/labs</pre>
+								<pre class="pre-scrollable">
 [
 	{
 		"short_identifier": "ag001",
@@ -439,8 +439,8 @@
 
 							<p class="lead">GET buildings/ID/labs/ID</p>
 							<div class="example-request">
-								<pre class="request_header">GET <%= api.full_url %>buildings/ag/labs/ag002</pre>
-								<pre class="pre-scrollable" data-example-request="buildings/ag/labs/ag002">
+								<pre class="request_header">GET <%= api.full %>/buildings/ag/labs/ag002</pre>
+								<pre class="pre-scrollable">
 {
 	"short_identifier": "ag002",
 	"room_number": "0.02"
@@ -482,7 +482,7 @@
 								<p class="lead">GET buildings/labs/timetables</p>
 								<div class="example-request">
 									<pre class="request_header">GET http://ssd.api.port.ac.uk/v1/buildings/labs/timetables</pre>
-									<pre class="pre-scrollable" data-example-request="buildings/labs/timetables">
+									<pre class="pre-scrollable">
 [
 	{
 		"start_time": "19:00:00",
@@ -562,7 +562,7 @@
 								<p class="lead">GET buildings/ID/labs/timetables</p>
 								<div class="example-request">
 									<pre class="request_header">GET http://ssd.api.port.ac.uk/v1/buildings/ag/labs/timetables</pre>
-									<pre class="pre-scrollable" data-example-request="buildings/ag/labs/timetables">
+									<pre class="pre-scrollable">
 [
 	{
 		"start_time": "19:00:00",
@@ -601,7 +601,7 @@
 								<p class="lead">GET buildings/ID/labs/ID/timetables</p>
 								<div class="example-request">
 									<pre class="request_header">GET http://ssd.api.port.ac.uk/v1/buildings/ag/labs/ag029/timetables</pre>
-									<pre class="pre-scrollable" data-example-request="buildings/ag/labs/ag029/timetables">
+									<pre class="pre-scrollable">
 [
 	{
 		"start_time": "19:00:00",
@@ -663,8 +663,8 @@
 
 						<p class="lead">GET services</p>
 						<div class="example-request">
-							<pre class="request_header">GET <%= api.full_url %>services</pre>
-							<pre class="pre-scrollable" data-example-request="services">
+							<pre class="request_header">GET <%= api.full %>/services</pre>
+							<pre class="pre-scrollable">
 [
 	{
 		"name": "Wireless Error",

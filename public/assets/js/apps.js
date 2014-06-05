@@ -62,7 +62,7 @@ $(document).ready(function () {
 		// Perform an AJAX request to add the new app using the data stored in the input fields on the New App modal.
 		$.ajax({
 			type: 'POST',
-			url: '/apps',
+			url: window.location.pathname,
 			data: { title: newAppTitle.val(), request_origin: newAppRequestOrigin.val() },
 			success: function (app) {
 				// Hide the New App modal.
@@ -121,7 +121,7 @@ $(document).ready(function () {
 		// Perform an AJAX request to update the app using the data stored in the input fields on the Edit App modal.
 		$.ajax({
 			type: 'PUT',
-			url: '/apps',
+			url: window.location.pathname,
 			data: { id: editAppId.val(), title: editAppTitle.val(), request_origin: editAppRequestOrigin.val() },
 			success: function (data) {
 				// Hide the Edit App modal.
@@ -151,7 +151,7 @@ $(document).ready(function () {
 		// Perform an AJAX request to delete the current app.
 		$.ajax({
 			type: 'DELETE',
-			url: '/apps',
+			url: window.location.pathname,
 			data: { id: deleteAppId.val() },
 			success: function (data) {
 				// Hide the Delete App modal.

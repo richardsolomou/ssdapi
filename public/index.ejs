@@ -1,6 +1,6 @@
 <% include includes/header %>
 
-	<script src="/assets/js/documentation.js"></script>
+	<script src="<%= api.public %>/assets/js/documentation.js"></script>
 
 	<article id="intro">
 		<div class="container">
@@ -22,7 +22,7 @@
 					</span>
 					<h4>How can I start using the API?</h4>
 				</div>
-					<p>We have an awesome <a href="/documentation">documentation</a> on how to use this API. This service will always be publicly available to all students and staff. It literally takes minutes to get started.</p>
+					<p>We have an awesome <a href="<%= api.folder %>/documentation">documentation</a> on how to use this API. This service will always be publicly available to all students and staff. It literally takes minutes to get started.</p>
 			</div>
 			<div class="col-md-4">
 				<div class="text-center">
@@ -46,7 +46,7 @@
 			</div>
 			<div class="col-md-6">
 				<div class="img">
-					<img src="/assets/img/ithelp.png">
+					<img src="<%= api.public %>/assets/img/ithelp.png">
 					<legend><a href="http://ithelp.port.ac.uk" target="_blank">IT Help</a> shown using the API as its datasource.</legend>
 				</div>
 			</div>
@@ -57,7 +57,7 @@
 		<div class="container">
 			<div class="col-md-6">
 				<div class="img">
-					<img src="/assets/img/kiosk.png">
+					<img src="<%= api.public %>/assets/img/kiosk.png">
 					<legend>Library information kiosk shown using the API as its datasource.</legend>
 				</div>
 			</div>

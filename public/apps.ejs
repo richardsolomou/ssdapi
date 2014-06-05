@@ -1,6 +1,6 @@
 <% include includes/header %>
 
-	<script src="/assets/js/apps.js"></script>
+	<script src="<%= api.public %>/assets/js/apps.js"></script>
 
 	<article id="intro">
 		<div class="container">
@@ -70,7 +70,7 @@
 			<h4>Pure JavaScript</h4>
 <pre class="pre-scrollable">
 var script = document.createElement('script');
-script.src = '<%= api.full_url %>buildings?access_token=test&amp;callback=test';
+script.src = '<%= api.full %>/buildings?access_token=test&amp;callback=test';
 document.body.appendChild(script);
 function test(data) {
 	console.dir(data);
@@ -79,7 +79,7 @@ function test(data) {
 <pre class="pre-scrollable">
 $.ajax({
 	type: 'GET',
-	url: '<%= api.full_url %>buildings?access_token=test',
+	url: '<%= api.full %>/buildings?access_token=test',
 	dataType: 'jsonp',
 	success: function (data) {
 		console.dir(data);
@@ -87,14 +87,14 @@ $.ajax({
 });</pre>
 			<h4>jQuery AJAX Shorthand</h4>
 <pre class="pre-scrollable">
-$.getJSON('<%= api.full_url %>buildings?access_token=test&amp;callback=?', function (data) {
+$.getJSON('<%= api.full %>/buildings?access_token=test&amp;callback=?', function (data) {
 	console.dir(data);
 });</pre>
 
 			<h3>Using PHP</h3>
 			<p>Server-side languages like PHP can use built-in functionality like "file_get_contents" and "json_encode" to easily grab JSON data from the API.
 <pre class="pre-scrollable">
-$json = file_get_contents('<%= api.full_url %>buildings?access_token=test');
+$json = file_get_contents('<%= api.full %>/buildings?access_token=test');
 $data = json_decode($json);
 var_dump($data);</pre>
 
@@ -112,7 +112,7 @@ import org.json.simple.parser.ParseException;
 
 public class ParseJson {
 	public static void main(String[] args) {
-		String json = IOUtils.toString(new URL("<%= api.full_url %>buildings?access_token=test"));
+		String json = IOUtils.toString(new URL("<%= api.full %>/buildings?access_token=test"));
 		JSONObject data = (JSONObject) JSONValue.parseWithException(json);
 		System.out.println(data.get("name"));
 	}
