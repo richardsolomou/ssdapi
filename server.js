@@ -14,19 +14,18 @@ var express = require('express'),
 	GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
 	LocalAPIKeyStrategy = require('passport-localapikey').Strategy,
 	flash = require('connect-flash'),
+	redis = require('redis').createClient(),
+	RedisStore = require('connect-redis')(session),
 	async = require('async'),
 	url = require('url'),
 	dns = require('dns'),
 	v6 = require('ipv6').v6;
 
-// Set the port and load the configuration.
-var port = process.env.PORT || 8080,
-	config = require('./config/config'),
-	local = require('./config/local');
+// Load the configuration.
+var config = new require('./config')();
 
 // Set up the firewall bypass proxy.
 require('proxy-out')('http://wwwcache.port.ac.uk:81/');
-
 
 /**
  * Module configuration.
@@ -35,9 +34,9 @@ require('proxy-out')('http://wwwcache.port.ac.uk:81/');
 // Initialize express.
 var app = express();
 // Setup connection to the MySQL database.
-var mysql_conn = mysql.createConnection(config.db.mysql);
+var mysql_conn = mysql.createConnection(config.mysql);
 // Connect to the MSSQL Database.
-mssql.connect(config.db.mssql);
+mssql.connect(config.mssql);
 
 // Implement a custom format for query escaping.
 mysql_conn.config.queryFormat = function (query, values) {
@@ -54,15 +53,15 @@ passport.serializeUser(function (user, done) {
 });
 
 // Deserialize user instance to and from the session.
-passport.deserializeUser(function (obj, done) {
-	done(null, obj);
+passport.deserializeUser(function (user, done) {
+	done(null, user);
 });
 
 // Use the GoogleStrategy within Passport.
 passport.use(new GoogleStrategy({
 		clientID: config.passport.client_id,
 		clientSecret: config.passport.client_secret,
-		callbackURL: local.api.base_url + '/auth/google/callback',
+		callbackURL: 'http://' + config.api.hostname + config.api.folder + '/auth/google/callback',
 		scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
 		passReqToCallback: true
 	},
@@ -107,9 +106,9 @@ passport.use(new LocalAPIKeyStrategy({
 			// Set the origin variable.
 			var origin = rows[0].request_origin;
 			// Set the address variable as an IPv6 address.
-			var address = new v6.Address(req.headers['x-forwarded-for']);
+			var address = (typeof req.headers['x-forwarded-for'] !== 'undefined') ? new v6.Address(req.headers['x-forwarded-for']) : null;
 			// Checks the remote machine's proxied IP address against the allowed request origin.
-			if (req.headers['x-forwarded-for'] && (req.headers['x-forwarded-for'] == origin || req.protocol + '://' + req.headers['x-forwarded-for'] == origin) || (address.isValid() && (address.six2four().gateway == origin || req.protocol + '://' + address.six2four().gateway == origin))) {
+			if (req.headers['x-forwarded-for'] && (req.headers['x-forwarded-for'] == origin || req.protocol + '://' + req.headers['x-forwarded-for'] == origin) || (address && address.isValid() && (address && address.six2four().gateway == origin || req.protocol + '://' + address.six2four().gateway == origin))) {
 				return done(null, rows[0].user_id);
 			// Checks the remote machine's IP address against the allowed request origin.
 			} else if (req.ip == origin || req.protocol + '://' + req.ip == origin) {
@@ -136,7 +135,7 @@ passport.use(new LocalAPIKeyStrategy({
 app.use(express.static(__dirname + '/public'));
 app.set('views', __dirname + '/public');
 // Log requests to the console.
-app.use(morgan('dev'));
+app.use(morgan('short'));
 // Read cookies needed for authentication.
 app.use(cookieParser());
 // Get information from HTML forms.
@@ -144,9 +143,17 @@ app.use(bodyParser());
 // Set up ejs for templating.
 app.set('view engine', 'ejs');
 // Set up application local variables.
-app.locals = local;
+app.locals = config;
 // Set the session secret.
-app.use(session({ secret: config.express.secret }));
+app.use(session({
+	store: new RedisStore({
+		host: config.api.hostname,
+		port: 6379,
+		prefix: 'ssdapi_sess',
+		client: redis
+	}),
+	secret: config.express.secret
+}));
 // Initialize passport and use persistent login sessions.
 app.use(passport.initialize());
 app.use(passport.session());
@@ -155,19 +162,15 @@ app.use(flash());
 // Allows JSONP requests.
 app.set('jsonp callback', true);
 
-
 /**
  * Route cofiguration.
  */
 
-// Load the interface and pass in the application and passport instances.
-require('./app/interface')(app, passport, mysql_conn, local);
-
 // Load the API routes and pass in the application and passport instances.
-require('./app/api')(app, passport, mysql_conn, mssql);
+require('./routes/api')(app, passport, mysql_conn, mssql, config);
 
+// Load the interface and pass in the application and passport instances.
+require('./routes/interface')(app, passport, mysql_conn, config);
 
 // Listen for connections.
-app.listen(port, function () {
-	console.log('Listening to port ' + port);
-});
+app.listen(process.env.PORT);
