@@ -21,6 +21,7 @@
 		"async": "*",
 		"body-parser": "*",
 		"connect-flash": "*",
+		"connect-redis": "*",
 		"cookie-parser": "*",
 		"ejs": "*",
 		"express": "*",
@@ -34,7 +35,7 @@
 		"passport-google-oauth": "*",
 		"passport-localapikey": "*",
 		"proxy-out": "*",
-		"validator": "*",
-		"winston": "*"
+		"redis": "*",
+		"validator": "*"
 	}
 }
