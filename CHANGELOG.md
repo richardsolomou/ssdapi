@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.1 (2014-06-05)
+
+- Added bus timetable and journey routes.
+- Improved performance.
+- Added support for IIS using iisnode.
+- Improved access token identification functionality.
+- Added error handling for invalid routes.
+
 ## 0.1.0 (2014-04-29)
 
 - Removed lecturer names from the timetable routes.
