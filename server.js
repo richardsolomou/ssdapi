@@ -22,7 +22,21 @@ var express = require('express'),
 	v6 = require('ipv6').v6;
 
 // Load the configuration.
-var config = new require('./config')();
+var local = [require('./version.json'), require('./config.json')[process.env.NODE_ENV || 'development']],
+	config = {};
+
+// Loop through the configuration objects.
+for (var i = 0; i < local.length; i++) {
+	// Loop through each of their properties.
+	for (p in local[i]) {
+		// Append the property to the new configuration object.
+		if (local[i].hasOwnProperty(p)) config[p] = local[i][p];
+	}
+}
+
+// Set some extra configuration.
+config.api.full = 'http://' + config.api.hostname + config.api.folder + '/v' + config.version.number;
+config.api.public = config.api.folder + '/public';
 
 // Set up the firewall bypass proxy.
 require('proxy-out')('http://wwwcache.port.ac.uk:81/');
@@ -34,9 +48,9 @@ require('proxy-out')('http://wwwcache.port.ac.uk:81/');
 // Initialize express.
 var app = express();
 // Setup connection to the MySQL database.
-var mysql_conn = mysql.createConnection(config.mysql);
+var mysql_conn = mysql.createConnection(config.db.api);
 // Connect to the MSSQL Database.
-mssql.connect(config.mssql);
+mssql.connect(config.db.labstats);
 
 // Implement a custom format for query escaping.
 mysql_conn.config.queryFormat = function (query, values) {

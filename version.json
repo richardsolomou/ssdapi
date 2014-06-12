@@ -1,0 +1,9 @@
+{
+	"title": "Student Service Delivery API",
+	"version": {
+		"number": "1",
+		"real_number": "0.1.2",
+		"date": "2014-06-12",
+		"date_readable": "June 12th, 2014"
+	}
+}

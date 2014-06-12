@@ -1,0 +1,58 @@
+{
+	"development": {
+		"api": {
+			"hostname": "foo",
+			"folder": "bar"
+		},
+		"db": {
+			"api": {
+				"host": "foo",
+				"user": "bar",
+				"password": "baz",
+				"database": "qux",
+				"multipleStatements": true
+			},
+			"labstats": {
+				"server": "foo",
+				"user": "bar",
+				"password": "baz",
+				"database": "qux"
+			}
+		},
+		"passport": {
+			"client_id": "foo",
+			"client_secret": "bar"
+		},
+		"express": {
+			"secret": "foo"
+		}
+	},
+	"production": {
+		"api": {
+			"hostname": "foo",
+			"folder": "bar"
+		},
+		"db": {
+			"api": {
+				"host": "foo",
+				"user": "bar",
+				"password": "baz",
+				"database": "qux",
+				"multipleStatements": true
+			},
+			"labstats": {
+				"server": "foo",
+				"user": "bar",
+				"password": "baz",
+				"database": "qux"
+			}
+		},
+		"passport": {
+			"client_id": "foo",
+			"client_secret": "bar"
+		},
+		"express": {
+			"secret": "foo"
+		}
+	}
+}
