@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.2 (2014-06-12)
+
+- Greatly improved functionality on checking building status.
+- Labs table has been renamed to rooms and more rooms were added to it.
+
 ## 0.1.1 (2014-06-05)
 
 - Added bus timetable and journey routes.
