@@ -360,9 +360,9 @@ module.exports = function (app, passport, mysql, mssql, config) {
 				// Check if a building reference was not defined.
 				if (!req.params.reference) return callback();
 				// Run a MySQL query for getting the building data of the referenced building.
-				mysql.query('SELECT * FROM `buildings` WHERE `reference` = :reference', { reference: req.params.reference }, function (err, results) {
+				mysql.query('SELECT * FROM `buildings` WHERE `reference` = :reference', { reference: req.params.reference }, function (err, buildings) {
 					// Return the building id as part of the callback to the next function.
-					callback(null, 'WHERE `buildings`.`id` = ' + results[0].id);
+					callback(null, 'WHERE `buildings`.`id` = ' + buildings[0].id);
 				});
 			}
 		// Runs a function that gets the open access area availability for the specified building (if any) or all buildings.
@@ -376,61 +376,74 @@ module.exports = function (app, passport, mysql, mssql, config) {
 				var data = [], d = new Date(), today = d.getDay() - 1, time = d.toLocaleTimeString(), days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 				// Run a series of functions for each building returned.
 				async.each(results, function (building, callback) {
-					// Set the opening status, total number and in use number of computers in the building.
+					// Set the default opening status, total number and in use number of computers in the building.
 					var open = false, total = 0, in_use = 0;
-					// Run a MySQL query for getting the opening and closing times for today for the building.
-					mysql.query('SELECT * FROM `openingtimes` WHERE `building_id` = ' + building.id + ' AND `day_of_the_week` = "' + days[today] + '"', function (err, openingtimes) {
-						// Set the opening status to true if the current time is within the opening times.
-						open = (time > openingtimes[0].opening_time && time < openingtimes[0].closing_time) ? true : false;
-					});
-					// Run a MySQL query for getting the open access areas for the building.
-					mysql.query('SELECT * FROM `openaccess` WHERE `building_id` = ' + building.id, function (err, openaccess) {
-						// Delete the building id.
-						delete building.id;
-						// Run a series of functions for each open access area in the building.
-						async.each(openaccess, function (openacc, callback) {
-							// Run a series of functions in parallel for each open access area.
-							async.parallel([
-								// Run a function for getting the total number of computers in the area.
-								function (callback) {
-									// Create a new MSSQL query request.
-									var labstats = new mssql.Request();
-									// Run an MSSQL query to get the total number of computers in the open access area.
-									labstats.query('SELECT COUNT(*) AS count FROM LabStats.dbo.CLS_CLIENT WHERE STATIONID IN (SELECT STATIONID FROM LabStats.dbo.CLS_STATION_GROUP WHERE GROUPID = ' + openacc.groupid + ' AND ENDDATE IS NULL)', function (err, labstats) {
-										// Add the open access area computer count to the building total.
-										total += labstats[0].count;
-										// Call the callback function to continue.
-										callback();
-									});
-								},
-								// Run a function for getting the number of in-use computers in the area.
-								function (callback) {
-									// Create a new MSSQL query request.
-									var labstats = new mssql.Request();
-									// Run an MSSQL query to get the number of in-use computers in the open access area.
-									labstats.query("SELECT COUNT(*) AS count FROM LabStats.dbo.CLS_CLIENT WHERE CURRENTUSER <> '' AND STATIONID IN (SELECT STATIONID FROM LabStats.dbo.CLS_STATION_GROUP WHERE GROUPID = " + openacc.groupid + " AND ENDDATE IS NULL)", function (err, labstats) {
-										// Add the open access area computer count to the building total.
-										in_use += labstats[0].count;
-										// Call the callback function to continue.
-										callback();
-									});
+					// Run a MySQL query for getting the opening times of the building.
+					mysql.query('SELECT * FROM `oathkeeper`.`openingtimes` WHERE `building_id` = ' + building.id + ' AND `day_range` LIKE "%' + days[today] + '%"', function (err, openingtimes) {
+						// Run a MySQL query to select any opening/closing rules that apply to this building or the university.
+						mysql.query('SELECT * FROM `oathkeeper`.`rules` WHERE :date BETWEEN `start_date` AND `end_date` AND `active` = 1 ORDER BY `priority` ASC, `start_date` ASC', { date: d.yyyymmdd() }, function (err, rules) {
+							// Set the default status.
+							var status = true;
+							// Loop through the returned rules.
+							for (var i in rules) {
+								// Check if the rule is affecting the building or the university as a whole.
+								if (rules[i].building_id && !rules[i].room_id && rules[i].building_id == building.id || !rules[i].building_id && !rules[i].room_id) {
+									// Save the status of the rule.
+									status = rules[i].status === 'open' ? true : false;
 								}
-							// Run a function after the parallely functions have finished running.
-							], function () {
-								// Call the callback function to continue to the next open access area.
-								callback();
+							}
+							// Set the opening status to true if the building is set to open and the current time is within the opening times.
+							open = (status && time > openingtimes[0].open_time && time < openingtimes[0].close_time) ? true : false;
+							// Run a MySQL query for getting the open access areas for the building.
+							mysql.query('SELECT * FROM `openaccess` WHERE `building_id` = ' + building.id, function (err, openaccess) {
+								// Delete the building id.
+								delete building.id;
+								// Run a series of functions for each open access area in the building.
+								async.each(openaccess, function (openacc, callback) {
+									// Run a series of functions in parallel for each open access area.
+									async.parallel([
+										// Run a function for getting the total number of computers in the area.
+										function (callback) {
+											// Create a new MSSQL query request.
+											var labstats = new mssql.Request();
+											// Run an MSSQL query to get the total number of computers in the open access area.
+											labstats.query('SELECT COUNT(*) AS count FROM LabStats.dbo.CLS_CLIENT WHERE STATIONID IN (SELECT STATIONID FROM LabStats.dbo.CLS_STATION_GROUP WHERE GROUPID = ' + openacc.groupid + ' AND ENDDATE IS NULL)', function (err, total_stats) {
+												// Add the open access area computer count to the building total.
+												total += total_stats[0].count;
+												// Call the callback function to continue.
+												callback();
+											});
+										},
+										// Run a function for getting the number of in-use computers in the area.
+										function (callback) {
+											// Create a new MSSQL query request.
+											var labstats = new mssql.Request();
+											// Run an MSSQL query to get the number of in-use computers in the open access area.
+											labstats.query("SELECT COUNT(*) AS count FROM LabStats.dbo.CLS_CLIENT WHERE CURRENTUSER <> '' AND STATIONID IN (SELECT STATIONID FROM LabStats.dbo.CLS_STATION_GROUP WHERE GROUPID = " + openacc.groupid + " AND ENDDATE IS NULL)", function (err, stats_in_use) {
+												// Add the open access area computer count to the building total.
+												in_use += stats_in_use[0].count;
+												// Call the callback function to continue.
+												callback();
+											});
+										}
+									// Run a function after the parallely functions have finished running.
+									], function () {
+										// Call the callback function to continue to the next open access area.
+										callback();
+									});
+								// Run a function after the functions for each open access area have finished running.
+								}, function () {
+									// Push the building object with its open access area availability data.
+									data.push({
+										'open': open,
+										'in_use': in_use,
+										'total': total,
+										'building': building
+									});
+									// Call the callback function to continue to the next building.
+									callback();
+								});
 							});
-						// Run a function after the functions for each open access area have finished running.
-						}, function () {
-							// Push the building object with its open access area availability data.
-							data.push({
-								'open': open,
-								'in_use': in_use,
-								'total': total,
-								'building': building
-							});
-							// Call the callback function to continue to the next building.
-							callback();
 						});
 					});
 				// Run a function after all previous functions have finished executing.
