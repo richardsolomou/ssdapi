@@ -152,7 +152,7 @@ module.exports = function (app, passport, mysql, mssql, config) {
 	// Route to get all the timetables for a specific lab.
 	app.get(config.api.folder + '/v1/buildings/:reference/labs/:short_identifier/timetables', isAuthorized, function (req, res) {
 		// Run a MySQL query to get the timetables for a specific lab.
-		mysql.query('SELECT `start_time`, `finish_time`, `module_name`, `module_type` FROM `timetables` INNER JOIN `buildings` ON `buildings`.`id` = `timetables`.`building_id` AND `buildings`.`reference` = :reference INNER JOIN `labs` ON `labs`.`id` = `timetables`.`lab_id` AND `labs`.`short_identifier` = :short_identifier ORDER BY `start_time`, `finish_time`', { reference: req.params.reference, short_identifier: req.params.short_identifier }, function (err, results) {
+		mysql.query('SELECT `start_time`, `finish_time`, `module_name`, `module_type` FROM `timetables` INNER JOIN `buildings` ON `buildings`.`id` = `timetables`.`building_id` AND `buildings`.`reference` = :reference INNER JOIN `rooms` ON `rooms`.`id` = `timetables`.`room_id` AND `rooms`.`short_identifier` = :short_identifier ORDER BY `start_time`, `finish_time`', { reference: req.params.reference, short_identifier: req.params.short_identifier }, function (err, results) {
 			// Return appropriate error messages if something went wrong.
 			if (err) return res.jsonp(500, { error: { message: 'Something went wrong.', code: 500, details: err } });
 			if (!results || !results.length) return res.jsonp(404, { error: { message: 'There are no timetables for this building.', code: 404 } });
@@ -164,18 +164,18 @@ module.exports = function (app, passport, mysql, mssql, config) {
 	// Route to get all the timetables for a specific building.
 	app.get(config.api.folder + '/v1/buildings/:reference/labs/timetables', isAuthorized, function (req, res) {
 		// Run a MySQL query to get the timetables for a specific building.
-		mysql.query('SELECT `start_time`, `finish_time`, `module_name`, `module_type`, `lab_id` FROM `timetables` INNER JOIN `buildings` ON `buildings`.`id` = `timetables`.`building_id` AND `buildings`.`reference` = :reference ORDER BY `start_time`, `finish_time`', { reference: req.params.reference }, function (err, results) {
+		mysql.query('SELECT `start_time`, `finish_time`, `module_name`, `module_type`, `room_id` FROM `timetables` INNER JOIN `buildings` ON `buildings`.`id` = `timetables`.`building_id` AND `buildings`.`reference` = :reference ORDER BY `start_time`, `finish_time`', { reference: req.params.reference }, function (err, results) {
 			// Return appropriate error messages if something went wrong.
 			if (err) return res.jsonp(500, { error: { message: 'Something went wrong.', code: 500, details: err } });
 			if (!results || !results.length) return res.jsonp(404, { error: { message: 'There are no timetables for this building.', code: 404 } });
 			// Loop through all the timetables.
 			async.each(results, function (timetable, callback) {
 				// Run a MySQL query to get the lab details for the timetable.
-				mysql.query('SELECT `short_identifier`, `room_number` FROM `labs` WHERE `id` = :lab_id', { lab_id: timetable.lab_id }, function (err, labs) {
+				mysql.query('SELECT `short_identifier`, `room_number` FROM `rooms` WHERE `id` = :room_id AND `type` LIKE "%labs%"', { room_id: timetable.room_id }, function (err, rooms) {
 					// Append the lab to the timetable object.
-					timetable.lab = labs[0];
+					timetable.lab = rooms[0];
 					// Delete the timetable lab id.
-					delete timetable.lab_id;
+					delete timetable.room_id;
 					// Call the callback function to continue.
 					callback();
 				});
@@ -213,11 +213,11 @@ module.exports = function (app, passport, mysql, mssql, config) {
 					// Run a function for getting the lab details for the timetable.
 					function (callback) {
 						// Run a MySQL query to get the lab details for the timetable.
-						mysql.query('SELECT `short_identifier`, `room_number` FROM `labs` WHERE `id` = :lab_id', { lab_id: timetable.lab_id }, function (err, labs) {
+						mysql.query('SELECT `short_identifier`, `room_number` FROM `rooms` WHERE `id` = :room_id AND `type` LIKE "%labs%"', { room_id: timetable.room_id }, function (err, rooms) {
 							// Append the lab to the timetable object.
-							timetable.lab = labs[0];
+							timetable.lab = rooms[0];
 							// Delete the timetable lab id.
-							delete timetable.lab_id;
+							delete timetable.room_id;
 							// Call the callback function to continue.
 							callback();
 						});
@@ -240,7 +240,7 @@ module.exports = function (app, passport, mysql, mssql, config) {
 	// Route to get a specific lab.
 	app.get(config.api.folder + '/v1/buildings/:reference/labs/:short_identifier', isAuthorized, function (req, res) {
 		// Run a MySQL query to get the lab.
-		mysql.query('SELECT `labs`.`short_identifier`, `labs`.`room_number` FROM `labs` INNER JOIN `buildings` ON `buildings`.`id` = `labs`.`building_id` AND `buildings`.`reference` = :reference WHERE `labs`.`short_identifier` = :short_identifier', { reference: req.params.reference, short_identifier: req.params.short_identifier }, function (err, results) {
+		mysql.query('SELECT `rooms`.`short_identifier`, `rooms`.`room_number` FROM `rooms` INNER JOIN `buildings` ON `buildings`.`id` = `rooms`.`building_id` AND `buildings`.`reference` = :reference WHERE `rooms`.`short_identifier` = :short_identifier', { reference: req.params.reference, short_identifier: req.params.short_identifier }, function (err, results) {
 			// Return appropriate error messages if something went wrong.
 			if (err) return res.jsonp(500, { error: { message: 'Something went wrong.', code: 500, details: err } });
 			if (!results || !results.length) return res.jsonp(404, { error: { message: 'Invalid lab short identifier.', code: 404 } });
@@ -252,7 +252,7 @@ module.exports = function (app, passport, mysql, mssql, config) {
 	// Route to get the shared teaching spaces of a specific building.
 	app.get(config.api.folder + '/v1/buildings/:reference/labs', isAuthorized, function (req, res) {
 		// Run a MySQL query to get the shared teaching spaces of the building.
-		mysql.query('SELECT `labs`.`short_identifier`, `labs`.`room_number` FROM `labs` INNER JOIN `buildings` ON `buildings`.`id` = `labs`.`building_id` AND `buildings`.`reference` = :reference', { reference: req.params.reference }, function (err, results) {
+		mysql.query('SELECT `rooms`.`short_identifier`, `rooms`.`room_number` FROM `rooms` INNER JOIN `buildings` ON `buildings`.`id` = `rooms`.`building_id` AND `buildings`.`reference` = :reference WHERE `rooms`.`type` LIKE "%labs%"', { reference: req.params.reference }, function (err, results) {
 			// Return appropriate error messages if something went wrong.
 			if (err) return res.jsonp(500, { error: { message: 'Something went wrong.', code: 500, details: err } });
 			if (!results || !results.length) return res.jsonp(404, { error: { message: 'There are no labs available for this building.', code: 404 } });
@@ -264,10 +264,10 @@ module.exports = function (app, passport, mysql, mssql, config) {
 	// Route to get all shared teaching spaces.
 	app.get(config.api.folder + '/v1/buildings/labs', isAuthorized, function (req, res) {
 		// Run a MySQL query to get all labs.
-		mysql.query('SELECT `short_identifier`, `room_number`, `building_id` FROM `labs`', function (err, results) {
+		mysql.query('SELECT `short_identifier`, `room_number`, `building_id` FROM `rooms` WHERE `type` LIKE "%labs%"', function (err, results) {
 			// Return appropriate error messages if something went wrong.
 			if (err) return res.jsonp(500, { error: { message: 'Something went wrong.', code: 500, details: err } });
-			if (!results || !results.length) return res.jsonp(404, { error: { message: 'Labs table is empty.', code: 404 } });
+			if (!results || !results.length) return res.jsonp(404, { error: { message: 'Rooms table is empty.', code: 404 } });
 			// Loop through all the labs.
 			async.each(results, function (lab, callback) {
 				// Run a MySQL query to get the labs for the building.
@@ -290,12 +290,29 @@ module.exports = function (app, passport, mysql, mssql, config) {
 	// Route to get the opening times of a specific building.
 	app.get(config.api.folder + '/v1/buildings/:reference/openingtimes', isAuthorized, function (req, res) {
 		// Run a MySQL query to get the opening times of all buildings.
-		mysql.query('SELECT `openingtimes`.`day_of_the_week`, `openingtimes`.`opening_time`, `openingtimes`.`closing_time` FROM `openingtimes` INNER JOIN `buildings` ON `buildings`.`id` = `openingtimes`.`building_id` AND `buildings`.`reference` = :reference', { reference: req.params.reference }, function (err, results) {
+		mysql.query('SELECT `openingtimes`.* FROM `oathkeeper`.`openingtimes` INNER JOIN `buildings` ON `buildings`.`id` = `openingtimes`.`building_id` AND `buildings`.`reference` = :reference', { reference: req.params.reference }, function (err, results) {
 			// Return appropriate error messages if something went wrong.
 			if (err) return res.jsonp(500, { error: { message: 'Something went wrong.', code: 500, details: err } });
 			if (!results || !results.length) return res.jsonp(404, { error: { message: 'Opening times are not available for this building.', code: 404 } });
-			// Return all buildings in JSON format.
-			return res.jsonp(results);
+			// Loop through all the opening times.
+			async.each(results, function (openingtimes, callback) {
+				// Delete the id.
+				delete openingtimes.id;
+				// Run a MySQL query for getting the room details.
+				mysql.query('SELECT `room_number`, `short_identifier` FROM `rooms` WHERE `id` = :room_id', { room_id: openingtimes.room_id }, function (err, rooms) {
+					// Delete the building and room ids.
+					delete openingtimes.building_id;
+					delete openingtimes.room_id;
+					// Append the room data to the opening times object.
+					openingtimes.room = rooms ? rooms[0] : {};
+					// Call the callback function to continue.
+					callback();
+				});
+			// Execute a function after the results loop has finished.
+			}, function () {
+				// Return the buildings and its opening times in JSON format.
+				return res.jsonp(results);
+			});
 		});
 	});
 
@@ -303,20 +320,28 @@ module.exports = function (app, passport, mysql, mssql, config) {
 	app.get(config.api.folder + '/v1/buildings/openingtimes', isAuthorized, function (req, res) {
 		var data;
 		// Run a MySQL query to get the opening times of all buildings.
-		mysql.query('SELECT `building_id`, `day_of_the_week`, `opening_time`, `closing_time` FROM `openingtimes`', function (err, results) {
+		mysql.query('SELECT * FROM `oathkeeper`.`openingtimes`', function (err, results) {
 			// Return appropriate error messages if something went wrong.
 			if (err) return res.jsonp(500, { error: { message: 'Something went wrong.', code: 500, details: err } });
-			if (!results || !results.length) return res.jsonp(404, { error: { message: 'Buildings table is empty.', code: 404 } });
+			if (!results || !results.length) return res.jsonp(404, { error: { message: 'Opening times table is empty.', code: 404 } });
 			// Loop through all the opening times.
 			async.each(results, function (openingtimes, callback) {
+				// Delete the id.
+				delete openingtimes.id;
 				// Run a MySQL query for getting the building details.
 				mysql.query('SELECT `name`, `reference` FROM `buildings` WHERE `id` = :building_id', { building_id: openingtimes.building_id }, function (err, buildings) {
-					// Delete the building's id.
-					delete openingtimes.building_id;
 					// Append the building data to the opening times object.
 					openingtimes.building = buildings[0];
-					// Call the callback function to continue.
-					callback();
+					// Run a MySQL query for getting the room details.
+					mysql.query('SELECT `room_number`, `short_identifier` FROM `rooms` WHERE `id` = :room_id', { room_id: openingtimes.room_id }, function (err, rooms) {
+						// Delete the building and room ids.
+						delete openingtimes.building_id;
+						delete openingtimes.room_id;
+						// Append the room data to the opening times object.
+						openingtimes.room = rooms ? rooms[0] : {};
+						// Call the callback function to continue.
+						callback();
+					});
 				});
 			// Execute a function after the results loop has finished.
 			}, function () {
